@@ -1,10 +1,15 @@
 import { useParams } from 'react-router-dom';
 import { capitalizeFirstLetter } from '../../services/mayusculaPrimeraLetra';
 import { ServiciosDetalleProducto } from '../../services/serviciosDetalleProducto';
+import { useEffect } from 'react';
+import { useMapeandoCategoriaPorId } from '../../hooks/useMapearCatPorId';
 function DetalleProducto() {
     const { id } = useParams();
     const {handleChange, handleDelete, handleModificar,productosId } = ServiciosDetalleProducto(id)
     const nombreProducto = capitalizeFirstLetter(productosId.producto)
+    const {categoriaId} = useMapeandoCategoriaPorId(productosId.categoria)
+    const nombreCategoria = capitalizeFirstLetter(categoriaId.categoria)
+
 
     return (
         <div className='flex flex-col justify-center items-center h-screen bg-gray-100'>
@@ -50,7 +55,7 @@ function DetalleProducto() {
                                 className="w-full p-3 border border-gray-100"
                                 name="categoria"
                                 type="text"
-                                defaultValue={ productosId.categoria}
+                                defaultValue={ nombreCategoria}
                                 onChange={handleChange}
                             />
                         </div>

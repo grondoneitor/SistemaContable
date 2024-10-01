@@ -1,0 +1,9 @@
+Agregar categoria a los productos
+poder filtrar por categoria
+
+-Manejar errores// si no se enceuntran productos, si se escribe mal uno
+-Validaciones de la busqueda// que tenga mas de 3 letras, que no sean numeros, entre otras.
+-Que inpput hagan verificacion de datos en los formularios
+
+-seguir trabajando con la api para poder crear un proiducto con categoria y poder mostrarlo,
+por ahora puedo crear un producto desde la api pasandole el id de la categoria pero no puedo tomar el valor de categoria 

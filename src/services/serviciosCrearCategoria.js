@@ -61,14 +61,27 @@ export const ServiciosCrearCategoria = () => {
     const [nombreCategoriaNueva, setNombreCategoriaNueva] = useState("")
     const handleChangeEdi = (e) => {
         const {  value } = e.target;
-        setNombreCategoriaNueva(value);
+        console.log(categ.categoria + " categoria se")
+        if(value === ""){
+            setNombreCategoriaNueva(categ.categoria);
+        }else{
+            setNombreCategoriaNueva(value);
+        }
+       
     };
     const {modificarCategoria} =useModificarCategoria()
     
     const handleModificar = async()=>{
+        let categoriaFinal= ""
+        if(nombreCategoriaNueva === ""){
+             categoriaFinal = categ.categoria
+        }else{
+            categoriaFinal = nombreCategoriaNueva
+        }
+        console.log(categoriaFinal + " categoria final")
         const nuevoCateg ={
             id_Categoria:categ.id_Categoria,
-            categoria:nombreCategoriaNueva
+            categoria:categoriaFinal
         }
         await modificarCategoria(nuevoCateg)
         editarCategoria(nuevoCateg)

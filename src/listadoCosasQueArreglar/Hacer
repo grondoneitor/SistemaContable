@@ -7,3 +7,9 @@ poder filtrar por categoria
 
 -seguir trabajando con la api para poder crear un proiducto con categoria y poder mostrarlo,
 por ahora puedo crear un producto desde la api pasandole el id de la categoria pero no puedo tomar el valor de categoria 
+
+
+
+-cuando seleccionamos una categoria para modificar y no modificamos y ponemos editar categoria lo cambia por una categoria vacia
+-ver porque no funciona el buscador de categorias
+-No permitir crear categorias que no cumplan cierta regla( !== "" || length > 3)

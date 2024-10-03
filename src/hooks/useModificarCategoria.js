@@ -14,7 +14,7 @@ export const useModificarCategoria = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    "id": categoria.id,
+                    "id_Categoria": categoria.id_Categoria,
                     "categoria": categoria.categoria
                 })
             });

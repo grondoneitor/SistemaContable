@@ -5,13 +5,13 @@ export const useBorrarCategoria = () => {
     const [error, setError] = useState(null);
     const borrarCategoriaR = async (categoria ) => {
         try {
-            console.log(`Intentando eliminar cateogria con ID: ${categoria.id}`);
+            console.log(`Intentando eliminar cateogria con ID: ${categoria.id_Categoria}`);
             const response = await fetch(`http://localhost:8092/api/v1/categoria`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ "id": categoria.id})
+                body: JSON.stringify({ "id_Categoria": categoria.id_Categoria})
             });
     
             if (!response.ok) {

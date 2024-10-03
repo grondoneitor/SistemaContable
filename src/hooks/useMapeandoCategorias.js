@@ -1,10 +1,8 @@
-import { useContext, useEffect, useState } from "react";
-import { CategoriaContext } from "../context/categorias";
+import {  useEffect, useState } from "react";
 
 export const useMapeandoCategorias = () => {
   const [allCategorias, setAllCategorias] = useState([]);
   const [error, setError] = useState(null);
-  const { state } = useContext(CategoriaContext);
 
   useEffect(() => {
     const fetchCategorias = async () => {

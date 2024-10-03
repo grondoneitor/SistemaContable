@@ -12,7 +12,7 @@ export const ServiciosCrearCategoria = () => {
     const [categoriaFinal, setCategoriaFinal] = useState({ id: null, categoria: "" })
     const { crearCategoria,editarCategoria,borrarCategoria } = useContext(CategoriaContext)
     const { crearCategoriaReal } = useCrearCategoria()
-    const [categ, setCateg] = useState({id:null,categoria:""})
+    const [categ, setCateg] = useState({id_Categoria:null,categoria:""})
     const [activo, setActivo] = useState(false)
     const { state } = useElegirCategorias()
 
@@ -41,7 +41,7 @@ export const ServiciosCrearCategoria = () => {
     const handleOnClick = (categoria) => {
 
         const cat = {
-            id: categoria.id,
+            id_Categoria: categoria.id_Categoria,
             categoria: capitalizeFirstLetter(categoria.categoria)}
         setCateg(cat)
     }
@@ -57,29 +57,30 @@ export const ServiciosCrearCategoria = () => {
     const handleVolver = () => {
         setCateg({id:null,categoria:""});
     }
-
+    
+    const [nombreCategoriaNueva, setNombreCategoriaNueva] = useState("")
+    const handleChangeEdi = (e) => {
+        const {  value } = e.target;
+        setNombreCategoriaNueva(value);
+    };
     const {modificarCategoria} =useModificarCategoria()
     
     const handleModificar = async()=>{
         const nuevoCateg ={
-            id:categ.id,
+            id_Categoria:categ.id_Categoria,
             categoria:nombreCategoriaNueva
         }
         await modificarCategoria(nuevoCateg)
         editarCategoria(nuevoCateg)
 
     }
-    const [nombreCategoriaNueva, setNombreCategoriaNueva] = useState("")
-    const handleChangeEdi = (e) => {
-        const {  value } = e.target;
-        setNombreCategoriaNueva(value);
-    };
+  
   
     
     const {borrarCategoriaR} = useBorrarCategoria()
 
     const handleDelete = async()=>{
-  
+        console.log(categ.id_Categoria + " categ delete")
         await borrarCategoriaR(categ)
         borrarCategoria(categ)
     }

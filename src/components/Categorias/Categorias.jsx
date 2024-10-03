@@ -30,7 +30,7 @@ export default function Categorias() {
                     <div >
                         <ul className="grid grid-cols-4 mx-5 gap-8 " >
                             {categoriasMostrar.map((categoria) => (
-                                <li key={categoria.id} >
+                                <li key={categoria.id_Categoria} >
                                     <button onClick={() => handleOnClick(categoria)}><h1>{capitalizeFirstLetter(categoria.categoria)}</h1></button>
                                 </li>
                             ))}

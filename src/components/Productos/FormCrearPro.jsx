@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { ServiciosCrear } from "../../services/serviciosCrear";
+import { useElegirCategorias } from "../../hooks/useElegirCategorias";
+
 
 export default function PatientForm() {
-   
-     const {handleOnSubmit, handleChange,producto} = ServiciosCrear()
-
+    const { state } = useElegirCategorias()
+    const { handleOnSubmit, handleChange, producto } = ServiciosCrear()
 
     return (
         <div className="flex items-center justify-center mt-10">
@@ -17,7 +18,7 @@ export default function PatientForm() {
                 </p>
 
                 <form
-                     onSubmit={handleOnSubmit  }
+                    onSubmit={handleOnSubmit}
                     className="bg-white shadow-md rounded-lg py-4 px-5 mb-10 border border-indigo-800"
                     noValidate
 
@@ -38,8 +39,8 @@ export default function PatientForm() {
                             className="w-full p-3 border border-gray-100"
                             type="text"
                             name="producto"
-                             value={producto.producto} // Vinculación del estado
-                             onChange={handleChange} // Maneja el cambio
+                            value={producto.producto} // Vinculación del estado
+                            onChange={handleChange} // Maneja el cambio
                             placeholder="Nombre del producto"
                             required
                         />
@@ -54,12 +55,27 @@ export default function PatientForm() {
                             className="w-full p-3 border border-gray-100"
                             name="precio"
                             type="number"
-                             value={producto.precio} // Vinculación del estado
-                             onChange={handleChange} // Maneja el cambio
+                            value={producto.precio} // Vinculación del estado
+                            onChange={handleChange} // Maneja el cambio
                             placeholder="Precio del producto"
                             required
 
                         />
+                    </div>
+
+                    <div className="mb-5">
+                        <label htmlFor="categoria" className="text-sm uppercase font-bold">
+                            Categoria
+                        </label>
+                        <select name="categoria" id="categoria" onChange={handleChange}>
+                            <option value="">Selecciona una categoría</option>
+                            {state.categorias.map(cat => (
+                                <option key={cat.id_Categoria} value={cat.categoria}>
+                                    {cat.categoria}
+                                </option>
+                            ))}
+                        </select>
+
                     </div>
 
                     <div className="mb-5">
@@ -70,8 +86,8 @@ export default function PatientForm() {
                             id="descripcion"
                             className="w-full p-3 border border-gray-100"
                             name="descripcion"
-                             value={producto.descripcion} // Vinculación del estado
-                             onChange={handleChange} // Maneja el cambio
+                            value={producto.descripcion} // Vinculación del estado
+                            onChange={handleChange} // Maneja el cambio
                             placeholder="Descripcion del producto"
                             required
 
@@ -86,8 +102,8 @@ export default function PatientForm() {
                             id="stock"
                             className="w-full p-3 border border-gray-100"
                             name="stock"
-                             value={producto.stock} // Vinculación del estado
-                             onChange={handleChange} // Maneja el cambio
+                            value={producto.stock} // Vinculación del estado
+                            onChange={handleChange} // Maneja el cambio
                             placeholder="Stock actual de este producto"
                             type="number"
                             required
@@ -104,8 +120,8 @@ export default function PatientForm() {
                             type="number"
                             className="w-full p-3 border border-gray-100"
                             name="stock_Min"
-                             value={producto.stock_Min} // Vinculación del estado
-                             onChange={handleChange} // Maneja el cambio
+                            value={producto.stock_Min} // Vinculación del estado
+                            onChange={handleChange} // Maneja el cambio
                             placeholder="Stock minimo de este producto"
                             required
 

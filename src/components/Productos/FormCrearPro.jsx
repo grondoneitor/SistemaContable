@@ -68,9 +68,9 @@ export default function PatientForm() {
                             Categoria
                         </label>
                         <select name="categoria" id="categoria" onChange={handleChange}>
-                            <option value="">Selecciona una categoría</option>
+                        <option value="">Selecciona una categoría</option>
                             {state.categorias.map(cat => (
-                                <option key={cat.id_Categoria} value={cat.categoria}>
+                                <option key={cat.id_Categoria} value={cat.id_Categoria}>
                                     {cat.categoria}
                                 </option>
                             ))}

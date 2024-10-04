@@ -10,12 +10,12 @@ export default function Categorias() {
 
     const {handleChange,handleSubmitCrear,handleOnClick,handleVolver, activo,categ, handleModificar, handleChangeEdi,handleDelete} = ServiciosCrearCategoria()
     const {state, error} = useElegirCategorias()
+    const {handleSubmitBuscador, handleVolverBuscador } = ServiciosCrearCategoria()
 
     const categoriasMostrar = state.categoriasBuscados.length > 0 ? state.categoriasBuscados : state.categorias
-
     return (
         <div className="flex flex-col items-center">
-            <SearchCategorias />
+            <SearchCategorias handleSubmitBuscador={handleSubmitBuscador} handleVolverBuscador={handleVolverBuscador} />
             <div className="flex w-3/4 mt-16 h-full gap-6 justify-center">
                 <aside className="w-2/12 bg-white text-center m-3">
                     <h2 className="mt-2 mb-8 font-black">Opciones</h2>

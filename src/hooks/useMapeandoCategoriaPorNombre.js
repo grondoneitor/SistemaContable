@@ -2,13 +2,14 @@ import {  useContext, useEffect, useState } from "react";
 import { CategoriaContext } from "../context/categorias";
 
 export const useMapeandoCategoriasPorNombre = () => {
-     const MapearCatNomrbre = ()=>{
+     
       const [categoriasNombre, setCategorias] = useState([]);
       const [errorPro, setError] = useState(null);
       const {state} = useContext(CategoriaContext) 
       const nombre = String(state.nombreCategoriaBuscado)
       useEffect(() => {
-         console.log(nombre + " categoria desde el")
+        console.log(nombre + " desde effect")
+        if(!nombre) return
         fetch(`http://localhost:8092/api/v1/categorias/${nombre}`)
           .then(response => {
             if (!response.ok) {
@@ -25,6 +26,5 @@ export const useMapeandoCategoriasPorNombre = () => {
       }, [nombre]);
     
       return { categoriasNombre,setCategorias, errorPro };
-     }
-     return {MapearCatNomrbre}
+    
 };

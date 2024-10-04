@@ -1,13 +1,8 @@
-import { useContext } from "react"
-import { Form } from "react-router-dom"
-import { CategoriaContext } from "../../context/categorias"
-import { ServiciosCrearCategoria } from "../../services/serviciosCrearCategoria";
 
 // eslint-disable-next-line react/prop-types
-export default function SearchCategorias() {
+export default function SearchCategorias({handleSubmitBuscador, handleVolverBuscador }) {
     
-    const {handleSubmitBuscador,
-        handleVolverBuscador } = ServiciosCrearCategoria()
+
 
     return (
         <header className='w-full'>

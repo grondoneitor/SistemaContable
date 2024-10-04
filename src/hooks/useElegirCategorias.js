@@ -5,15 +5,21 @@ import { useMapeandoCategoriasPorNombre } from "./useMapeandoCategoriaPorNombre"
 
 export const useElegirCategorias = () => {
     const { allCategorias, error } = useMapeandoCategorias()
-    const { MapearCatNomrbre } = useMapeandoCategoriasPorNombre()
     const { state, mostrarCategorias, mostrarCategoriasBuscados } = useContext(CategoriaContext);
+    const { categoriasNombre } = useMapeandoCategoriasPorNombre()
+
     useEffect(() => {
+
+        console.log(state.nombreCategoriaBuscado + " categoria")
+
         if (allCategorias.length > 0) {
+            mostrarCategorias(allCategorias);
+
             mostrarCategorias(allCategorias);
             mostrarCategoriasBuscados([])
 
             if (state.nombreCategoriaBuscado !== "") {
-                const { categoriasNombre } = MapearCatNomrbre()
+                console.log(state.nombreCategoriaBuscado + " nombree2")
                 mostrarCategoriasBuscados(categoriasNombre);
                 mostrarCategorias([]);
             } else {
@@ -21,7 +27,8 @@ export const useElegirCategorias = () => {
             }
 
         }
-    }, [allCategorias]);
+
+    }, [allCategorias,categoriasNombre,state.nombreCategoriaBuscado]);
 
     return { state: state, error }
 }

@@ -10,6 +10,7 @@ const { productosNombre } = useMapeandoProductosPorNombre()
 
 
 useEffect(() => {
+    console.log("desde elegir producto")
     if (allProducts.length > 0) {
         mostrarProductos(allProducts); // Despachar productos al contexto
         mostrarProductosBuscados([])
@@ -22,7 +23,7 @@ useEffect(() => {
         }
 
     }
-}, [allProducts, productosNombre]);
+}, [allProducts, productosNombre, state.nombreProductoBuscado]);
 
 return {state: state, error}
 }

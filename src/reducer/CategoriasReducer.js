@@ -1,6 +1,6 @@
 
 export const InitialState = {
-    categorias: [],
+    categorias:[],
     categoriasBuscados: [],
     nombreCategoriaBuscado: ""
 };

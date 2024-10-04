@@ -10,6 +10,6 @@ por ahora puedo crear un producto desde la api pasandole el id de la categoria p
 
 
 
--cuando seleccionamos una categoria para modificar y no modificamos y ponemos editar categoria lo cambia por una categoria vacia
--ver porque no funciona el buscador de categorias
+♣-cuando seleccionamos una categoria para modificar y no modificamos y ponemos editar categoria lo cambia por una categoria vacia
+♣-ver porque no funciona el buscador de categorias
 -No permitir crear categorias que no cumplan cierta regla( !== "" || length > 3)

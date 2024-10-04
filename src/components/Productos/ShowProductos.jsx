@@ -8,8 +8,8 @@ import { ServiciosSearch } from "../../services/serviciosSearch";
 export default function ShowProductos() {
      
     const {state, error} = useElegirProductos()
-    const productosAmostrar = state.productosBuscados.length > 0 ? state.productosBuscados : state.productos;
     const { handleSubmit,handleVolver} = ServiciosSearch()
+    const productosAmostrar = state.productosBuscados.length > 0 ? state.productosBuscados : state.productos;
     
     return (
         <>

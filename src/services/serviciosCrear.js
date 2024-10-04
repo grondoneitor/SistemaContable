@@ -16,14 +16,11 @@ export const ServiciosCrear = () => {
     const { crearProductoReal } = useCrearProducto();
 
     const handleOnSubmit = async (e) => {
-        e.preventDefault(); // Previene el comportamiento por defecto
-        console.log(producto.producto, producto.precio, producto.descripcion, producto.categoria)
-        const nuevoProducto = { ...producto }; // Usa el estado directamente
+        e.preventDefault(); 
+        const nuevoProducto = { ...producto }; 
 
-        // Llama a la función para crear el producto
         await crearProductoReal(nuevoProducto);
         crearProducto(nuevoProducto)
-        // Resetea el estado del formulario
         setProducto({
             producto: "",
             precio: "",

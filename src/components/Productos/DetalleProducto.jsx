@@ -1,19 +1,35 @@
 import { useParams } from 'react-router-dom';
 import { capitalizeFirstLetter } from '../../services/mayusculaPrimeraLetra';
 import { ServiciosDetalleProducto } from '../../services/serviciosDetalleProducto';
-import { useEffect } from 'react';
-import { useMapeandoCategoriaPorId } from '../../hooks/useMapearCatPorId';
+import { useEffect, useState } from 'react';
+import { useElegirCategorias } from '../../hooks/useElegirCategorias';
 function DetalleProducto() {
     const { id } = useParams();
-    const {handleChange, handleDelete, handleModificar,productosId } = ServiciosDetalleProducto(id)
+    const { handleChange, handleDelete, handleModificar, productosId } = ServiciosDetalleProducto(id)
     const nombreProducto = capitalizeFirstLetter(productosId.producto)
-    const {categoriaId} = useMapeandoCategoriaPorId(productosId.categoria)
-    const nombreCategoria = capitalizeFirstLetter(categoriaId.categoria)
+    const { state } = useElegirCategorias()
+
+
+    const [selectedCategoria, setSelectedCategoria] = useState('');
+
+    useEffect(() => {
+        // Inicializa el estado con la categoría actual del producto
+        if (productosId.categoria) {
+            setSelectedCategoria(productosId.categoria);
+        }
+    }, [productosId]);
+
+     const handleSelectChange = (event) => {
+         const value = event.target.value;
+         setSelectedCategoria(value);
+         handleChange(event); // Llama a tu función de manejo del cambio
+     };
+
 
 
     return (
         <div className='flex flex-col justify-center items-center h-screen bg-gray-100'>
-            <h1 className='text-xl font-bold'>nombre de producto</h1>
+            <h1 className='text-xl font-bold'>{nombreProducto}</h1>
 
             <div className='flex justify-center items-center gap-4 border border-indigo-800'>
                 <img
@@ -48,16 +64,21 @@ function DetalleProducto() {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div className="mb-2">
+                        <div className='mb-2'>
                             <label htmlFor="categoria" className="text-sm uppercase font-bold">Categoria</label>
-                            <input
+                            <select
                                 id="categoria"
-                                className="w-full p-3 border border-gray-100"
                                 name="categoria"
-                                type="text"
-                                defaultValue={ nombreCategoria}
-                                onChange={handleChange}
-                            />
+                                className="w-full p-3 border border-gray-100"
+                                value={selectedCategoria}
+                                onChange={handleSelectChange}
+                            >
+                                {state.categorias.map(cat => (
+                                    <option key={cat.id_Categoria} value={cat.id_Categoria}>
+                                        {capitalizeFirstLetter(cat.categoria)}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
 
                         <div className="mb-2">

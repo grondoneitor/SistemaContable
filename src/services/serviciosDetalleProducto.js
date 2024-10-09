@@ -1,16 +1,16 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { ProductoContext } from "../context/productos";
 import { useNavigate } from "react-router-dom";
-import {useMapeandoProductosPorId} from '../hooks/useMapeandoPorId'
-import {useBorrarProducto} from '../hooks/useBorrarProducto'
-import {useModificarProducto} from '../hooks/useModificarProducto'
+import { useMapeandoProductosPorId } from '../hooks/useMapeandoPorId'
+import { useBorrarProducto } from '../hooks/useBorrarProducto'
+import { useModificarProducto } from '../hooks/useModificarProducto'
 
-export const ServiciosDetalleProducto = (id)=>{
+export const ServiciosDetalleProducto = (id) => {
     const navigate = useNavigate()
     const { productosId } = useMapeandoProductosPorId(id)
     const { borrarProducto } = useBorrarProducto()
-    const { borrarProductoI,editarProducto } = useContext(ProductoContext)
-    const {modificarProducto} = useModificarProducto()
+    const { borrarProductoI, editarProducto } = useContext(ProductoContext)
+    const { modificarProducto } = useModificarProducto()
 
     const handleDelete = async (event) => {
         event.preventDefault();
@@ -19,62 +19,31 @@ export const ServiciosDetalleProducto = (id)=>{
         navigate("/productos")
     };
 
-    const [producto, setProducto] = useState({
-        id: id,
-        stock_Min: "",
-        descripcion: "",
-        producto: "",
-        stock: "",
-        categoria:"",
-        estado: "",
-        precio: ""
-    })
-    // Cargar el producto al montar el componente
-    useEffect(() => {
-        if (productosId) {
-            setProducto({
-                id: productosId.id,
-                stock_Min: productosId.stock_Min,
-                descripcion: productosId.descripcion,
-                producto: productosId.producto,
-                stock: productosId.stock,
-                categoria: productosId.categoria,
-                estado: productosId.estado,
-                precio: productosId.precio
-            });
-        }
-        console.log(productosId.categoria + " viendo categoria")
-    }, [productosId]);
 
-    const handleModificar = async (event) => {
-        event.preventDefault()
-        const nuevoProducto = {...producto}
-        console.log(nuevoProducto.producto + " nombre del producto  actualizao")
-        const success = await modificarProducto(nuevoProducto.id, nuevoProducto); // Asegúrate de pasar el ID correctamente
+    const handleModificar = async (e) => {
+
+        e.preventDefault(); 
+        const valores = e.currentTarget;
+        const data = new FormData(valores);
+        
+       
+        const formDataObj = {};
+        data.forEach((value, key) => {
+            formDataObj[key] = value;
+        });
+        
+        
+        console.log(formDataObj.descripcion + " nombre del producto  actualizao")
+        const success = await modificarProducto(id, formDataObj); 
 
         if (success) {
-            editarProducto(nuevoProducto);
+            editarProducto(formDataObj);
             navigate("/productos");
         }
 
-        setProducto({
-            id: "",
-            stock_Min: "",
-            descripcion: "",
-            producto: "",
-            stock: "",
-            categoria:"",
-            estado: "",
-            precio: ""
-        })
-    }
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setProducto((prevState) => ({
-            ...prevState, // Mantén el estado anterior
-            [name]: value // Actualiza solo el campo que cambió
-        }));
-    };
- return {handleChange, handleDelete, handleModificar,productosId:productosId }
+    }
+           
+
+    return {  handleDelete, handleModificar, productosId: productosId }
 }

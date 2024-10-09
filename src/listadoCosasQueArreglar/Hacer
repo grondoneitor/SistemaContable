@@ -9,7 +9,7 @@ poder filtrar por categoria
 por ahora puedo crear un producto desde la api pasandole el id de la categoria pero no puedo tomar el valor de categoria 
 
 
-
-♣-cuando seleccionamos una categoria para modificar y no modificamos y ponemos editar categoria lo cambia por una categoria vacia
-♣-ver porque no funciona el buscador de categorias
 -No permitir crear categorias que no cumplan cierta regla( !== "" || length > 3)
+-Editar productos
+
+cambiar de los formularios(por lo meno en el de editar que los nuevos datos se pasen por onChange, esos los puedo usar para validaciones). El pasaje de datos jsutamente de onChange a onSubmit y tomar los datos reales solo cunado se hace el submit.

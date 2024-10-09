@@ -13,7 +13,6 @@ function DetalleProducto() {
     const [selectedCategoria, setSelectedCategoria] = useState('');
 
     useEffect(() => {
-        // Inicializa el estado con la categoría actual del producto
         if (productosId.categoria) {
             setSelectedCategoria(productosId.categoria);
         }
@@ -22,10 +21,8 @@ function DetalleProducto() {
      const handleSelectChange = (event) => {
          const value = event.target.value;
          setSelectedCategoria(value);
-         handleChange(event); // Llama a tu función de manejo del cambio
+         handleChange(event); 
      };
-
-
 
     return (
         <div className='flex flex-col justify-center items-center h-screen bg-gray-100'>
@@ -39,7 +36,7 @@ function DetalleProducto() {
                 />
 
                 <div className='text-center w-2/3'>
-                    <form className="bg-white shadow-md rounded-lg py-4 px-5 border border-indigo-800">
+                    <form onSubmit={handleModificar} className="bg-white shadow-md rounded-lg py-4 px-5 border border-indigo-800">
                         <div className="mb-2">
                             <label htmlFor="producto" className="text-sm uppercase font-bold">Producto</label>
                             <input
@@ -118,9 +115,8 @@ function DetalleProducto() {
 
                         <div className='flex gap-1'>
                             <button
-                                type="button"
+                                type="submit"
                                 className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
-                                onClick={handleModificar}
                             >
                                 Editar Producto
                             </button>

@@ -1,9 +1,10 @@
-import {  useEffect, useState } from "react";
+import {  useContext, useEffect, useState } from "react";
+import { CategoriaContext } from "../context/categorias";
 
 export const useMapeandoCategorias = () => {
   const [allCategorias, setAllCategorias] = useState([]);
   const [error, setError] = useState(null);
-
+  const {state} = useContext(CategoriaContext)
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
@@ -20,7 +21,7 @@ export const useMapeandoCategorias = () => {
     };
 
     fetchCategorias();
-  }, []); // Cambiar a [] si no necesitas que se ejecute con cada cambio en `state`
+  }, [state.categorias])
 
   return { allCategorias, error };
 };

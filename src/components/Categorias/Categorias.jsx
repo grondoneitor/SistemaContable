@@ -6,9 +6,8 @@ import { useElegirCategorias } from "../../hooks/useElegirCategorias";
 
 
 export default function Categorias() {
-
-
-    const {handleChange,handleSubmitCrear,handleOnClick,handleVolver, activo,categ, handleModificar, handleChangeEdi,handleDelete} = ServiciosCrearCategoria()
+ 
+    const {handleSubmitCrear,handleOnClick,handleVolver, activo,categ, handleModificar,handleDelete} = ServiciosCrearCategoria()
     const {state, error} = useElegirCategorias()
     const {handleSubmitBuscador, handleVolverBuscador } = ServiciosCrearCategoria()
 
@@ -42,15 +41,13 @@ export default function Categorias() {
                         <>
                             <h1 className="font-black p-2 text-xl">Crear categoria</h1>
                             <label htmlFor="categoria"></label>
-                            <input onChange={handleChange} className="p-3 m-6 border border-s-4 border-green-600"  type="text" id="categoria" name="categoria" placeholder="categoria" />
+                            <input  className="p-3 m-6 border border-s-4 border-green-600"  type="text" id="categoria" name="categoria" placeholder="categoria" />
 
-                            <button className="bg-indigo-900 p-3 rounded-xl text-slate-100 font-semibold">Crear categoria</button>
-
-
+                            <button type="submit" className="bg-indigo-900 p-3 rounded-xl text-slate-100 font-semibold">Crear categoria</button>
                         </>
                     </form>
                     :
-                    <form action="">
+                    <form onSubmit={handleModificar} action="">
 
                         <div className="flex gap-2 items-center p-2 justify-center">
                             <button onClick={handleVolver} className='flex' type="button">
@@ -62,11 +59,11 @@ export default function Categorias() {
                         </div>
 
 
-                        <label htmlFor="producto"></label>
-                        <input className="p-3 m-6 border border-s-4 border-blue-600" onChange={handleChangeEdi} defaultValue={categ.categoria} type="text" id="producto" name="producto" placeholder="categoria" />
+                        <label htmlFor="categoria"></label>
+                        <input className="p-3 m-6 border border-s-4 border-blue-600"  defaultValue={categ.categoria} type="text" id="categoria" name="categoria" placeholder="categoria" />
 
                         <div className="flex gap-2 p-2">
-                            <button className="bg-blue-900 p-3 rounded-xl text-slate-100 font-semibold" onClick={handleModificar}>Modificar categoria</button>
+                            <button type="submit" className="bg-blue-900 p-3 rounded-xl text-slate-100 font-semibold">Modificar categoria</button>
                             <button className="bg-red-900 p-3 rounded-xl text-slate-100 font-semibold" onClick={handleDelete}>Eliminar categoria</button>
                         </div>
                     </form>

@@ -9,7 +9,6 @@ import { useBorrarCategoria } from "../hooks/useBorrarCateogria";
 
 
 export const ServiciosCrearCategoria = () => {
-    const [categoriaFinal, setCategoriaFinal] = useState({ id: null, categoria: "" })
     const { crearCategoria, editarCategoria, borrarCategoria } = useContext(CategoriaContext)
     const { crearCategoriaReal } = useCrearCategoria()
     const [categ, setCateg] = useState({ id_Categoria: null, categoria: "" })
@@ -17,26 +16,24 @@ export const ServiciosCrearCategoria = () => {
     const { state } = useElegirCategorias()
 
 
-    const handleSubmitCrear = async () => {
+    const handleSubmitCrear = async (event) => {
+        event.preventDefault()
+        const dat = event.currentTarget
+        const data = new FormData(dat)
+    
+        const formDataObj = {}
+        data.forEach((value, key) => {
+            formDataObj[key] = value
+        })
 
-        const nuevaCategoria = { ...categoriaFinal };
-
-        await crearCategoriaReal(nuevaCategoria);
-
-        crearCategoria(nuevaCategoria);
-
-        setCategoriaFinal({ id: null, categoria: "" });
+        await crearCategoriaReal(formDataObj);
+        crearCategoria(formDataObj);
+        dat.reset()
     };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setCategoriaFinal((prevState) => ({
-            ...prevState, // Mantén el estado anterior
-            [name]: value // Actualiza solo el campo que cambió
-        }));
-    };
+
     const handleOnClick = (categoria) => {
-
+        console.log(categoria.id_Categoria + " viendo el id")
         const cat = {
             id_Categoria: categoria.id_Categoria,
             categoria: capitalizeFirstLetter(categoria.categoria)
@@ -56,33 +53,37 @@ export const ServiciosCrearCategoria = () => {
         setCateg({ id: null, categoria: "" });
     }
 
-    const [nombreCategoriaNueva, setNombreCategoriaNueva] = useState("")
-    const handleChangeEdi = (e) => {
-        const { value } = e.target;
-        console.log(categ.categoria + " categoria se")
-        if (value === "") {
-            setNombreCategoriaNueva(categ.categoria);
-        } else {
-            setNombreCategoriaNueva(value);
-        }
+    // const [nombreCategoriaNueva, setNombreCategoriaNueva] = useState("")
+    // const handleChangeEdi = (e) => {
+    //     const { value } = e.target;
+    //     console.log(categ.categoria + " categoria se")
+    //     if (value === "") {
+    //         setNombreCategoriaNueva(categ.categoria);
+    //     } else {
+    //         setNombreCategoriaNueva(value);
+    //     }
 
-    };
+    // };
     const { modificarCategoria } = useModificarCategoria()
 
-    const handleModificar = async () => {
-        let categoriaFinal = ""
-        if (nombreCategoriaNueva === "") {
-            categoriaFinal = categ.categoria
-        } else {
-            categoriaFinal = nombreCategoriaNueva
-        }
-        console.log(categoriaFinal + " categoria final")
-        const nuevoCateg = {
+    const handleModificar = async (event) => {
+        event.preventDefault();
+        const dat = event.currentTarget
+        const data = new FormData(dat)
+        
+        const formDataObj = {}
+        data.forEach((value,key) =>{
+            formDataObj[key] = value
+        })
+
+        const objectFinal = {
             id_Categoria: categ.id_Categoria,
-            categoria: categoriaFinal
+            categoria:formDataObj.categoria
         }
-        await modificarCategoria(nuevoCateg)
-        editarCategoria(nuevoCateg)
+        await modificarCategoria(objectFinal)
+        editarCategoria(objectFinal)
+        dat.reset()
+        setCateg({ id_Categoria: null, categoria: "" })
 
     }
 
@@ -94,6 +95,7 @@ export const ServiciosCrearCategoria = () => {
         console.log(categ.id_Categoria + " categ delete")
         await borrarCategoriaR(categ)
         borrarCategoria(categ)
+        setCateg({ id_Categoria: null, categoria: "" })
     }
 
     const { guardarNombreCatBuscados, mostrarCategoriasBuscados } = useContext(CategoriaContext)
@@ -117,7 +119,6 @@ export const ServiciosCrearCategoria = () => {
 
     
     return {
-        handleChange,
         handleSubmitCrear,
         handleOnClick,
         handleVolver,
@@ -125,7 +126,7 @@ export const ServiciosCrearCategoria = () => {
         activo,
         categ,
         handleModificar,
-        handleChangeEdi,
+        // handleChangeEdi,
         handleDelete,
         handleSubmitBuscador,
         handleVolverBuscador

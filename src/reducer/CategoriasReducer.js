@@ -37,7 +37,7 @@ export const CategoriaReducer = (state = InitialState, action) => {
             return{
                 ...state,
                 categorias: state.categorias.map((categoria) => {
-                    if (categoria.id === ActionPayload.id) {
+                    if (categoria.id_Categoria === ActionPayload.id_Categoria) {
                        return {...categoria, ...ActionPayload}
                     }
                     return categoria
@@ -48,7 +48,7 @@ export const CategoriaReducer = (state = InitialState, action) => {
             return{
                 ...state,
                 categorias: state.categorias.filter(categoria =>{
-                    return categoria.id !== ActionPayload.id
+                    return categoria.id_Categoria !== ActionPayload.id_Categoria
                 })
             }
         }

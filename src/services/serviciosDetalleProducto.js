@@ -19,31 +19,23 @@ export const ServiciosDetalleProducto = (id) => {
         navigate("/productos")
     };
 
-
     const handleModificar = async (e) => {
 
         e.preventDefault(); 
         const valores = e.currentTarget;
         const data = new FormData(valores);
-        
        
         const formDataObj = {};
         data.forEach((value, key) => {
             formDataObj[key] = value;
         });
         
-        
-        console.log(formDataObj.descripcion + " nombre del producto  actualizao")
         const success = await modificarProducto(id, formDataObj); 
 
         if (success) {
             editarProducto(formDataObj);
             navigate("/productos");
         }
-
-
     }
-           
-
     return {  handleDelete, handleModificar, productosId: productosId }
 }

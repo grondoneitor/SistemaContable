@@ -10,20 +10,16 @@ export const useElegirCategorias = () => {
 
     useEffect(() => {
 
-        console.log(state.nombreCategoriaBuscado + " categoria")
-
         if (allCategorias.length > 0) {
-            mostrarCategorias(allCategorias);
 
             mostrarCategorias(allCategorias);
             mostrarCategoriasBuscados([])
 
             if (state.nombreCategoriaBuscado !== "") {
-                console.log(state.nombreCategoriaBuscado + " nombree2")
                 mostrarCategoriasBuscados(categoriasNombre);
                 mostrarCategorias([]);
             } else {
-                mostrarCategoriasBuscados([]); // Si no hay búsqueda, limpiar
+                mostrarCategoriasBuscados([])
             }
 
         }

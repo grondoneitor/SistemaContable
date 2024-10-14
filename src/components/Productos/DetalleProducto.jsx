@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useElegirCategorias } from '../../hooks/useElegirCategorias';
 function DetalleProducto() {
     const { id } = useParams();
-    const { handleChange, handleDelete, handleModificar, productosId } = ServiciosDetalleProducto(id)
+    const { handleDelete, handleModificar, productosId } = ServiciosDetalleProducto(id)
     const nombreProducto = capitalizeFirstLetter(productosId.producto)
     const { state } = useElegirCategorias()
 
@@ -21,7 +21,6 @@ function DetalleProducto() {
      const handleSelectChange = (event) => {
          const value = event.target.value;
          setSelectedCategoria(value);
-         handleChange(event); 
      };
 
     return (
@@ -46,7 +45,6 @@ function DetalleProducto() {
                                 name="producto"
                                 defaultValue={nombreProducto}
                                 required
-                                onChange={handleChange}
                             />
                         </div>
 
@@ -58,7 +56,6 @@ function DetalleProducto() {
                                 name="precio"
                                 type="number"
                                 defaultValue={productosId.precio}
-                                onChange={handleChange}
                             />
                         </div>
                         <div className='mb-2'>
@@ -85,7 +82,6 @@ function DetalleProducto() {
                                 className="w-full p-3 border border-gray-100"
                                 name="descripcion"
                                 defaultValue={productosId.descripcion}
-                                onChange={handleChange}
                             />
                         </div>
 
@@ -97,7 +93,6 @@ function DetalleProducto() {
                                 name="stock"
                                 type="number"
                                 defaultValue={productosId.stock}
-                                onChange={handleChange}
                             />
                         </div>
 
@@ -109,7 +104,6 @@ function DetalleProducto() {
                                 className="w-full p-3 border border-gray-100"
                                 name="stock_Min"
                                 defaultValue={productosId.stock_Min}
-                                onChange={handleChange}
                             />
                         </div>
 

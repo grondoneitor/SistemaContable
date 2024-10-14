@@ -3,9 +3,9 @@ import { useState } from 'react';
 
 export const useModificarCategoria = () => {
     const [error, setError] = useState(null);
-    const modificarCategoria = async ( categoria ) => {
+    const modificarCategoria = async ( objectFinal ) => {
         try {
-            console.log("Datos a enviar:", categoria);
+            console.log("Datos a enviar:",objectFinal);
 
             const response = await fetch(`http://localhost:8092/api/v1/categoria`, {
                 method: 'PUT',
@@ -14,8 +14,8 @@ export const useModificarCategoria = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    "id_Categoria": categoria.id_Categoria,
-                    "categoria": categoria.categoria
+                    "id_Categoria": objectFinal.id_Categoria,
+                    "categoria": objectFinal.categoria
                 })
             });
 

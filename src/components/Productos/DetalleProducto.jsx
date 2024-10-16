@@ -5,14 +5,10 @@ import { useContext, useEffect, useState } from 'react';
 import { CategoriaContext } from '../../context/categorias';
 function DetalleProducto() {
     const { id } = useParams();
-    // const {detalleProducto} = useContext(ProductoContext)
-
      const { handleDelete, handleModificar, productosId } = ServiciosDetalleProducto(id)
      const nombreProducto = capitalizeFirstLetter(productosId.producto)
-    // const {state} = useContext(CategoriaContext)
-    // const {state} = useElegirCategorias()
+     const {state} = useContext(CategoriaContext)
      const [selectedCategoria, setSelectedCategoria] = useState('');
-
  useEffect(() => {
          if (productosId.categoria) {
              setSelectedCategoria(productosId.categoria);

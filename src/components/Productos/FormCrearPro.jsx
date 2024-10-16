@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import { ServiciosCrear } from "../../services/serviciosCrear";
+import { useContext } from "react";
+import { CategoriaContext } from "../../context/categorias";
 
 
 export default function PatientForm() {
     const { handleOnSubmit, handleChange, producto } = ServiciosCrear()
-
+    const {state} = useContext(CategoriaContext)
     return (
         <div className="flex items-center justify-center mt-10">
             <div className="md:w-1/2 lg:w-2/5 mx-5 w-full">

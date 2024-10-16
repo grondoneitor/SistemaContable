@@ -50,17 +50,7 @@ export const ServiciosCrearCategoria = () => {
         setCateg({ id: null, categoria: "" });
     }
 
-    // const [nombreCategoriaNueva, setNombreCategoriaNueva] = useState("")
-    // const handleChangeEdi = (e) => {
-    //     const { value } = e.target;
-    //     console.log(categ.categoria + " categoria se")
-    //     if (value === "") {
-    //         setNombreCategoriaNueva(categ.categoria);
-    //     } else {
-    //         setNombreCategoriaNueva(value);
-    //     }
 
-    // };
     const { modificarCategoria } = useModificarCategoria()
 
     const handleModificar = async (event) => {

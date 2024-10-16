@@ -26,6 +26,9 @@ export function CategoriaProvider({ children }) {
      const editarCategoria = (categoria) =>{
          dispatch({ type: 'editar_categoria', payload: categoria })
      }
+     const categoriaCreada = (categ) =>{
+        dispatch({ type: 'categoria_creada', payload: categ })
+     }
 
     return (
         <CategoriaContext.Provider value={{
@@ -35,7 +38,8 @@ export function CategoriaProvider({ children }) {
             guardarNombreCatBuscados,
             crearCategoria,
             borrarCategoria,
-            editarCategoria
+            editarCategoria,
+            categoriaCreada
         }}>
             {children}
         </CategoriaContext.Provider>

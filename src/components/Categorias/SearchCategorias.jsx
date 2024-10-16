@@ -2,8 +2,6 @@
 // eslint-disable-next-line react/prop-types
 export default function SearchCategorias({handleSubmitBuscador, handleVolverBuscador }) {
     
-
-
     return (
         <header className='w-full'>
             <form onSubmit={handleSubmitBuscador} className='flex flex-col items-center mt-9'>

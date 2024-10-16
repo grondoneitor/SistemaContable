@@ -2,7 +2,8 @@
 export const InitialState = {
     productos: [],
     productosBuscados: [],
-    nombreProductoBuscado: ""
+    nombreProductoBuscado: "",
+    detalleProducto: null
 };
 
 // Tipos de acción
@@ -13,6 +14,7 @@ export const ActionTypes = {
     CREAR_PRODUCTO: 'crear_producto',
     BORRAR_PRODUCTO: 'borrar_producto',
     EDITAR_PRODUCTO: 'editar_producto',
+    DETALLE_PRODUCTO: 'detalle_producto',
 };
 
 // Reducer
@@ -60,6 +62,12 @@ export const ProductReducer = (state = InitialState, action) => {
                     }
                     return producto
                 })
+            }
+        }
+        case ActionTypes.DETALLE_PRODUCTO:{
+            return{
+                ...state,
+                detalleProducto:ActionPayload
             }
         }
 

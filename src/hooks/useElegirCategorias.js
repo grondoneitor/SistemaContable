@@ -1,30 +1,30 @@
-import { useContext, useEffect } from "react";
-import { CategoriaContext } from "../context/categorias";
-import { useMapeandoCategorias } from "./useMapeandoCategorias";
-import { useMapeandoCategoriasPorNombre } from "./useMapeandoCategoriaPorNombre";
+// import { useContext, useEffect } from "react";
+// import { CategoriaContext } from "../context/categorias";
+// import { MapeandoCategorias } from "./MapeandoCategorias";
+// import { useMapeandoCategoriasPorNombre } from "./useMapeandoCategoriaPorNombre";
 
-export const useElegirCategorias = () => {
-    const { allCategorias, error } = useMapeandoCategorias()
-    const { state, mostrarCategorias, mostrarCategoriasBuscados } = useContext(CategoriaContext);
-    const { categoriasNombre } = useMapeandoCategoriasPorNombre()
+// export const useElegirCategorias = () => {
+//     const {  error } = MapeandoCategorias()
+//     const { state, mostrarCategorias, mostrarCategoriasBuscados } = useContext(CategoriaContext);
+//     const { categoriasNombre } = useMapeandoCategoriasPorNombre()
 
-    useEffect(() => {
+//     useEffect(() => {
 
-        if (allCategorias.length > 0) {
+//         if (state.categorias.length > 0) {
 
-            mostrarCategorias(allCategorias);
-            mostrarCategoriasBuscados([])
+//             mostrarCategorias(state.categorias);
+//             mostrarCategoriasBuscados([])
 
-            if (state.nombreCategoriaBuscado !== "") {
-                mostrarCategoriasBuscados(categoriasNombre);
-                mostrarCategorias([]);
-            } else {
-                mostrarCategoriasBuscados([])
-            }
+//             if (state.nombreCategoriaBuscado !== "") {
+//                 mostrarCategoriasBuscados(categoriasNombre);
+//                 mostrarCategorias([]);
+//             } else {
+//                 mostrarCategoriasBuscados([])
+//             }
 
-        }
+//         }
 
-    }, [allCategorias,categoriasNombre,state.nombreCategoriaBuscado]);
+//     }, [state.categorias, categoriasNombre, mostrarCategorias, mostrarCategoriasBuscados, state.nombreCategoriaBuscado]);
 
-    return { state: state, error }
-}
+//     return { state: state, error }
+// }

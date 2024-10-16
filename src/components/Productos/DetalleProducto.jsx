@@ -1,31 +1,34 @@
 import { useParams } from 'react-router-dom';
 import { capitalizeFirstLetter } from '../../services/mayusculaPrimeraLetra';
 import { ServiciosDetalleProducto } from '../../services/serviciosDetalleProducto';
-import { useEffect, useState } from 'react';
-import { useElegirCategorias } from '../../hooks/useElegirCategorias';
+import { useContext, useEffect, useState } from 'react';
+import { CategoriaContext } from '../../context/categorias';
 function DetalleProducto() {
     const { id } = useParams();
-    const { handleDelete, handleModificar, productosId } = ServiciosDetalleProducto(id)
-    const nombreProducto = capitalizeFirstLetter(productosId.producto)
-    const { state } = useElegirCategorias()
+    // const {detalleProducto} = useContext(ProductoContext)
 
+     const { handleDelete, handleModificar, productosId } = ServiciosDetalleProducto(id)
+     const nombreProducto = capitalizeFirstLetter(productosId.producto)
+    // const {state} = useContext(CategoriaContext)
+    // const {state} = useElegirCategorias()
+     const [selectedCategoria, setSelectedCategoria] = useState('');
 
-    const [selectedCategoria, setSelectedCategoria] = useState('');
+ useEffect(() => {
+         if (productosId.categoria) {
+             setSelectedCategoria(productosId.categoria);
+         }
+     }, []);
 
-    useEffect(() => {
-        if (productosId.categoria) {
-            setSelectedCategoria(productosId.categoria);
-        }
-    }, [productosId]);
-
-     const handleSelectChange = (event) => {
-         const value = event.target.value;
-         setSelectedCategoria(value);
-     };
+      const handleSelectChange = (event) => {
+          const value = event.target.value;
+          setSelectedCategoria(value);
+      };
 
     return (
         <div className='flex flex-col justify-center items-center h-screen bg-gray-100'>
-            <h1 className='text-xl font-bold'>{nombreProducto}</h1>
+            <h1 className='text-xl font-bold'>
+             {nombreProducto} 
+            </h1>
 
             <div className='flex justify-center items-center gap-4 border border-indigo-800'>
                 <img
@@ -35,7 +38,9 @@ function DetalleProducto() {
                 />
 
                 <div className='text-center w-2/3'>
-                    <form onSubmit={handleModificar} className="bg-white shadow-md rounded-lg py-4 px-5 border border-indigo-800">
+                    <form
+                         onSubmit={handleModificar}
+                        className="bg-white shadow-md rounded-lg py-4 px-5 border border-indigo-800">
                         <div className="mb-2">
                             <label htmlFor="producto" className="text-sm uppercase font-bold">Producto</label>
                             <input
@@ -55,10 +60,10 @@ function DetalleProducto() {
                                 className="w-full p-3 border border-gray-100"
                                 name="precio"
                                 type="number"
-                                defaultValue={productosId.precio}
+                                 defaultValue={productosId.precio}
                             />
                         </div>
-                        <div className='mb-2'>
+                         <div className='mb-2'>
                             <label htmlFor="categoria" className="text-sm uppercase font-bold">Categoria</label>
                             <select
                                 id="categoria"
@@ -67,13 +72,13 @@ function DetalleProducto() {
                                 value={selectedCategoria}
                                 onChange={handleSelectChange}
                             >
-                                {state.categorias.map(cat => (
+                                 {state.categorias.map(cat => (
                                     <option key={cat.id_Categoria} value={cat.id_Categoria}>
                                         {capitalizeFirstLetter(cat.categoria)}
                                     </option>
-                                ))}
+                                ))} 
                             </select>
-                        </div>
+                        </div> 
 
                         <div className="mb-2">
                             <label htmlFor="descripcion" className="text-sm uppercase font-bold">Descripción</label>
@@ -81,7 +86,7 @@ function DetalleProducto() {
                                 id="descripcion"
                                 className="w-full p-3 border border-gray-100"
                                 name="descripcion"
-                                defaultValue={productosId.descripcion}
+                                 defaultValue={productosId.descripcion}
                             />
                         </div>
 
@@ -92,7 +97,7 @@ function DetalleProducto() {
                                 className="w-full p-3 border border-gray-100"
                                 name="stock"
                                 type="number"
-                                defaultValue={productosId.stock}
+                                 defaultValue={productosId.stock}
                             />
                         </div>
 
@@ -103,7 +108,7 @@ function DetalleProducto() {
                                 type="number"
                                 className="w-full p-3 border border-gray-100"
                                 name="stock_Min"
-                                defaultValue={productosId.stock_Min}
+                                 defaultValue={productosId.stock_Min}
                             />
                         </div>
 
@@ -117,7 +122,7 @@ function DetalleProducto() {
                             <button
                                 type="button"
                                 className="bg-red-600 w-full p-3 text-white uppercase font-bold hover:bg-red-700 cursor-pointer transition-colors"
-                                onClick={handleDelete}
+                                 onClick={handleDelete}
                             >
                                 Eliminar Producto
                             </button>

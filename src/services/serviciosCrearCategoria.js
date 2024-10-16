@@ -2,19 +2,16 @@ import { useContext, useEffect, useState } from "react";
 import { useCrearCategoria } from "../hooks/useCrearCategoria";
 import { CategoriaContext } from "../context/categorias";
 import { capitalizeFirstLetter } from "./mayusculaPrimeraLetra";
-import { useElegirCategorias } from "../hooks/useElegirCategorias";
 import { useModificarCategoria } from "../hooks/useModificarCategoria";
 import { useBorrarCategoria } from "../hooks/useBorrarCateogria";
 
 
-
 export const ServiciosCrearCategoria = () => {
-    const { crearCategoria, editarCategoria, borrarCategoria } = useContext(CategoriaContext)
+    const { crearCategoria, editarCategoria, borrarCategoria, categoriaCreada } = useContext(CategoriaContext)
     const { crearCategoriaReal } = useCrearCategoria()
     const [categ, setCateg] = useState({ id_Categoria: null, categoria: "" })
     const [activo, setActivo] = useState(false)
-    const { state } = useElegirCategorias()
-
+ 
 
     const handleSubmitCrear = async (event) => {
         event.preventDefault()
@@ -28,12 +25,12 @@ export const ServiciosCrearCategoria = () => {
 
         await crearCategoriaReal(formDataObj);
         crearCategoria(formDataObj);
+        categoriaCreada(formDataObj)
         dat.reset()
     };
 
 
     const handleOnClick = (categoria) => {
-        console.log(categoria.id_Categoria + " viendo el id")
         const cat = {
             id_Categoria: categoria.id_Categoria,
             categoria: capitalizeFirstLetter(categoria.categoria)
@@ -107,7 +104,6 @@ export const ServiciosCrearCategoria = () => {
         const categoria = data.get("categoria")
 
         guardarNombreCatBuscados(categoria)
-        console.log(categoria + " categoria")
         valores.reset()
     }
     const handleVolverBuscador = () => {
@@ -122,7 +118,6 @@ export const ServiciosCrearCategoria = () => {
         handleSubmitCrear,
         handleOnClick,
         handleVolver,
-        state,
         activo,
         categ,
         handleModificar,

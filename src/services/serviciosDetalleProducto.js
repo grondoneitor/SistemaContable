@@ -8,10 +8,10 @@ import { useModificarProducto } from '../hooks/useModificarProducto'
 export const ServiciosDetalleProducto = (id) => {
     const navigate = useNavigate()
     const { productosId } = useMapeandoProductosPorId(id)
-    const { borrarProducto } = useBorrarProducto()
-    const { borrarProductoI, editarProducto } = useContext(ProductoContext)
     const { modificarProducto } = useModificarProducto()
-
+    const { borrarProducto } = useBorrarProducto()
+    const { borrarProductoI, editarProducto,state } = useContext(ProductoContext)
+    console.log(state.productos.id + " id producto")
     const handleDelete = async (event) => {
         event.preventDefault();
         await borrarProducto(id)

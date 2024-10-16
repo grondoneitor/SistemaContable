@@ -26,7 +26,9 @@ export function ProductoProvider({ children }) {
     const editarProducto = (producto) =>{
         dispatch({ type: 'editar_producto', payload: producto })
     }
-
+    const detalleProducto = (id) =>{
+        dispatch({ type: 'detalle_producto', payload: id })
+    }
     return (
         <ProductoContext.Provider value={{
             state,
@@ -35,7 +37,8 @@ export function ProductoProvider({ children }) {
             guardarNombreProBuscados,
             crearProducto,
             borrarProductoI,
-            editarProducto
+            editarProducto,
+            detalleProducto
         }}>
             {children}
         </ProductoContext.Provider>

@@ -1,8 +1,10 @@
 
+
 export const InitialState = {
     categorias:[],
     categoriasBuscados: [],
-    nombreCategoriaBuscado: ""
+    nombreCategoriaBuscado: "",
+    categoriaCreada:[]
 };
 
 // Tipos de acción
@@ -12,7 +14,8 @@ export const ActionTypes = {
     EDITAR_CATEGORIA: 'editar_categoria',
     BORRAR_CATEGORIA: 'borrar_categoria',
     BUSCAR_CATEGORIA: 'buscar_categoria',
-    GUARDAR_CAT_CATEGORIA: 'guardar_cat_categoria'
+    GUARDAR_CAT_CATEGORIA: 'guardar_cat_categoria',
+    CATEGORIA_CREADA: 'categoria_creada'
 };
 
 // Reducer
@@ -62,6 +65,12 @@ export const CategoriaReducer = (state = InitialState, action) => {
             return{
                 ...state,
                 nombreCategoriaBuscado:ActionPayload
+            }
+        }
+        case ActionTypes.CATEGORIA_CREADA:{
+            return{
+                ...state,
+                categoriaCreada: ActionPayload
             }
         }
         default:

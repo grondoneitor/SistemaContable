@@ -2,19 +2,31 @@ import { Link, NavLink } from "react-router-dom";
 import SearchCategorias from "./SearchCategorias";
 import { capitalizeFirstLetter } from "../../services/mayusculaPrimeraLetra";
 import { ServiciosCrearCategoria } from "../../services/serviciosCrearCategoria";
-import { useElegirCategorias } from "../../hooks/useElegirCategorias";
+import { useContext, } from "react";
+import { CategoriaContext } from "../../context/categorias";
+import { useMapeandoCategorias } from "../../hooks/useMapeandoCategorias";
+import { useMapeandoCategoriasPorNombre } from "../../hooks/useMapeandoCategoriaPorNombre";
 
 
 export default function Categorias() {
- 
+    
     const {handleSubmitCrear,handleOnClick,handleVolver, activo,categ, handleModificar,handleDelete} = ServiciosCrearCategoria()
-    const {state, error} = useElegirCategorias()
+   
     const {handleSubmitBuscador, handleVolverBuscador } = ServiciosCrearCategoria()
+   
 
+    
+    useMapeandoCategorias()
+    useMapeandoCategoriasPorNombre()
+    
+    const {state} = useContext(CategoriaContext)
+ 
     const categoriasMostrar = state.categoriasBuscados.length > 0 ? state.categoriasBuscados : state.categorias
+    
+
     return (
         <div className="flex flex-col items-center">
-            <SearchCategorias handleSubmitBuscador={handleSubmitBuscador} handleVolverBuscador={handleVolverBuscador} />
+              <SearchCategorias handleSubmitBuscador={handleSubmitBuscador} handleVolverBuscador={handleVolverBuscador} /> 
             <div className="flex w-3/4 mt-16 h-full gap-6 justify-center">
                 <aside className="w-2/12 bg-white text-center m-3">
                     <h2 className="mt-2 mb-8 font-black">Opciones</h2>
@@ -28,16 +40,16 @@ export default function Categorias() {
                     <h1 className="font-black text-3xl text-slate-800 text-center mb-14">Categorias</h1>
                     <div >
                         <ul className="grid grid-cols-4 mx-5 gap-8 " >
-                            {categoriasMostrar.map((categoria) => (
+                              {categoriasMostrar.map((categoria) => (
                                 <li key={categoria.id_Categoria} >
-                                    <button onClick={() => handleOnClick(categoria)}><h1>{capitalizeFirstLetter(categoria.categoria)}</h1></button>
+                                     <button onClick={() => handleOnClick(categoria)}><h1>{capitalizeFirstLetter(categoria.categoria)}</h1></button>  
                                 </li>
-                            ))}
+                            ))}  
                         </ul>
                     </div>
                 </main>
-                {!activo ?
-                    <form onSubmit={handleSubmitCrear} className=" bg-white text-center w-2/5">
+                 {!activo ?
+                    <form onSubmit={handleSubmitCrear } className=" bg-white text-center w-2/5">
                         <>
                             <h1 className="font-black p-2 text-xl">Crear categoria</h1>
                             <label htmlFor="categoria"></label>
@@ -68,7 +80,7 @@ export default function Categorias() {
                         </div>
                     </form>
 
-                }
+                } 
             </div>
 
         </div>

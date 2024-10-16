@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { ProductoContext } from "../context/productos";
 
 
 export const useMapeandoProductosPorId = (id) => {
   const [productosId, setProductosId] = useState({});
   const [errorPro, setError] = useState(null);
-    
+  const {state} = useContext(ProductoContext)
  console.log("este es el id desde map " + id)  
 
   useEffect(() => {

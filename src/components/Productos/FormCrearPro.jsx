@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom";
 import { ServiciosCrear } from "../../services/serviciosCrear";
-import { useElegirCategorias } from "../../hooks/useElegirCategorias";
 
 
 export default function PatientForm() {
-    const { state } = useElegirCategorias()
     const { handleOnSubmit, handleChange, producto } = ServiciosCrear()
 
     return (

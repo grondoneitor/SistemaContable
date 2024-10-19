@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import { CategoriaContext } from '../../context/categorias';
 function DetalleProducto() {
     const { id } = useParams();
-    const { handleDelete, handleModificar, productosId } = ServiciosDetalleProducto(id)
+    const { handleDelete, handleModificar, productosId, error} = ServiciosDetalleProducto(id)
     const nombreProducto = capitalizeFirstLetter(productosId.producto)
     const { state } = useContext(CategoriaContext)
     const [selectedCategoria, setSelectedCategoria] = useState('');
@@ -18,7 +18,6 @@ function DetalleProducto() {
         const value = event.target.value;
         setSelectedCategoria(value);
     };
-
     return (
         <div className='flex flex-col justify-center items-center h-screen bg-gray-100'>
             <h1 className='text-xl font-bold'>
@@ -44,7 +43,6 @@ function DetalleProducto() {
                                 type="text"
                                 name="producto"
                                 defaultValue={nombreProducto}
-                                required
                             />
                         </div>
 
@@ -107,6 +105,7 @@ function DetalleProducto() {
                                 defaultValue={productosId.stock_Min}
                             />
                         </div>
+                        <p>{error != null && error + " alto error"}</p>
 
                         <div className='flex gap-1'>
                             <button

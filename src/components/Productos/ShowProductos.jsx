@@ -38,7 +38,7 @@ export default function ShowProductos() {
                                                     <div className="w-full h-full flex flex-col items-center justify-center border border-indigo-800 p-4 rounded">
                                                         <h2 className="text-lg font-bold text-slate-100">{capitalizeFirstLetter(item.producto)}</h2>
                                                         <h4 className="text-md font-semibold text-slate-50">${item.precio}</h4>
-                                                        <h4 className="text-md font-semibold text-slate-50">{capitalizeFirstLetter(item.categoria.categoria)}</h4>
+                                                       { item.categoria !== null && <h4 className="text-md font-semibold text-slate-50">{capitalizeFirstLetter(item.categoria.categoria)}</h4>}
                                                         {item.estado ? (
                                                             <p className="text-green-500">Disponible</p>
                                                         ) : (

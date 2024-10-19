@@ -1,6 +1,5 @@
 export const useCrearProducto = () => {
     const crearProductoReal = async (producto) => {
-        console.log(producto + " viendo el producto")
         try {
             const response = await fetch('http://localhost:8092/api/v1/producto', {
                 method: 'POST',

@@ -5,8 +5,13 @@ import { CategoriaContext } from "../../context/categorias";
 
 
 export default function PatientForm() {
-    const { handleOnSubmit, handleChange, producto } = ServiciosCrear()
-    const {state} = useContext(CategoriaContext)
+    const { handleOnSubmit, handleChange, producto, errorValidacion,formRef } = ServiciosCrear()
+    const { state } = useContext(CategoriaContext)
+
+    const erroresValidaciones = (name) => {
+        return errorValidacion.filter(err => err.name === name).map(obj => (obj.mensaje));
+    };
+
     return (
         <div className="flex items-center justify-center mt-10">
             <div className="md:w-1/2 lg:w-2/5 mx-5 w-full">
@@ -19,6 +24,7 @@ export default function PatientForm() {
 
                 <form
                     onSubmit={handleOnSubmit}
+                    ref={formRef}
                     className="bg-white shadow-md rounded-lg py-4 px-5 mb-10 border border-indigo-800"
                     noValidate
 
@@ -42,8 +48,10 @@ export default function PatientForm() {
                             value={producto.producto} // Vinculación del estado
                             onChange={handleChange} // Maneja el cambio
                             placeholder="Nombre del producto"
-                            required
+
                         />
+                        {erroresValidaciones("producto") !== "" && <p className="text-red-500">{erroresValidaciones("producto")}</p>}
+
                     </div>
 
                     <div className="mb-5">
@@ -58,9 +66,10 @@ export default function PatientForm() {
                             value={producto.precio} // Vinculación del estado
                             onChange={handleChange} // Maneja el cambio
                             placeholder="Precio del producto"
-                            required
 
                         />
+                        {erroresValidaciones("precio") !== "" && <p className="text-red-500">{erroresValidaciones("precio")}</p>}
+
                     </div>
 
                     <div className="mb-5">
@@ -68,7 +77,7 @@ export default function PatientForm() {
                             Categoria
                         </label>
                         <select name="categoria" id="categoria" onChange={handleChange}>
-                        <option value="">Selecciona una categoría</option>
+                            <option value="">Selecciona una categoría</option>
                             {state.categorias.map(cat => (
                                 <option key={cat.id_Categoria} value={cat.id_Categoria}>
                                     {cat.categoria}
@@ -106,9 +115,10 @@ export default function PatientForm() {
                             onChange={handleChange} // Maneja el cambio
                             placeholder="Stock actual de este producto"
                             type="number"
-                            required
 
                         />
+                        {erroresValidaciones("stock") !== "" && <p className="text-red-500">{erroresValidaciones("stock")}</p>}
+
                     </div>
 
                     <div className="mb-5">

@@ -1,14 +1,30 @@
-Agregar categoria a los productos
-poder filtrar por categoria
+-Productos:
+ 1) poder agregar imagen/modificarla/borrarla || 2
 
--Manejar errores// si no se enceuntran productos, si se escribe mal uno
--Validaciones de la busqueda// que tenga mas de 3 letras, que no sean numeros, entre otras.
--Que inpput hagan verificacion de datos en los formularios
+ -categorias: 
+ 1) poder eliminar categoria que este utilizada por un producto, dando un mensaje de aviso || 2
+ 2) Si no se encuentra categoria mostrar mensaje de no se encontraron categorias. || 1
+ 
+ En los dos 
+ 1) HAcer validaciones correctas en los formularios tanto en el front como en el back || 1
 
--seguir trabajando con la api para poder crear un proiducto con categoria y poder mostrarlo,
-por ahora puedo crear un producto desde la api pasandole el id de la categoria pero no puedo tomar el valor de categoria 
+
+Validaaciones BackEnd 
+1) Ya hice la validacion de crear producto para que no se cree un producto sin nombre,precio y stock
+2) Ya se puede buscar correctamente producto por id en el detalle de productos
+
+3) Falta validacion de la actualizacion del producto(que venga con mensaje)
+
+// Crear validaciones en el front y mostrar mensajes de error
 
 
--No permitir crear categorias que no cumplan cierta regla( !== "" || length > 3)
--Editar productos
 
+// Esta creada las validaciones del front para crear el producto (nombre,precio,stock)
+   // AHORAA las validaciones tiene un pequeño error de sincronologia porque el dato que es tomado es el anterior al actual
+   // entonces con el precio al primer valor que coloco auqnue sea mayor a 0 me lo marca como error porque como me toma el valor anterior
+   // que es 0 me lo marca como error. Lo mismo con el stock.
+   // ESO A MEJORAR
+/// mejorar codigo, limpiarlo un poco, trabajar igual con la actualizacion//
+
+
+ LIMPIAR COIDGOOOOOOOOO

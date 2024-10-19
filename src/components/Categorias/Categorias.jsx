@@ -21,8 +21,9 @@ export default function Categorias() {
     
     const {state} = useContext(CategoriaContext)
  
-    const categoriasMostrar = state.categoriasBuscados.length > 0 ? state.categoriasBuscados : state.categorias
+    const categoriasMostrar = state.nombreCategoriaBuscado !== ""  ? state.categoriasBuscados : state.categorias
     
+    console.dir(categoriasMostrar + " adadasd")
 
     return (
         <div className="flex flex-col items-center">
@@ -39,13 +40,16 @@ export default function Categorias() {
                 <main className="w-full ml-4">
                     <h1 className="font-black text-3xl text-slate-800 text-center mb-14">Categorias</h1>
                     <div >
+                    { categoriasMostrar.length <= 0 ? 
+                      <p className="text-red-400"> No se encontro {state.nombreCategoriaBuscado} </p>
+                    :   
                         <ul className="grid grid-cols-4 mx-5 gap-8 " >
                               {categoriasMostrar.map((categoria) => (
                                 <li key={categoria.id_Categoria} >
                                      <button onClick={() => handleOnClick(categoria)}><h1>{capitalizeFirstLetter(categoria.categoria)}</h1></button>  
                                 </li>
                             ))}  
-                        </ul>
+                        </ul>}
                     </div>
                 </main>
                  {!activo ?

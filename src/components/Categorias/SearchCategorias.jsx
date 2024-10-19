@@ -1,7 +1,8 @@
+import { useMapeandoCategoriasPorNombre } from "../../hooks/useMapeandoCategoriaPorNombre";
 
 // eslint-disable-next-line react/prop-types
 export default function SearchCategorias({handleSubmitBuscador, handleVolverBuscador }) {
-    
+    const {errorValidacion} = useMapeandoCategoriasPorNombre()
     return (
         <header className='w-full'>
             <form onSubmit={handleSubmitBuscador} className='flex flex-col items-center mt-9'>
@@ -19,7 +20,7 @@ export default function SearchCategorias({handleSubmitBuscador, handleVolverBusc
                             type="text"
                             placeholder="Mate, yerbera, bombilla, etc..."
                         />
-                        {/* {errorValidacion && <p className="text-red-600 absolute ml-4">{errorValidacion}</p>} */}
+                         {errorValidacion && <p className="text-red-600 absolute ml-4">{errorValidacion}</p>}
                     </div>
 
                     <button className='bg-slate-800 text-slate-100 font-bold uppercase p-3 rounded-3xl' type="submit">

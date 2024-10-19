@@ -8,10 +8,11 @@ import { useModificarProducto } from '../hooks/useModificarProducto'
 export const ServiciosDetalleProducto = (id) => {
     const navigate = useNavigate()
     const { productosId } = useMapeandoProductosPorId(id)
-    const { modificarProducto } = useModificarProducto()
+    const { modificarProducto,error } = useModificarProducto()
     const { borrarProducto } = useBorrarProducto()
-    const { borrarProductoI, editarProducto,state } = useContext(ProductoContext)
-    console.log(state.productos.id + " id producto")
+    const { borrarProductoI, editarProducto } = useContext(ProductoContext)
+
+
     const handleDelete = async (event) => {
         event.preventDefault();
         await borrarProducto(id)
@@ -37,5 +38,5 @@ export const ServiciosDetalleProducto = (id) => {
             navigate("/productos");
         }
     }
-    return {  handleDelete, handleModificar, productosId: productosId }
+    return {  handleDelete, handleModificar, productosId: productosId, error }
 }

@@ -4,11 +4,10 @@ import { CategoriaContext } from "../context/categorias";
 export const useMapeandoCategoriasPorNombre = () => {
      
       // const [categoriasNombre, setCategorias] = useState([]);
-      const [setError] = useState(null);
+      const [errorValidacion,setError] = useState(null);
       const {state,mostrarCategoriasBuscados} = useContext(CategoriaContext) 
       const nombre = String(state.nombreCategoriaBuscado)
       useEffect(() => {
-        console.log(nombre + " desde effect")
         if(!nombre) return
         fetch(`http://localhost:8092/api/v1/categorias/${nombre}`)
           .then(response => {
@@ -17,13 +16,17 @@ export const useMapeandoCategoriasPorNombre = () => {
             }
             return response.json();
           })
-          .then(data => mostrarCategoriasBuscados(data.object))
+          .then(data =>{
+             mostrarCategoriasBuscados(data.object)
+      // if(state.categoriasBuscados.length <= 0 && !errorValidacion ) setError("No se encontro ninguna categoria")
+            
+            })
           .catch(error => {
             console.error("Error fetching products:", error);
             setError("No se encontro este producto");
-            // setCategorias([])
           });
       }, [nombre]);
-    
-    
+
+      
+    return {errorValidacion}
 };

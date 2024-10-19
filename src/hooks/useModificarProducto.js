@@ -24,12 +24,12 @@ export const useModificarProducto = () => {
 
             if (!response.ok) {
 
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                throw new Error( response);
             }
 
             return true;
         } catch (err) {
-            setError(err.message);
+            setError(err);
             return false;
         }
     };

@@ -4,13 +4,15 @@ import { Link, NavLink } from "react-router-dom";
 import { useElegirProductos } from "../../hooks/useElegirProductos";
 import { ServiciosSearch } from "../../services/serviciosSearch";
 import { useMapeandoCategorias } from "../../hooks/useMapeandoCategorias";
+import { useMapeandoProductos } from "../../hooks/useMapeandoProductos";
 
 
 export default function ShowProductos() {
      
     const {state, error} = useElegirProductos()
     const { handleSubmit,handleVolver} = ServiciosSearch()
-    const productosAmostrar = state.productosBuscados.length > 0 ? state.productosBuscados : state.productos;
+    const productos = useMapeandoProductos()
+    const productosAmostrar = state.productosBuscados.length > 0 || state.nombreProductoBuscado !== "" ? state.productosBuscados : productos.allProducts;
     useMapeandoCategorias()
     
     return (

@@ -2,15 +2,17 @@ import { Link } from "react-router-dom";
 import { ServiciosCrear } from "../../services/serviciosCrear";
 import { useContext } from "react";
 import { CategoriaContext } from "../../context/categorias";
-
+import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { schema } from "../../services/validaciones";
 
 export default function PatientForm() {
-    const { handleOnSubmit, handleChange, producto, errorValidacion,formRef } = ServiciosCrear()
+    const { register, handleSubmit, formState : { errors },reset } = useForm({
+        resolver: yupResolver(schema)
+    })
+    const {  onSubmit } = ServiciosCrear(reset)
     const { state } = useContext(CategoriaContext)
 
-    const erroresValidaciones = (name) => {
-        return errorValidacion.filter(err => err.name === name).map(obj => (obj.mensaje));
-    };
 
     return (
         <div className="flex items-center justify-center mt-10">
@@ -23,8 +25,7 @@ export default function PatientForm() {
                 </p>
 
                 <form
-                    onSubmit={handleOnSubmit}
-                    ref={formRef}
+                    onSubmit={handleSubmit(onSubmit)}
                     className="bg-white shadow-md rounded-lg py-4 px-5 mb-10 border border-indigo-800"
                     noValidate
 
@@ -41,17 +42,14 @@ export default function PatientForm() {
                             Producto
                         </label>
                         <input
+                            {...register("producto")}
                             id="producto"
                             className="w-full p-3 border border-gray-100"
                             type="text"
                             name="producto"
-                            value={producto.producto} // Vinculación del estado
-                            onChange={handleChange} // Maneja el cambio
                             placeholder="Nombre del producto"
-
                         />
-                        {erroresValidaciones("producto") !== "" && <p className="text-red-500">{erroresValidaciones("producto")}</p>}
-
+                        {errors.producto && <p className="text-red-500">{errors.producto.message}</p>}
                     </div>
 
                     <div className="mb-5">
@@ -59,24 +57,21 @@ export default function PatientForm() {
                             Precio
                         </label>
                         <input
+                            {...register("precio")}
                             id="precio"
                             className="w-full p-3 border border-gray-100"
                             name="precio"
                             type="number"
-                            value={producto.precio} // Vinculación del estado
-                            onChange={handleChange} // Maneja el cambio
                             placeholder="Precio del producto"
-
                         />
-                        {erroresValidaciones("precio") !== "" && <p className="text-red-500">{erroresValidaciones("precio")}</p>}
-
+                        {errors.precio && <p className="text-red-500">{errors.precio.message}</p>}
                     </div>
 
                     <div className="mb-5">
                         <label htmlFor="categoria" className="text-sm uppercase font-bold">
                             Categoria
                         </label>
-                        <select name="categoria" id="categoria" onChange={handleChange}>
+                        <select name="categoria" id="categoria"  {...register("categoria")}>
                             <option value="">Selecciona una categoría</option>
                             {state.categorias.map(cat => (
                                 <option key={cat.id_Categoria} value={cat.id_Categoria}>
@@ -84,7 +79,6 @@ export default function PatientForm() {
                                 </option>
                             ))}
                         </select>
-
                     </div>
 
                     <div className="mb-5">
@@ -95,11 +89,8 @@ export default function PatientForm() {
                             id="descripcion"
                             className="w-full p-3 border border-gray-100"
                             name="descripcion"
-                            value={producto.descripcion} // Vinculación del estado
-                            onChange={handleChange} // Maneja el cambio
                             placeholder="Descripcion del producto"
-                            required
-
+                            {...register("descripcion")}
                         />
                     </div>
 
@@ -108,16 +99,15 @@ export default function PatientForm() {
                             Stock Actual
                         </label>
                         <input
+                            {...register("stock")}
                             id="stock"
                             className="w-full p-3 border border-gray-100"
                             name="stock"
-                            value={producto.stock} // Vinculación del estado
-                            onChange={handleChange} // Maneja el cambio
                             placeholder="Stock actual de este producto"
                             type="number"
 
                         />
-                        {erroresValidaciones("stock") !== "" && <p className="text-red-500">{erroresValidaciones("stock")}</p>}
+                        {errors.stock && <p className="text-red-500">{errors.stock.message}</p>}
 
                     </div>
 
@@ -130,18 +120,14 @@ export default function PatientForm() {
                             type="number"
                             className="w-full p-3 border border-gray-100"
                             name="stock_Min"
-                            value={producto.stock_Min} // Vinculación del estado
-                            onChange={handleChange} // Maneja el cambio
                             placeholder="Stock minimo de este producto"
-                            required
-
+                            {...register("stock_Min")}
                         />
                     </div>
 
                     <button
                         type="submit"
-                        className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
-                    >
+                        className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors">
                         Guardar Producto
                     </button>
                 </form>

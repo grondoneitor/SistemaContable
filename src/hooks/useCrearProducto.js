@@ -1,12 +1,13 @@
 export const useCrearProducto = () => {
     const crearProductoReal = async (producto) => {
+        console.dir(producto )
         try {
             const response = await fetch('http://localhost:8092/api/v1/producto', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(producto),
+                body: JSON.stringify(producto.data),
             });
 
             if (!response.ok) {

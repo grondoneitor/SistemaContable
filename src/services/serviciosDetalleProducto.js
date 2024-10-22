@@ -20,23 +20,13 @@ export const ServiciosDetalleProducto = (id) => {
         navigate("/productos")
     };
 
-    const handleModificar = async (e) => {
-
-        e.preventDefault(); 
-        const valores = e.currentTarget;
-        const data = new FormData(valores);
-       
-        const formDataObj = {};
-        data.forEach((value, key) => {
-            formDataObj[key] = value;
-        });
-        
-        const success = await modificarProducto(id, formDataObj); 
-
+    const onSubmitModificar = async (data) =>{
+        const success = await modificarProducto(id, data); 
         if (success) {
-            editarProducto(formDataObj);
+            editarProducto(data);
             navigate("/productos");
         }
     }
-    return {  handleDelete, handleModificar, productosId: productosId, error }
+
+    return {  handleDelete, productosId: productosId, error, onSubmitModificar }
 }

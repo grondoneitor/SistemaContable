@@ -108,7 +108,6 @@ export default function PatientForm() {
 
                         />
                         {errors.stock && <p className="text-red-500">{errors.stock.message}</p>}
-
                     </div>
 
                     <div className="mb-5">

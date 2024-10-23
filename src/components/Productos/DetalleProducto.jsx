@@ -18,7 +18,7 @@ function DetalleProducto() {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schema)
     });
-
+    
     useEffect(() => {
         if (productosId) {
             reset({

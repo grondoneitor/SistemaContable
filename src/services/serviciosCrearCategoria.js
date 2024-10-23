@@ -6,27 +6,20 @@ import { useModificarCategoria } from "../hooks/useModificarCategoria";
 import { useBorrarCategoria } from "../hooks/useBorrarCateogria";
 
 
-export const ServiciosCrearCategoria = () => {
+export const ServiciosCrearCategoria = (reset) => {
     const { crearCategoria, editarCategoria, borrarCategoria, categoriaCreada } = useContext(CategoriaContext)
     const { crearCategoriaReal } = useCrearCategoria()
     const [categ, setCateg] = useState({ id_Categoria: null, categoria: "" })
     const [activo, setActivo] = useState(false)
  
 
-    const handleSubmitCrear = async (event) => {
-        event.preventDefault()
-        const dat = event.currentTarget
-        const data = new FormData(dat)
-    
-        const formDataObj = {}
-        data.forEach((value, key) => {
-            formDataObj[key] = value
-        })
+    const handleSubmitCrear = async (data) => {
 
-        await crearCategoriaReal(formDataObj);
-        crearCategoria(formDataObj);
-        categoriaCreada(formDataObj)
-        dat.reset()
+        
+        await crearCategoriaReal(data);
+        crearCategoria(data);
+        categoriaCreada(data)
+        reset()
     };
 
 
@@ -53,24 +46,15 @@ export const ServiciosCrearCategoria = () => {
 
     const { modificarCategoria } = useModificarCategoria()
 
-    const handleModificar = async (event) => {
-        event.preventDefault();
-        const dat = event.currentTarget
-        const data = new FormData(dat)
-        
-        const formDataObj = {}
-        data.forEach((value,key) =>{
-            formDataObj[key] = value
-        })
-
+    const handleModificar = async (data) => {
+        console.log(data)
         const objectFinal = {
             id_Categoria: categ.id_Categoria,
-            categoria:formDataObj.categoria
+            categoria:data.categoria
         }
-        await modificarCategoria(objectFinal)
-        editarCategoria(objectFinal)
-        dat.reset()
-        setCateg({ id_Categoria: null, categoria: "" })
+       const access = await modificarCategoria(objectFinal)
+       if(access) editarCategoria(objectFinal)
+       setCateg({ id_Categoria: null, categoria: "" })
 
     }
 
@@ -111,7 +95,6 @@ export const ServiciosCrearCategoria = () => {
         activo,
         categ,
         handleModificar,
-        // handleChangeEdi,
         handleDelete,
         handleSubmitBuscador,
         handleVolverBuscador

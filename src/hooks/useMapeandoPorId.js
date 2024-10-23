@@ -1,16 +1,11 @@
-import { useContext, useEffect, useState } from "react";
-import { ProductoContext } from "../context/productos";
-
+import { useEffect, useState } from "react";
 
 export const useMapeandoProductosPorId = (id) => {
   const [productosId, setProductosId] = useState({});
   const [errorPro, setError] = useState(null);
-  const {state} = useContext(ProductoContext)
- console.log("este es el id desde map " + id)  
 
   useEffect(() => {
-    if(!id) return
-
+    if (!id) return
     fetch(`http://localhost:8092/api/v1/producto/${id}`)
       .then(response => {
         if (!response.ok) {
@@ -26,5 +21,5 @@ export const useMapeandoProductosPorId = (id) => {
       });
   }, [id]);
 
-  return { productosId,setProductosId, errorPro };
+  return { productosId, setProductosId, errorPro };
 };

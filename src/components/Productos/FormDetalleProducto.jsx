@@ -16,15 +16,14 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { useMapeandoProductos } from '../../hooks/useMapeandoProductos';
 import { ServiciosDetalleProducto } from '../../services/serviciosDetalleProducto';
 import { useEffect } from 'react';
-import { ProductoContext } from '../../context/productos';
+// import { ProductoContext } from '../../context/productos';
 
 function createData(id, producto, precio, categoria, descripcion, stock, stock_Min, estado) {
     return {
@@ -151,7 +150,8 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-    const { numSelected,selected } = props;
+    // eslint-disable-next-line react/prop-types
+    const { numSelected, selected } = props;
     const { handleDelete } = ServiciosDetalleProducto(selected);
     return (
         <Toolbar
@@ -185,11 +185,20 @@ function EnhancedTableToolbar(props) {
                 </Typography>
             )}
             {numSelected > 0 ? (
-                <Tooltip title="Delete">
-                    <IconButton>
-                        <DeleteIcon onClick={handleDelete} />
-                    </IconButton>
-                </Tooltip>
+                <>
+                    <Tooltip onClick={handleDelete} title="Delete">
+                        <IconButton>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
+                   {numSelected === 1 &&
+                    <Tooltip>
+                        <IconButton color="primary" >
+                            <EditIcon />
+                        </IconButton>
+                    </Tooltip>
+                    }
+                </>
             ) : (
                 <Tooltip title="Filter list">
                     <IconButton>
@@ -207,16 +216,15 @@ export default function FormDetalleProducto() {
     const [orderBy, setOrderBy] = React.useState('calories');
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
-    const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const productos = useMapeandoProductos()
- 
+
     const [rows, setRows] = React.useState([])
     useMapeandoProductos()
-    const {state} = React.useContext(ProductoContext)
+    // const {state} = React.useContext(ProductoContext)
 
-    useEffect(()=>{
-       const mappedRows =  productos.allProducts.map((producto) =>
+    useEffect(() => {
+        const mappedRows = productos.allProducts.map((producto) =>
             createData(
                 producto.id,
                 producto.producto,
@@ -229,9 +237,9 @@ export default function FormDetalleProducto() {
             )
         );
         console.log(mappedRows)
-         setRows(mappedRows)
-    },[productos.allProducts])
- 
+        setRows(mappedRows)
+    }, [productos.allProducts])
+
     console.log("asdads")
 
     const handleRequestSort = (event, property) => {
@@ -276,20 +284,18 @@ export default function FormDetalleProducto() {
         setPage(0);
     };
 
-    const handleChangeDense = (event) => {
-        setDense(event.target.checked);
-    };
+
 
     // Avoid a layout jump when reaching the last page with empty rows.
-    const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    // const emptyRows =
+    //     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
     const visibleRows = React.useMemo(
         () =>
             [...rows]
                 .sort(getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-        [order, orderBy, page, rowsPerPage,rows],
+        [order, orderBy, page, rowsPerPage, rows],
     );
 
     return (
@@ -300,7 +306,6 @@ export default function FormDetalleProducto() {
                     <Table
                         sx={{ minWidth: 750 }}
                         aria-labelledby="tableTitle"
-                        size={dense ? 'small' : 'medium'}
                     >
                         <EnhancedTableHead
                             numSelected={selected.length}
@@ -363,10 +368,6 @@ export default function FormDetalleProducto() {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-            <FormControlLabel
-                control={<Switch checked={dense} onChange={handleChangeDense} />}
-                label="Dense padding"
-            />
         </Box>
     );
 }

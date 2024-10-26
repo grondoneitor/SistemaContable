@@ -63,7 +63,6 @@ export const ServiciosCrearCategoria = (reset) => {
     const { borrarCategoriaR } = useBorrarCategoria()
 
     const handleDelete = async () => {
-        console.log(categ.id_Categoria + " categ delete")
         await borrarCategoriaR(categ)
         borrarCategoria(categ)
         setCateg({ id_Categoria: null, categoria: "" })

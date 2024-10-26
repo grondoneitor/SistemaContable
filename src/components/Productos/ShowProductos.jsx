@@ -5,7 +5,7 @@ import { useElegirProductos } from "../../hooks/useElegirProductos";
 import { ServiciosSearch } from "../../services/serviciosSearch";
 import { useMapeandoCategorias } from "../../hooks/useMapeandoCategorias";
 import { useMapeandoProductos } from "../../hooks/useMapeandoProductos";
-
+import FormDetalleProducto from "./FormDetalleProducto"
 
 export default function ShowProductos() {
      
@@ -51,6 +51,10 @@ export default function ShowProductos() {
                                             </li>
                                         ))}
                                 </ul>))}
+
+                                <FormDetalleProducto 
+                                   productos={productos}
+                                />
                     </div>
                 </main>
             </div>

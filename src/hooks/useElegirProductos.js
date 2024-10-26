@@ -8,21 +8,21 @@ export const useElegirProductos = () => {
     const { allProducts, error } = useMapeandoProductos()
     const { productosNombre } = useMapeandoProductosPorNombre()
 
-    useEffect(() => {
-        console.log("desde elegir producto")
-        if (allProducts.length > 0) {
-            mostrarProductos(allProducts); // Despachar productos al contexto
-            mostrarProductosBuscados([])
+    // useEffect(() => {
+    //     console.log("desde elegir producto")
+    //     if (allProducts.length > 0) {
+    //         mostrarProductos(allProducts); // Despachar productos al contexto
+    //         mostrarProductosBuscados([])
 
-            if (state.nombreProductoBuscado !== "") {
-                mostrarProductosBuscados(productosNombre);
-                mostrarProductos([]);
-            } else {
-                mostrarProductosBuscados([]); // Si no hay búsqueda, limpiar
-            }
+    //         if (state.nombreProductoBuscado !== "") {
+    //             mostrarProductosBuscados(productosNombre);
+    //             mostrarProductos([]);
+    //         } else {
+    //             mostrarProductosBuscados([]); // Si no hay búsqueda, limpiar
+    //         }
 
-        }
-    }, [allProducts, productosNombre, state.nombreProductoBuscado]);
+    //     }
+    // }, [allProducts, productosNombre, state.nombreProductoBuscado]);
 
     return { state: state, error }
 }

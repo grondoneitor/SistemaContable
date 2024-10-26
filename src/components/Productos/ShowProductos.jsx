@@ -6,13 +6,16 @@ import { ServiciosSearch } from "../../services/serviciosSearch";
 import { useMapeandoCategorias } from "../../hooks/useMapeandoCategorias";
 import { useMapeandoProductos } from "../../hooks/useMapeandoProductos";
 import FormDetalleProducto from "./FormDetalleProducto"
+import { ProductoContext } from "../../context/productos";
+import { useContext } from "react";
 
 export default function ShowProductos() {
      
-    const {state, error} = useElegirProductos()
+    const { error} = useElegirProductos()
     const { handleSubmit,handleVolver} = ServiciosSearch()
     const productos = useMapeandoProductos()
-    const productosAmostrar = state.productosBuscados.length > 0 || state.nombreProductoBuscado !== "" ? state.productosBuscados : productos.allProducts;
+    const {state} = useContext(ProductoContext)
+    const productosAmostrar = state.productosBuscados.length > 0 || state.nombreProductoBuscado !== "" ? state.productosBuscados : state.productos;
     useMapeandoCategorias()
     
     return (
@@ -30,7 +33,7 @@ export default function ShowProductos() {
                 <main className="w-full ml-4">
                     <h1 className="font-black text-3xl text-slate-800 text-center mb-14">Productos</h1>
                     <div>
-                        {error ? (<p className="text-red-600">{error}</p>) : (
+                        {/* {error ? (<p className="text-red-600">{error}</p>) : (
                             productosAmostrar.length <= 0 ? <p className="text-red-600">No hay productos disponibles</p> :
                                 (<ul className="grid grid-cols-4 mx-5 gap-8">
                                     {
@@ -50,10 +53,9 @@ export default function ShowProductos() {
                                                 </Link>
                                             </li>
                                         ))}
-                                </ul>))}
+                                </ul>))} */}
 
                                 <FormDetalleProducto 
-                                   productos={productos}
                                 />
                     </div>
                 </main>

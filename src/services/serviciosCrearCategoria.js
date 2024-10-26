@@ -65,7 +65,7 @@ export const ServiciosCrearCategoria = (reset) => {
     const handleDelete = async () => {
         await borrarCategoriaR(categ)
         borrarCategoria(categ)
-        setCateg({ id_Categoria: null, categoria: "" })
+        // setCateg({ id_Categoria: null, categoria: "" })
     }
 
     const { guardarNombreCatBuscados, mostrarCategoriasBuscados } = useContext(CategoriaContext)

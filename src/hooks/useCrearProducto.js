@@ -1,5 +1,8 @@
+import { useMapeandoProductos } from "./useMapeandoProductos";
+
 export const useCrearProducto = () => {
     const crearProductoReal = async (producto) => {
+        
         console.dir(producto )
         try {
             const response = await fetch('http://localhost:8092/api/v1/producto', {
@@ -9,7 +12,7 @@ export const useCrearProducto = () => {
                 },
                 body: JSON.stringify(producto.data),
             });
-
+            
             if (!response.ok) {
                 throw new Error('Error al crear el producto');
             }
@@ -21,6 +24,7 @@ export const useCrearProducto = () => {
             console.error('Error:', error);
         }
     };
+    useMapeandoProductos()
 
     return {crearProductoReal};
 };

@@ -5,7 +5,8 @@ export const useMapeandoProductosPorId = (id) => {
   const [errorPro, setError] = useState(null);
 
   useEffect(() => {
-    if (!id) return
+    console.log(typeof(id) + "desde id")
+    if (!id || id === false) return
     fetch(`http://localhost:8092/api/v1/producto/${id}`)
       .then(response => {
         if (!response.ok) {

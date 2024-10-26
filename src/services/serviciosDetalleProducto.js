@@ -7,17 +7,16 @@ import { useModificarProducto } from '../hooks/useModificarProducto'
 
 export const ServiciosDetalleProducto = (id) => {
     const navigate = useNavigate()
-    const { productosId } = useMapeandoProductosPorId(id)
+    // const { productosId } = useMapeandoProductosPorId(id)
     const { modificarProducto,error } = useModificarProducto()
     const { borrarProducto } = useBorrarProducto()
     const { borrarProductoI, editarProducto } = useContext(ProductoContext)
 
 
     const handleDelete = async (event) => {
-        event.preventDefault();
+        // event.preventDefault();
         await borrarProducto(id)
-        borrarProductoI(productosId)
-        navigate("/productos")
+        borrarProductoI(id)
     };
 
     const onSubmitModificar = async (data) =>{
@@ -28,5 +27,5 @@ export const ServiciosDetalleProducto = (id) => {
         }
     }
 
-    return {  handleDelete, productosId: productosId, error, onSubmitModificar }
+    return {  handleDelete, error, onSubmitModificar }
 }

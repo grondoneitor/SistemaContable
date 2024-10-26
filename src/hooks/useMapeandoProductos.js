@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { ProductoContext } from "../context/productos";
 
 export const useMapeandoProductos = () => {
   const [allProducts, setAllProductos] = useState([]);
   const [error, setError] = useState(null);
+  const {state} = useContext(ProductoContext)
   useEffect(() => {
+    console.log("asasd")
     fetch(`http://localhost:8092/api/v1/productos`)
       .then(response => {
         if (!response.ok) {
@@ -18,7 +21,7 @@ export const useMapeandoProductos = () => {
       });
       // 
        setError(null)
-  }, []);
+  }, [state.productos]);
    
 
   return { allProducts, error };

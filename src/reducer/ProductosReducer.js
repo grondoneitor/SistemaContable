@@ -42,6 +42,7 @@ export const ProductReducer = (state = InitialState, action) => {
             }
         }
         case ActionTypes.CREAR_PRODUCTO:{
+            
             return{
                 ...state,
                 productos: [...state.productos, ActionPayload]
@@ -50,7 +51,7 @@ export const ProductReducer = (state = InitialState, action) => {
         case ActionTypes.BORRAR_PRODUCTO: {
             return {
                 ...state,
-                productos: state.productos.filter(producto => producto.id !== ActionPayload.id)
+                productos: state.productos.filter(producto => producto.id !== ActionPayload)
             }
         }
         case ActionTypes.EDITAR_PRODUCTO:{

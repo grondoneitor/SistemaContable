@@ -21,10 +21,10 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import { ProductoContext } from '../../context/productos';
-import { useMapeandoCategorias } from '../../hooks/useMapeandoCategorias';
 import { useMapeandoProductos } from '../../hooks/useMapeandoProductos';
 import { ServiciosDetalleProducto } from '../../services/serviciosDetalleProducto';
+import { useEffect } from 'react';
+import { ProductoContext } from '../../context/productos';
 
 function createData(id, producto, precio, categoria, descripcion, stock, stock_Min, estado) {
     return {
@@ -210,8 +210,13 @@ export default function FormDetalleProducto() {
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const productos = useMapeandoProductos()
+ 
+    const [rows, setRows] = React.useState([])
+    useMapeandoProductos()
+    const {state} = React.useContext(ProductoContext)
 
-        const rows = productos.allProducts.map((producto) =>
+    useEffect(()=>{
+       const mappedRows =  productos.allProducts.map((producto) =>
             createData(
                 producto.id,
                 producto.producto,
@@ -223,7 +228,11 @@ export default function FormDetalleProducto() {
                 producto.estado
             )
         );
-
+        console.log(mappedRows)
+         setRows(mappedRows)
+    },[productos.allProducts])
+ 
+    console.log("asdads")
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -280,7 +289,7 @@ export default function FormDetalleProducto() {
             [...rows]
                 .sort(getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-        [order, orderBy, page, rowsPerPage],
+        [order, orderBy, page, rowsPerPage,rows],
     );
 
     return (
@@ -339,7 +348,7 @@ export default function FormDetalleProducto() {
                                             {row.estado === false ? "No disponible" : "Disponible"}
                                         </TableCell>
                                     </TableRow>
-                                );
+                                )
                             })}
                         </TableBody>
                     </Table>

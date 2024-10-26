@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { ProductoContext } from "../context/productos";
 import { useCrearProducto } from "../hooks/useCrearProducto";
+import { useMapeandoProductos } from "../hooks/useMapeandoProductos";
 
 export const ServiciosCrear = (reset) => {
 
@@ -10,8 +11,7 @@ export const ServiciosCrear = (reset) => {
 
     const onSubmit = async (data) => {
         const nuevoProducto = { data };
-        const succes = await crearProductoReal(nuevoProducto);
-        if (succes)crearProducto(nuevoProducto) 
+        await crearProductoReal(nuevoProducto);
         reset()
     }
 

@@ -8,16 +8,16 @@ import { useMapeandoProductos } from "../../hooks/useMapeandoProductos";
 import FormDetalleProducto from "./FormDetalleProducto"
 import { ProductoContext } from "../../context/productos";
 import { useContext } from "react";
+import { ModalContext, ModalProvider } from "../../context/modal";
 
 export default function ShowProductos() {
-     
-    const { error} = useElegirProductos()
-    const { handleSubmit,handleVolver} = ServiciosSearch()
-    const productos = useMapeandoProductos()
-    const {state} = useContext(ProductoContext)
+
+    // const { error} = useElegirProductos()
+    const { handleSubmit, handleVolver } = ServiciosSearch()
+    const { state } = useContext(ProductoContext)
     const productosAmostrar = state.productosBuscados.length > 0 || state.nombreProductoBuscado !== "" ? state.productosBuscados : state.productos;
     useMapeandoCategorias()
-    
+
     return (
         <>
             <SearchProducts handleSubmit={handleSubmit} handleVolver={handleVolver} />
@@ -33,30 +33,9 @@ export default function ShowProductos() {
                 <main className="w-full ml-4">
                     <h1 className="font-black text-3xl text-slate-800 text-center mb-14">Productos</h1>
                     <div>
-                        {/* {error ? (<p className="text-red-600">{error}</p>) : (
-                            productosAmostrar.length <= 0 ? <p className="text-red-600">No hay productos disponibles</p> :
-                                (<ul className="grid grid-cols-4 mx-5 gap-8">
-                                    {
-                                        productosAmostrar.map((item) => (
-                                            <li className="text-center w-64 h-52 bg-slate-800" key={item.id}>
-                                                <Link to={`${item.id}`} className="flex flex-col items-center justify-center h-full">
-                                                    <div className="w-full h-full flex flex-col items-center justify-center border border-indigo-800 p-4 rounded">
-                                                        <h2 className="text-lg font-bold text-slate-100">{capitalizeFirstLetter(item.producto)}</h2>
-                                                        <h4 className="text-md font-semibold text-slate-50">${item.precio}</h4>
-                                                       { item.categoria !== null && <h4 className="text-md font-semibold text-slate-50">{capitalizeFirstLetter(item.categoria.categoria)}</h4>}
-                                                        {item.estado ? (
-                                                            <p className="text-green-500">Disponible</p>
-                                                        ) : (
-                                                            <p className="text-red-500">No disponible</p>
-                                                        )}
-                                                    </div>
-                                                </Link>
-                                            </li>
-                                        ))}
-                                </ul>))} */}
-
-                                <FormDetalleProducto 
-                                />
+                        <ModalProvider>
+                            <FormDetalleProducto />
+                        </ModalProvider>
                     </div>
                 </main>
             </div>

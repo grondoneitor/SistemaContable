@@ -23,6 +23,9 @@ import { visuallyHidden } from '@mui/utils';
 import { useMapeandoProductos } from '../../hooks/useMapeandoProductos';
 import { ServiciosDetalleProducto } from '../../services/serviciosDetalleProducto';
 import { useEffect } from 'react';
+import { Modal } from '@mui/material';
+import DetalleProducto from './DetalleProducto';
+import { ModalContext } from '../../context/modal';
 // import { ProductoContext } from '../../context/productos';
 
 function createData(id, producto, precio, categoria, descripcion, stock, stock_Min, estado) {
@@ -151,8 +154,9 @@ EnhancedTableHead.propTypes = {
 
 function EnhancedTableToolbar(props) {
     // eslint-disable-next-line react/prop-types
-    const { numSelected, selected } = props;
+    const { numSelected, selected, openModal } = props;
     const { handleDelete } = ServiciosDetalleProducto(selected);
+    console.log(selected + " selected")
     return (
         <Toolbar
             sx={[
@@ -191,12 +195,12 @@ function EnhancedTableToolbar(props) {
                             <DeleteIcon />
                         </IconButton>
                     </Tooltip>
-                   {numSelected === 1 &&
-                    <Tooltip>
-                        <IconButton color="primary" >
-                            <EditIcon />
-                        </IconButton>
-                    </Tooltip>
+                    {numSelected === 1 &&
+                        <Tooltip onClick={() => openModal(selected)}>
+                            <IconButton color="primary" >
+                                <EditIcon />
+                            </IconButton>
+                        </Tooltip>
                     }
                 </>
             ) : (
@@ -213,34 +217,36 @@ function EnhancedTableToolbar(props) {
 
 export default function FormDetalleProducto() {
     const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('calories');
+    const [orderBy, setOrderBy] = React.useState('productos');
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const productos = useMapeandoProductos()
 
-    const [rows, setRows] = React.useState([])
-    useMapeandoProductos()
+    // const [rows, setRows] = React.useState([])
     // const {state} = React.useContext(ProductoContext)
 
-    useEffect(() => {
-        const mappedRows = productos.allProducts.map((producto) =>
-            createData(
-                producto.id,
-                producto.producto,
-                producto.precio,
-                producto?.categoria.categoria,
-                producto.descripcion,
-                producto.stock,
-                producto.stock_Min,
-                producto.estado
-            )
-        );
-        console.log(mappedRows)
-        setRows(mappedRows)
-    }, [productos.allProducts])
+    const [isModalOpen, setModalOpen] = React.useState(false);  // Estado para abrir/cerrar modal
+    const [selectedProduct, setSelectedProduct] = React.useState(null);  // Producto seleccionado
+    const { state, openModal,closeModal} = React.useContext(ModalContext)
+
 
     console.log("asdads")
+    // const handleEdit = (productId) => {
+    //     console.log(productId + " producto id")
+    //     const product = productos.allProducts.map((row) => {
+    //         if (row.id === productId) return row
+    //     });
+    //     console.log(product + " producto")
+    //     setSelectedProduct(product);  // Guardamos el producto seleccionado
+    //     setModalOpen(true);  // Abrimos el modal
+    //     console.log(selectedProduct)
+    // };
+
+    const handleCloseModal = () => {
+        setModalOpen(false);  // Cerramos el modal
+        setSelectedProduct(null);  // Limpiamos el producto seleccionado
+    };
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -250,7 +256,7 @@ export default function FormDetalleProducto() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelected = rows.map((n) => n.id);
+            const newSelected = productos.allProducts.map((n) => n.id);
             setSelected(newSelected);
             return;
         }
@@ -292,18 +298,19 @@ export default function FormDetalleProducto() {
 
     const visibleRows = React.useMemo(
         () =>
-            [...rows]
+            [...productos.allProducts]
                 .sort(getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-        [order, orderBy, page, rowsPerPage, rows],
+        [order, orderBy, page, rowsPerPage, productos.allProducts],
     );
 
     return (
         <Box sx={{ width: '100%' }}>
             <Paper sx={{ width: '100%', mb: 2 }}>
-                <EnhancedTableToolbar numSelected={selected.length} selected={selected} />
+                <EnhancedTableToolbar numSelected={selected.length} selected={selected} openModal={openModal} />
                 <TableContainer>
                     <Table
+                        //Este es la linea donde me marca el error dekey la
                         sx={{ minWidth: 750 }}
                         aria-labelledby="tableTitle"
                     >
@@ -313,22 +320,22 @@ export default function FormDetalleProducto() {
                             orderBy={orderBy}
                             onSelectAllClick={handleSelectAllClick}
                             onRequestSort={handleRequestSort}
-                            rowCount={rows.length}
+                            rowCount={productos.allProducts.length}
                         />
 
-                        <TableBody>
+                        <TableBody >
                             {visibleRows.map((row, index) => {
                                 const isItemSelected = selected.includes(row.id);
                                 const labelId = `enhanced-table-checkbox-${index}`;
 
                                 return (
                                     <TableRow
+                                        key={row.id}
                                         hover
                                         onClick={(event) => handleClick(event, row.id)} // Click individual
                                         role="checkbox"
                                         aria-checked={isItemSelected}
                                         tabIndex={-1}
-                                        key={row.id}
                                         selected={isItemSelected}
                                         sx={{ cursor: 'pointer' }}
                                     >
@@ -345,29 +352,40 @@ export default function FormDetalleProducto() {
                                             {row.producto}
                                         </TableCell>
                                         <TableCell align="right">{row.precio}</TableCell>
-                                        <TableCell align="right">{row.categoria}</TableCell>
+                                        <TableCell align="right">{row.categoria.categoria}</TableCell>
                                         <TableCell align="right">{row.descripcion}</TableCell>
                                         <TableCell align="right">{row.stock}</TableCell>
                                         <TableCell align="right">{row.stock_Min}</TableCell>
                                         <TableCell align="right">
                                             {row.estado === false ? "No disponible" : "Disponible"}
                                         </TableCell>
+                                        <Modal open={state.open}>
+                                            <div>
+                                                <DetalleProducto
+                                                  selected={selected[0]} 
+                                                  />
+                                                
+                                            </div>
+                                        </Modal>
                                     </TableRow>
+
                                 )
                             })}
-                        </TableBody>
+                        </TableBody >
                     </Table>
+
                 </TableContainer>
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
-                    count={rows.length}
+                    count={productos.allProducts.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
+
         </Box>
     );
 }

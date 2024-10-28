@@ -7,7 +7,7 @@ import { useModificarProducto } from '../hooks/useModificarProducto'
 
 export const ServiciosDetalleProducto = (id) => {
     const navigate = useNavigate()
-    // const { productosId } = useMapeandoProductosPorId(id)
+    const { productosId } = useMapeandoProductosPorId(id)
     const { modificarProducto,error } = useModificarProducto()
     const { borrarProducto } = useBorrarProducto()
     const { borrarProductoI, editarProducto } = useContext(ProductoContext)
@@ -27,5 +27,5 @@ export const ServiciosDetalleProducto = (id) => {
         }
     }
 
-    return {  handleDelete, error, onSubmitModificar }
+    return {  handleDelete, error,productosId, onSubmitModificar }
 }

@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom';
 import { capitalizeFirstLetter } from '../../services/mayusculaPrimeraLetra';
 import { ServiciosDetalleProducto } from '../../services/serviciosDetalleProducto';
 import { useContext, useEffect, useState } from 'react';
@@ -6,19 +5,19 @@ import { CategoriaContext } from '../../context/categorias';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from "../../services/validaciones";
+import { ModalContext } from '../../context/modal';
 
-function DetalleProducto() {
-    const { id } = useParams();
+function DetalleProducto(selected) {
+    const id = selected.selected
     const { handleDelete, productosId, onSubmitModificar } = ServiciosDetalleProducto(id);
     const nombreProducto = capitalizeFirstLetter(productosId.producto);
     const { state } = useContext(CategoriaContext);
-
+    const { closeModal} = useContext(ModalContext)
     const [selectedCategoria, setSelectedCategoria] = useState('');
     
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schema)
     });
-    
     useEffect(() => {
         if (productosId) {
             reset({
@@ -38,12 +37,12 @@ function DetalleProducto() {
     };
 
     return (
-        <div className='flex flex-col justify-center items-center h-screen bg-gray-100'>
+        <div className='flex flex-col justify-center items-center h-screen bg-transparent'>
             <h1 className='text-xl font-bold'>
                 {nombreProducto}
             </h1>
 
-            <div className='flex justify-center items-center gap-4 border border-indigo-800'>
+            <div className='flex justify-center items-center gap-4 '>
                 <div className='text-center w-2/3'>
                     <form
                         onSubmit={handleSubmit(onSubmitModificar)}
@@ -135,6 +134,7 @@ function DetalleProducto() {
                     </form>
                 </div>
             </div>
+            <button onClick={()=>closeModal()}>CERRAR</button>
         </div>
     );
 }

@@ -16,7 +16,6 @@ export const useMapeandoProductosPorId = (id) => {
       })
       .then(data => setProductosId(data.object))
       .catch(error => {
-        console.error("Error fetching products:", error);
         setError("No se encontro este producto");
         setProductosId([])
       });

@@ -3,8 +3,8 @@ import ShowProductos from './components/Productos/ShowProductos'
 import Home from './components/Home'
 import PreProductos from './components/PreProductos'
 import DetalleProducto from './components/Productos/DetalleProducto'
-import CrearProducto from './components/Productos/CrearProducto'
 import Categorias from '../src/components/Categorias/Categorias.jsx'
+import FormCrearProducto from './components/Productos/FormCrearPro.jsx'
 function App() {
 
 
@@ -16,7 +16,7 @@ function App() {
         <Route path='/pro-cat/' element={<PreProductos />}>
         </Route>
         <Route path="/productos" element={<ShowProductos />} > </Route>
-        <Route path='productos/crear-producto' element={<CrearProducto/>}></Route>
+        <Route path='productos/crear-producto' element={<FormCrearProducto/>}></Route>
 
         <Route path='/productos/:id' element={<DetalleProducto/>} ></Route>
         

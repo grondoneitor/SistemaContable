@@ -1,23 +1,13 @@
 import SearchProducts from "./SearchProducts";
-import { capitalizeFirstLetter } from "../../services/mayusculaPrimeraLetra";
 import { Link, NavLink } from "react-router-dom";
-import { useElegirProductos } from "../../hooks/useElegirProductos";
 import { ServiciosSearch } from "../../services/serviciosSearch";
 import { useMapeandoCategorias } from "../../hooks/useMapeandoCategorias";
-import { useMapeandoProductos } from "../../hooks/useMapeandoProductos";
-import FormDetalleProducto from "./FormDetalleProducto"
-import { ProductoContext } from "../../context/productos";
-import { useContext } from "react";
-import { ModalContext, ModalProvider } from "../../context/modal";
+import FormDetalleProducto from "./formDetalleProducto";
+import {  ModalProvider } from "../../context/modal";
 
 export default function ShowProductos() {
-
-    // const { error} = useElegirProductos()
     const { handleSubmit, handleVolver } = ServiciosSearch()
-    const { state } = useContext(ProductoContext)
-    const productosAmostrar = state.productosBuscados.length > 0 || state.nombreProductoBuscado !== "" ? state.productosBuscados : state.productos;
     useMapeandoCategorias()
-
     return (
         <>
             <SearchProducts handleSubmit={handleSubmit} handleVolver={handleVolver} />

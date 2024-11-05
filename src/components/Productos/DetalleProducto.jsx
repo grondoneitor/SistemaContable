@@ -6,15 +6,14 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from "../../services/validaciones";
 import { ModalContext } from '../../context/modal';
-
+import '../../buttonCerrarStyle.css'
 function DetalleProducto(selected) {
     const id = selected.selected
     const { handleDelete, productosId, onSubmitModificar } = ServiciosDetalleProducto(id);
     const nombreProducto = capitalizeFirstLetter(productosId.producto);
     const { state } = useContext(CategoriaContext);
-    const { closeModal} = useContext(ModalContext)
+    const { closeModal } = useContext(ModalContext)
     const [selectedCategoria, setSelectedCategoria] = useState('');
-    
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schema)
     });
@@ -37,17 +36,18 @@ function DetalleProducto(selected) {
     };
 
     return (
-        <div className='flex flex-col justify-center items-center h-screen bg-transparent'>
-            <h1 className='text-xl font-bold'>
-                {nombreProducto}
-            </h1>
+        <div className='flex flex-col justify-center items-center w-screen h-screen '>
 
-            <div className='flex justify-center items-center gap-4 '>
+            <div className='flex justify-center items-center gap-4 w-2/3 '>
                 <div className='text-center w-2/3'>
                     <form
-                        onSubmit={handleSubmit(onSubmitModificar)}
+                        // onSubmit={handleSubmit(onSubmitModificar,()=> closeModal())  }
+                        onSubmit={handleSubmit((data) => {
+                            onSubmitModificar(data),
+                                closeModal()
+                        })}
                         className="bg-white shadow-md rounded-lg py-4 px-5 border border-indigo-800">
-                        
+
                         <div className="mb-2">
                             <label htmlFor="producto" className="text-sm uppercase font-bold">Producto</label>
                             <input
@@ -116,25 +116,27 @@ function DetalleProducto(selected) {
                                 {...register("stock_Min")}
                             />
                         </div>
-
                         <div className='flex gap-1'>
                             <button
                                 type="submit"
-                                className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors">
-                                Editar Producto
+                                className="btn-modificar"
+                                >
+                                <i className="animation"></i>Editar producto<i className="animation"></i>
                             </button>
 
                             <button
-                                type="button"
-                                className="bg-red-600 w-full p-3 text-white uppercase font-bold hover:bg-red-700 cursor-pointer transition-colors"
-                                onClick={handleDelete}>
-                                Eliminar Producto
+                                onClick={() => closeModal()}
+                                className="btn-cerrar">
+                                <i className="animation"></i>Cerrar<i className="animation"></i>
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
-            <button onClick={()=>closeModal()}>CERRAR</button>
+
+
+
+
         </div>
     );
 }

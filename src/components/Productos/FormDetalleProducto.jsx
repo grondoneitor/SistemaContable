@@ -22,17 +22,10 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { useMapeandoProductos } from '../../hooks/useMapeandoProductos';
 import { ServiciosDetalleProducto } from '../../services/serviciosDetalleProducto';
-import { useEffect } from 'react';
 import { Modal } from '@mui/material';
 import DetalleProducto from './DetalleProducto';
 import { ModalContext } from '../../context/modal';
-// import { ProductoContext } from '../../context/productos';
 
-function createData(id, producto, precio, categoria, descripcion, stock, stock_Min, estado) {
-    return {
-        id, producto, precio, categoria, descripcion, stock, stock_Min, estado
-    };
-}
 
 
 function descendingComparator(a, b, orderBy) {
@@ -223,31 +216,10 @@ export default function FormDetalleProducto() {
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const productos = useMapeandoProductos()
 
-    // const [rows, setRows] = React.useState([])
-    // const {state} = React.useContext(ProductoContext)
-
-    const [isModalOpen, setModalOpen] = React.useState(false);  // Estado para abrir/cerrar modal
-    const [selectedProduct, setSelectedProduct] = React.useState(null);  // Producto seleccionado
-    const { state, openModal,closeModal} = React.useContext(ModalContext)
-
-
-    console.log("asdads")
-    // const handleEdit = (productId) => {
-    //     console.log(productId + " producto id")
-    //     const product = productos.allProducts.map((row) => {
-    //         if (row.id === productId) return row
-    //     });
-    //     console.log(product + " producto")
-    //     setSelectedProduct(product);  // Guardamos el producto seleccionado
-    //     setModalOpen(true);  // Abrimos el modal
-    //     console.log(selectedProduct)
-    // };
-
-    const handleCloseModal = () => {
-        setModalOpen(false);  // Cerramos el modal
-        setSelectedProduct(null);  // Limpiamos el producto seleccionado
-    };
-
+    const { state, openModal } = React.useContext(ModalContext)
+    console.log(state.open + " state open")
+    const varOpen = React.useMemo(()=> state.open,[state.open])
+    
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -292,10 +264,6 @@ export default function FormDetalleProducto() {
 
 
 
-    // Avoid a layout jump when reaching the last page with empty rows.
-    // const emptyRows =
-    //     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
     const visibleRows = React.useMemo(
         () =>
             [...productos.allProducts]
@@ -305,12 +273,11 @@ export default function FormDetalleProducto() {
     );
 
     return (
-        <Box sx={{ width: '100%' }}>
-            <Paper sx={{ width: '100%', mb: 2 }}>
+        <Box sx={{ width: '100%', "& > .MuiBackdrop-root": { backdropFilter: "blur(2px)" } }}>
+            <Paper sx={{ width: '100%', mb: 2, background: "white" }}>
                 <EnhancedTableToolbar numSelected={selected.length} selected={selected} openModal={openModal} />
                 <TableContainer>
                     <Table
-                        //Este es la linea donde me marca el error dekey la
                         sx={{ minWidth: 750 }}
                         aria-labelledby="tableTitle"
                     >
@@ -337,7 +304,7 @@ export default function FormDetalleProducto() {
                                         aria-checked={isItemSelected}
                                         tabIndex={-1}
                                         selected={isItemSelected}
-                                        sx={{ cursor: 'pointer' }}
+                                        sx={{ cursor: 'pointer', "& > .MuiBackdrop-root": { backdropFilter: "blur(2px)" } }}
                                     >
                                         <TableCell padding="checkbox">
                                             <Checkbox
@@ -359,21 +326,21 @@ export default function FormDetalleProducto() {
                                         <TableCell align="right">
                                             {row.estado === false ? "No disponible" : "Disponible"}
                                         </TableCell>
-                                        <Modal open={state.open}>
-                                            <div>
-                                                <DetalleProducto
-                                                  selected={selected[0]} 
-                                                  />
-                                                
-                                            </div>
-                                        </Modal>
+
                                     </TableRow>
 
                                 )
                             })}
                         </TableBody >
                     </Table>
+                    <Modal open={varOpen} >
+                        <div >
+                            <DetalleProducto
+                                selected={selected[0]}
+                            />
 
+                        </div>
+                    </Modal>
                 </TableContainer>
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}

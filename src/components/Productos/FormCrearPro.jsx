@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from "../../services/validaciones";
 
-export default function PatientForm() {
+export default function FormCrearProducto() {
     const { register, handleSubmit, formState : { errors },reset } = useForm({
         resolver: yupResolver(schema)
     })

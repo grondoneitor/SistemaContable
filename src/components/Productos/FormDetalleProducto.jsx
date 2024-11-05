@@ -25,6 +25,8 @@ import { ServiciosDetalleProducto } from '../../services/serviciosDetalleProduct
 import { Modal } from '@mui/material';
 import DetalleProducto from './DetalleProducto';
 import { ModalContext } from '../../context/modal';
+import { useMapeandoProductosPorNombre } from '../../hooks/useMapeandoProductosPorNombre';
+import { ProductoContext } from '../../context/productos';
 
 
 
@@ -214,10 +216,12 @@ export default function FormDetalleProducto() {
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    const productos = useMapeandoProductos()
+    useMapeandoProductos()
+    useMapeandoProductosPorNombre();
+    const {state:statePro} = React.useContext(ProductoContext)
 
+    
     const { state, openModal } = React.useContext(ModalContext)
-    console.log(state.open + " state open")
     const varOpen = React.useMemo(()=> state.open,[state.open])
     
     const handleRequestSort = (event, property) => {
@@ -262,14 +266,13 @@ export default function FormDetalleProducto() {
         setPage(0);
     };
 
-
-
+   const productosMostrar = React.useMemo(()=> statePro.productosBuscados.length !== 0 ? statePro.productosBuscados : statePro.productos,[ statePro.productos,statePro.productosBuscados])
     const visibleRows = React.useMemo(
         () =>
-            [...productos.allProducts]
+            [...productosMostrar]
                 .sort(getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-        [order, orderBy, page, rowsPerPage, productos.allProducts],
+        [order, orderBy, page, rowsPerPage, productosMostrar],
     );
 
     return (
@@ -287,7 +290,7 @@ export default function FormDetalleProducto() {
                             orderBy={orderBy}
                             onSelectAllClick={handleSelectAllClick}
                             onRequestSort={handleRequestSort}
-                            rowCount={productos.allProducts.length}
+                            rowCount={statePro.productos.length}
                         />
 
                         <TableBody >
@@ -345,7 +348,7 @@ export default function FormDetalleProducto() {
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
-                    count={productos.allProducts.length}
+                    count={statePro.productos.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}

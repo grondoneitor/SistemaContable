@@ -2,24 +2,21 @@ import { useContext } from "react";
 import { ProductoContext } from "../context/productos";
 
 export const ServiciosSearch = () => {
-    const {  guardarNombreProBuscados,mostrarProductosBuscados } = useContext(ProductoContext);
+  const {guardarNombreProBuscados } = useContext(ProductoContext);
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const valores = e.currentTarget;
+    const data = new FormData(valores);
+    const final = data.get("producto")
 
-     const handleSubmit = (e) => {
-        e.preventDefault();
-        const valores = e.currentTarget;
-        const data = new FormData(valores);
-        const final = data.get("producto")
-
-       guardarNombreProBuscados(final);
-        
-
-         valores.reset(); 
-    };
-    const handleVolver = ()=>{
-      guardarNombreProBuscados("")
-      mostrarProductosBuscados([])
+    guardarNombreProBuscados(final);
+    valores.reset();
+  };
+  const handleVolver = () => {
+    guardarNombreProBuscados("")
   }
 
-    return{ handleSubmit,handleVolver}
+  return { handleSubmit, handleVolver }
 
 };

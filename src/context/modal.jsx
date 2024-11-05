@@ -1,16 +1,17 @@
 /* eslint-disable react/prop-types */
-import { createContext, useReducer } from "react";
+import { createContext, useContext, useReducer } from "react";
 import { InitialState, ModalReducer } from "../reducer/ModalReducer";
-import { useMapeandoProductos } from "../hooks/useMapeandoProductos";
+import { ProductoContext } from "./productos";
 
 export const ModalContext = createContext();
 
 export function ModalProvider({ children }) {
 
     const [state, dispatch] = useReducer(ModalReducer, InitialState)
-    const {allProducts} = useMapeandoProductos()
+    const {state:statePro} = useContext(ProductoContext)
+    const productos = statePro.productos
      const openModal = (productoSelected) => {
-        dispatch({ type: 'open_modal', payload: {productoSelected, allProducts} })
+        dispatch({ type: 'open_modal', payload: {productoSelected,productos } })
     }
     const closeModal = () => {
         dispatch({ type: 'close_modal' })

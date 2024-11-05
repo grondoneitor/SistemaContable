@@ -1,16 +1,15 @@
 import SearchProducts from "./SearchProducts";
 import { Link, NavLink } from "react-router-dom";
-import { ServiciosSearch } from "../../services/serviciosSearch";
 import { useMapeandoCategorias } from "../../hooks/useMapeandoCategorias";
 import FormDetalleProducto from "./formDetalleProducto";
 import {  ModalProvider } from "../../context/modal";
 
 export default function ShowProductos() {
-    const { handleSubmit, handleVolver } = ServiciosSearch()
+    
     useMapeandoCategorias()
     return (
         <>
-            <SearchProducts handleSubmit={handleSubmit} handleVolver={handleVolver} />
+            <SearchProducts />
             <div className="flex w-full mt-16 h-full gap-6">
                 <aside className="w-2/12 bg-white text-center m-3">
                     <h2 className="mt-2 mb-8 font-black">Opciones</h2>

@@ -13,19 +13,20 @@ export const ServiciosDetalleProducto = (id) => {
     const { borrarProductoI, editarProducto } = useContext(ProductoContext)
 
 
-    const handleDelete = async (event) => {
+    const handleDelete = async () => {
         // event.preventDefault();
         await borrarProducto(id)
         borrarProductoI(id)
     };
 
-    const onSubmitModificar = async (data) =>{
+    const onSubmitModificar = async (data) => {
         const success = await modificarProducto(id, data); 
         if (success) {
-            editarProducto(data);
+            editarProducto({ ...data, id });  // Llama a actualizarProducto para refrescar el estado
             navigate("/productos");
         }
-    }
+    };
+
 
     return {  handleDelete, error,productosId, onSubmitModificar }
 }

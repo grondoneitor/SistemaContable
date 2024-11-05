@@ -10,11 +10,11 @@ export const ActionTypes = {
 }
 
 export const ModalReducer = (state = InitialState, action) => {
-    const { type: ActionType, payload:{ ActionPayload, allProducts} = {} } = action;
+    const { type: ActionType, payload:{ ActionPayload, productos} = {} } = action;
    
     switch (ActionType) { 
          case ActionTypes.OPEN_MODAL:{
-            const product = allProducts.map((row) => {
+            const product = productos.map((row) => {
                 if (row.id === ActionPayload) return row
             });
              return{

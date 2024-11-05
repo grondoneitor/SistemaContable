@@ -25,7 +25,7 @@ export const ProductReducer = (state = InitialState, action) => {
         case ActionTypes.MOSTRAR_PRODUCTOS: {
             return {
                 ...state,
-                productos: ActionPayload, // Asignamos directamente los productos del payload
+                productos: ActionPayload, 
             };
         }
         case ActionTypes.BUSCADOR_PRODUCTOS:{
@@ -54,17 +54,28 @@ export const ProductReducer = (state = InitialState, action) => {
                 productos: state.productos.filter(producto => producto.id !== ActionPayload)
             }
         }
-        case ActionTypes.EDITAR_PRODUCTO:{
-            return{
+        // case ActionTypes.EDITAR_PRODUCTO:{
+        //     return{
+        //         ...state,
+        //         productos: state.productos.map(producto =>{
+        //             if(producto.id === ActionPayload.id){
+        //                 return {...producto, ...ActionPayload}
+        //             }
+        //             return producto
+        //         })
+        //     }
+        // }
+        case ActionTypes.EDITAR_PRODUCTO: {
+            const nuevosProductos = state.productos.map(producto => 
+                producto.id === ActionPayload.id ? { ...producto, ...ActionPayload } : producto
+            );
+            console.log("Productos después de edición:", nuevosProductos);  
+            return {
                 ...state,
-                productos: state.productos.map(producto =>{
-                    if(producto.id === ActionPayload.id){
-                        return {...producto, ...ActionPayload}
-                    }
-                    return producto
-                })
-            }
+                productos: nuevosProductos,
+            };
         }
+        
         case ActionTypes.DETALLE_PRODUCTO:{
             return{
                 ...state,

@@ -11,6 +11,7 @@ export const ServiciosSearch = () => {
     const final = data.get("producto")
 
     guardarNombreProBuscados(final);
+    console.log(final)
     valores.reset();
   };
   const handleVolver = () => {

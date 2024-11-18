@@ -20,8 +20,8 @@ export function ProductoProvider({ children }) {
     const crearProducto = (producto)=>{
         dispatch({ type: 'crear_producto', payload: producto })
     }
-    const borrarProductoI = (producto) =>{
-        dispatch({ type: 'borrar_producto', payload: producto })
+    const borrarProductoI = (id) =>{
+        dispatch({ type: 'borrar_producto', payload: id })
     }
     const editarProducto = (producto) =>{
         dispatch({ type: 'editar_producto', payload: producto })

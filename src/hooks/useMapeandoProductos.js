@@ -3,7 +3,7 @@ import { ProductoContext } from "../context/productos";
 
 export const useMapeandoProductos = () => {
   const [error, setError] = useState(null);
-  const {mostrarProductos} = useContext(ProductoContext)
+  const {state,mostrarProductos} = useContext(ProductoContext)
   useEffect(() => {
     fetch(`http://localhost:8092/api/v1/productos`)
       .then(response => {
@@ -19,7 +19,7 @@ export const useMapeandoProductos = () => {
       });
       // 
        setError(null)
-  }, []);
+  }, [state.borrarProductoI]);
    
 
   return {  error };

@@ -1,5 +1,5 @@
 /* From Uiverse.io by Satoshikamotona */ 
-.btn-cerrar {
+.btn-borrar {
     outline: 0;
     display: inline-flex;
     align-items: center;
@@ -21,12 +21,12 @@
     transition: all 0.5s;
   }
   
-  .btn-cerrar:hover {
+  .btn-borrar:hover {
     opacity: 0.95;
     background: #e14c35;
   }
   
-  .btn-cerrar .animation {
+  .btn-borrar .animation {
     border-radius: 100%;
     animation: ripple 0.6s linear infinite;
   }
@@ -60,6 +60,39 @@
   }
   
   .btn-modificar .animation {
+    border-radius: 100%;
+    animation: ripple 0.6s linear infinite;
+  } 
+  
+  .btn-cerrar {
+    outline: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #046749;
+    min-width: 50%;
+    border: 0;
+    border-radius: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    padding: 16px 20px;
+    margin-top: 10px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.5s;
+  }
+
+  .btn-cerrar:hover {
+    opacity: 0.95;
+    background: #099068;
+  }
+  
+  .btn-cerrar .animation {
     border-radius: 100%;
     animation: ripple 0.6s linear infinite;
   } 

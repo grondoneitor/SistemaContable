@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 
 export const useCrearCategoria = () => {
     const crearCategoriaReal = async (categoria) => {

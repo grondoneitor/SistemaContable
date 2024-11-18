@@ -25,5 +25,5 @@ export const useMapeandoCategoriaPorId = (id) => {
       });
   }, [id]);
 
-  return { categoriaId,setCategoriaId, errorPro };
+  return { categoriaId, errorPro };
 };

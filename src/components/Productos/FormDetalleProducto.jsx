@@ -16,18 +16,16 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { useMapeandoProductos } from '../../hooks/useMapeandoProductos';
-import { ServiciosDetalleProducto } from '../../services/serviciosDetalleProducto';
 import { Modal } from '@mui/material';
 import DetalleProducto from './DetalleProducto';
 import { ModalContext } from '../../context/modal';
-import { useMapeandoProductosPorNombre } from '../../hooks/useMapeandoProductosPorNombre';
+import {   useMapeandoProductosPorNombre } from '../../hooks/useMapeandoProductosPorNombre';
 import { ProductoContext } from '../../context/productos';
-
+import { capitalizeFirstLetter } from '../../services/mayusculaPrimeraLetra';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -147,67 +145,6 @@ EnhancedTableHead.propTypes = {
     rowCount: PropTypes.number.isRequired,
 };
 
-function EnhancedTableToolbar(props) {
-    // eslint-disable-next-line react/prop-types
-    const { numSelected, selected, openModal } = props;
-    const { handleDelete } = ServiciosDetalleProducto(selected);
-    console.log(selected + " selected")
-    return (
-        <Toolbar
-            sx={[
-                {
-                    pl: { sm: 2 },
-                    pr: { xs: 1, sm: 1 },
-                },
-                numSelected > 0 && {
-                    bgcolor: (theme) =>
-                        alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-                },
-            ]}
-        >
-            {numSelected > 0 ? (
-                <Typography
-                    sx={{ flex: '1 1 100%' }}
-                    color="inherit"
-                    variant="subtitle1"
-                    component="div"
-                >
-                    {numSelected} selected
-                </Typography>
-            ) : (
-                <Typography
-                    sx={{ flex: '1 1 100%' }}
-                    variant="h6"
-                    id="tableTitle"
-                    component="div"
-                >
-                </Typography>
-            )}
-            {numSelected > 0 ? (
-                <>
-                    <Tooltip onClick={handleDelete} title="Delete">
-                        <IconButton>
-                            <DeleteIcon />
-                        </IconButton>
-                    </Tooltip>
-                    {numSelected === 1 &&
-                        <Tooltip onClick={() => openModal(selected)}>
-                            <IconButton color="primary" >
-                                <EditIcon />
-                            </IconButton>
-                        </Tooltip>
-                    }
-                </>
-            ) : (
-                <Tooltip title="Filter list">
-                    <IconButton>
-                        <FilterListIcon />
-                    </IconButton>
-                </Tooltip>
-            )}
-        </Toolbar>
-    );
-}
 
 
 export default function FormDetalleProducto() {
@@ -217,13 +154,18 @@ export default function FormDetalleProducto() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     useMapeandoProductos()
-    useMapeandoProductosPorNombre();
-    const {state:statePro} = React.useContext(ProductoContext)
+    useMapeandoProductosPorNombre()
+    const { state: statePro, borrarProductoI } = React.useContext(ProductoContext)
 
-    
+    // React.useEffect(()=>{
+    //     // eslint-disable-next-line react-hooks/rules-of-hooks
+    //     statePro.productos
+
+    //   },[statePro.productos]) 
+
     const { state, openModal } = React.useContext(ModalContext)
-    const varOpen = React.useMemo(()=> state.open,[state.open])
-    
+    const varOpen = React.useMemo(() => state.open, [state.open])
+
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -232,7 +174,7 @@ export default function FormDetalleProducto() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelected = productos.allProducts.map((n) => n.id);
+            const newSelected = statePro.productos.map((n) => n.id);
             setSelected(newSelected);
             return;
         }
@@ -266,8 +208,10 @@ export default function FormDetalleProducto() {
         setPage(0);
     };
 
-   const productosMostrar = React.useMemo(()=> statePro.productosBuscados.length !== 0 ? statePro.productosBuscados : statePro.productos,[ statePro.productos,statePro.productosBuscados])
-    const visibleRows = React.useMemo(
+    const productosMostrar = React.useMemo(() =>
+        statePro.productosBuscados.length !== 0 ? statePro.productosBuscados : statePro.productos,
+        [statePro.productos, statePro.productosBuscados]
+    ); const visibleRows = React.useMemo(
         () =>
             [...productosMostrar]
                 .sort(getComparator(order, orderBy))
@@ -276,86 +220,157 @@ export default function FormDetalleProducto() {
     );
 
     return (
-        <Box sx={{ width: '100%', "& > .MuiBackdrop-root": { backdropFilter: "blur(2px)" } }}>
-            <Paper sx={{ width: '100%', mb: 2, background: "white" }}>
-                <EnhancedTableToolbar numSelected={selected.length} selected={selected} openModal={openModal} />
-                <TableContainer>
-                    <Table
-                        sx={{ minWidth: 750 }}
-                        aria-labelledby="tableTitle"
-                    >
-                        <EnhancedTableHead
-                            numSelected={selected.length}
-                            order={order}
-                            orderBy={orderBy}
-                            onSelectAllClick={handleSelectAllClick}
-                            onRequestSort={handleRequestSort}
-                            rowCount={statePro.productos.length}
-                        />
-
-                        <TableBody >
-                            {visibleRows.map((row, index) => {
-                                const isItemSelected = selected.includes(row.id);
-                                const labelId = `enhanced-table-checkbox-${index}`;
-
-                                return (
-                                    <TableRow
-                                        key={row.id}
-                                        hover
-                                        onClick={(event) => handleClick(event, row.id)} // Click individual
-                                        role="checkbox"
-                                        aria-checked={isItemSelected}
-                                        tabIndex={-1}
-                                        selected={isItemSelected}
-                                        sx={{ cursor: 'pointer', "& > .MuiBackdrop-root": { backdropFilter: "blur(2px)" } }}
-                                    >
-                                        <TableCell padding="checkbox">
-                                            <Checkbox
-                                                color="primary"
-                                                checked={isItemSelected}
-                                                inputProps={{
-                                                    'aria-labelledby': labelId,
-                                                }}
-                                            />
-                                        </TableCell>
-                                        <TableCell component="th" id={labelId} scope="row" padding="none">
-                                            {row.producto}
-                                        </TableCell>
-                                        <TableCell align="right">{row.precio}</TableCell>
-                                        <TableCell align="right">{row.categoria.categoria}</TableCell>
-                                        <TableCell align="right">{row.descripcion}</TableCell>
-                                        <TableCell align="right">{row.stock}</TableCell>
-                                        <TableCell align="right">{row.stock_Min}</TableCell>
-                                        <TableCell align="right">
-                                            {row.estado === false ? "No disponible" : "Disponible"}
-                                        </TableCell>
-
-                                    </TableRow>
-
-                                )
-                            })}
-                        </TableBody >
-                    </Table>
-                    <Modal open={varOpen} >
-                        <div >
-                            <DetalleProducto
-                                selected={selected[0]}
+        <Box sx={{ marginRight: '45px'}}>
+            <Box sx={{ width: '100%', "& > .MuiBackdrop-root": { backdropFilter: "blur(2px)" } }}>
+                <Paper sx={{ width: '100%', mb: 2, background: "white" }}>
+                    <EnhancedTableToolbar
+                        numSelected={selected.length}
+                        selected={selected}
+                        setSelected={setSelected}
+                        openModal={openModal}
+                    />
+                    <TableContainer>
+                        <Table
+                            sx={{ minWidth: 750 }}
+                            aria-labelledby="tableTitle"
+                        >
+                            <EnhancedTableHead
+                                numSelected={selected.length}
+                                order={order}
+                                orderBy={orderBy}
+                                onSelectAllClick={handleSelectAllClick}
+                                onRequestSort={handleRequestSort}
+                                rowCount={statePro.productos.length}
                             />
 
-                        </div>
-                    </Modal>
-                </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={statePro.productos.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Paper>
+                            <TableBody >
+                                {visibleRows.map((row, index) => {
+                                    const isItemSelected = selected.includes(row.id);
+                                    const labelId = `enhanced-table-checkbox-${index}`;
 
+                                    return (
+                                        <TableRow
+                                            key={row.id}
+                                            hover
+                                            onClick={(event) => handleClick(event, row.id)} // Click individual
+                                            role="checkbox"
+                                            aria-checked={isItemSelected}
+                                            tabIndex={-1}
+                                            selected={isItemSelected}
+                                            sx={{ cursor: 'pointer', "& > .MuiBackdrop-root": { backdropFilter: "blur(2px)" } }}
+                                        >
+                                            <TableCell padding="checkbox">
+                                                <Checkbox
+                                                    color="primary"
+                                                    checked={isItemSelected}
+                                                    inputProps={{
+                                                        'aria-labelledby': labelId,
+                                                    }}
+                                                />
+                                            </TableCell>
+                                            <TableCell component="th" id={labelId} scope="row" padding="none">
+                                                {capitalizeFirstLetter(row.producto)}
+                                            </TableCell>
+                                            <TableCell align="right">{row.precio}</TableCell>
+                                            <TableCell align="right">{capitalizeFirstLetter(row.categoria.categoria)}</TableCell>
+                                            <TableCell align="right">{row.descripcion}</TableCell>
+                                            <TableCell align="right">{row.stock}</TableCell>
+                                            <TableCell align="right">{row.stock_Min}</TableCell>
+                                            <TableCell align="right">
+                                                {row.estado === false ? "No disponible" : "Disponible"}
+                                            </TableCell>
+
+                                        </TableRow>
+
+                                    )
+                                })}
+                            </TableBody >
+                        </Table>
+                        <Modal open={varOpen} >
+                            <div >
+                                <DetalleProducto
+                                    selected={selected[0]}
+                                />
+
+                            </div>
+                        </Modal>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={productosMostrar.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </Paper>
+
+            </Box>
         </Box>
+    );
+}
+function EnhancedTableToolbar(props) {
+    // eslint-disable-next-line react/prop-types
+    const { numSelected, selected, openModal } = props;
+    // const handleDeleteAndUpdate = async ()=>{
+    //   await handleDelete()
+    //     setSelected([])
+    // }
+
+    return (
+        <Toolbar
+            sx={[
+                {
+                    pl: { sm: 2 },
+                    pr: { xs: 1, sm: 1 },
+                },
+                numSelected > 0 && {
+                    bgcolor: (theme) =>
+                        alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+                },
+            ]}
+        >
+            {numSelected > 0 ? (
+                <Typography
+                    sx={{ flex: '1 1 100%' }}
+                    color="inherit"
+                    variant="subtitle1"
+                    component="div"
+                >
+                    {numSelected} selected
+                </Typography>
+            ) : (
+                <Typography
+                    sx={{ flex: '1 1 100%' }}
+                    variant="h6"
+                    id="tableTitle"
+                    component="div"
+                >
+                </Typography>
+            )}
+            {numSelected > 0 ? (
+                <>
+                    {/* <Tooltip onClick={handleDeleteAndUpdate} title="Delete"> 
+                        <IconButton>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip> */}
+                    {numSelected === 1 &&
+                        <Tooltip onClick={() => openModal(selected)}>
+                            <IconButton color="primary" >
+                                <EditIcon />
+                            </IconButton>
+                        </Tooltip>
+                    }
+                </>
+            ) : (
+                <Tooltip title="Filter list">
+                    <IconButton>
+                        <FilterListIcon />
+                    </IconButton>
+                </Tooltip>
+            )}
+        </Toolbar>
     );
 }

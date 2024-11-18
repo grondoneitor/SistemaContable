@@ -49,27 +49,16 @@ export const ProductReducer = (state = InitialState, action) => {
             }
         }
         case ActionTypes.BORRAR_PRODUCTO: {
+            const nuevoProductos = state.productos.filter(pro => pro.id !== ActionPayload)
             return {
                 ...state,
-                productos: state.productos.filter(producto => producto.id !== ActionPayload)
-            }
+                productos: nuevoProductos,
+            };
         }
-        // case ActionTypes.EDITAR_PRODUCTO:{
-        //     return{
-        //         ...state,
-        //         productos: state.productos.map(producto =>{
-        //             if(producto.id === ActionPayload.id){
-        //                 return {...producto, ...ActionPayload}
-        //             }
-        //             return producto
-        //         })
-        //     }
-        // }
         case ActionTypes.EDITAR_PRODUCTO: {
             const nuevosProductos = state.productos.map(producto => 
                 producto.id === ActionPayload.id ? { ...producto, ...ActionPayload } : producto
             );
-            console.log("Productos después de edición:", nuevosProductos);  
             return {
                 ...state,
                 productos: nuevosProductos,

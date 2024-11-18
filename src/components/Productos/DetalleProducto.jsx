@@ -9,8 +9,7 @@ import { ModalContext } from '../../context/modal';
 import '../../buttonCerrarStyle.css'
 function DetalleProducto(selected) {
     const id = selected.selected
-    const { handleDelete, productosId, onSubmitModificar } = ServiciosDetalleProducto(id);
-    const nombreProducto = capitalizeFirstLetter(productosId.producto);
+    const { productosId, onSubmitModificar, handleDelete } = ServiciosDetalleProducto(id);
     const { state } = useContext(CategoriaContext);
     const { closeModal } = useContext(ModalContext)
     const [selectedCategoria, setSelectedCategoria] = useState('');
@@ -20,7 +19,7 @@ function DetalleProducto(selected) {
     useEffect(() => {
         if (productosId) {
             reset({
-                producto: productosId.producto,
+                producto: capitalizeFirstLetter(productosId.producto),
                 precio: productosId.precio,
                 categoria: productosId.categoria,
                 descripcion: productosId.descripcion,
@@ -120,16 +119,24 @@ function DetalleProducto(selected) {
                             <button
                                 type="submit"
                                 className="btn-modificar"
-                                >
+                            >
                                 <i className="animation"></i>Editar producto<i className="animation"></i>
                             </button>
 
                             <button
-                                onClick={() => closeModal()}
-                                className="btn-cerrar">
-                                <i className="animation"></i>Cerrar<i className="animation"></i>
+                                onClick={() => handleDelete()}
+                                className="btn-borrar">
+                                <i className="animation"></i>Borrar<i className="animation"></i>
                             </button>
+
+
                         </div>
+
+                        <button
+                            onClick={() => closeModal()}
+                            className="btn-cerrar">
+                            <i className="animation"></i>Cerrar<i className="animation"></i>
+                        </button>
                     </form>
                 </div>
             </div>

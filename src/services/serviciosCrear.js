@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { ProductoContext } from "../context/productos";
 import { useCrearProducto } from "../hooks/useCrearProducto";
-import { useMapeandoProductos } from "../hooks/useMapeandoProductos";
 
 export const ServiciosCrear = (reset) => {
 

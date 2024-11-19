@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { ProductoContext } from "../context/productos";
-import { fetchCategoriaPorId } from "./useMapearCatPorId";
+import { fetchCategoriaPorId } from "./fetchCategoriaPorId";
 
 export const  useMapeandoProductosPorNombre = () => {
-  const [errorPro, setError] = useState(null);
+  const [setError] = useState(null);
   const { state, mostrarProductosBuscados } = useContext(ProductoContext);
   const nombre = String(state.nombreProductoBuscado);
 
@@ -36,5 +36,6 @@ export const  useMapeandoProductosPorNombre = () => {
     if (nombre) {
       fetchProductos()
     }
-  }, [nombre]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ nombre]);
 };

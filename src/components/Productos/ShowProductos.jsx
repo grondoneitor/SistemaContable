@@ -4,7 +4,6 @@ import { useMapeandoCategorias } from "../../hooks/useMapeandoCategorias";
 import FormDetalleProducto from "./formDetalleProducto";
 import {  ModalProvider } from "../../context/modal";
 import { useMapeandoProductos } from "../../hooks/useMapeandoProductos";
-import { useMapeandoProductosPorNombre } from "../../hooks/useMapeandoProductosPorNombre";
 
 export default function ShowProductos() {
     useMapeandoProductos()

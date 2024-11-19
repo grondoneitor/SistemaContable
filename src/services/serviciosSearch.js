@@ -4,8 +4,8 @@ import { useMapeandoProductosPorNombre } from "../hooks/useMapeandoProductosPorN
 
 export const ServiciosSearch = () => {
   const { guardarNombreProBuscados, mostrarProductosBuscados } = useContext(ProductoContext);
-  console.log("hola")
   useMapeandoProductosPorNombre()
+  console.log("adasd")
   const handleSubmit = (e) => {
     e.preventDefault();
     const valores = e.currentTarget;

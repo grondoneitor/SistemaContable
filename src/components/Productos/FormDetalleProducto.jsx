@@ -19,11 +19,9 @@ import Tooltip from '@mui/material/Tooltip';
 import EditIcon from '@mui/icons-material/Edit';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import { useMapeandoProductos } from '../../hooks/useMapeandoProductos';
 import { Modal } from '@mui/material';
 import DetalleProducto from './DetalleProducto';
 import { ModalContext } from '../../context/modal';
-import {   useMapeandoProductosPorNombre } from '../../hooks/useMapeandoProductosPorNombre';
 import { ProductoContext } from '../../context/productos';
 import { capitalizeFirstLetter } from '../../services/mayusculaPrimeraLetra';
 
@@ -154,13 +152,8 @@ export default function FormDetalleProducto() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     
-    const { state: statePro, borrarProductoI } = React.useContext(ProductoContext)
+    const { state: statePro} = React.useContext(ProductoContext)
 
-    // React.useEffect(()=>{
-    //     // eslint-disable-next-line react-hooks/rules-of-hooks
-    //     statePro.productos
-
-    //   },[statePro.productos]) 
 
     const { state, openModal } = React.useContext(ModalContext)
     const varOpen = React.useMemo(() => state.open, [state.open])

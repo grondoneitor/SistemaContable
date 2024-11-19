@@ -3,7 +3,7 @@ import { ServiciosSearch } from "../../services/serviciosSearch";
 import { useContext, useMemo } from 'react';
 import { ProductoContext } from '../../context/productos';
 
-// eslint-disable-next-line react/prop-types
+ 
 export default function SearchProducts() {
     const { handleSubmit, handleVolver } = ServiciosSearch()
     const {state:statePro} = useContext(ProductoContext)

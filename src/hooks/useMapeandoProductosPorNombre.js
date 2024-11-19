@@ -1,38 +1,40 @@
 import { useContext, useEffect, useState } from "react";
 import { ProductoContext } from "../context/productos";
-import { useMapeandoCategoriaPorId } from "./useMapearCatPorId";
-export const useMapeandoProductosPorNombre = () => {
+import { fetchCategoriaPorId } from "./useMapearCatPorId";
+
+export const  useMapeandoProductosPorNombre = () => {
   const [errorPro, setError] = useState(null);
-  const { state, mostrarProductosBuscados } = useContext(ProductoContext)
-  const nombre = String(state.nombreProductoBuscado)
-  const [objeto, setObjeto] = useState({})
+  const { state, mostrarProductosBuscados } = useContext(ProductoContext);
+  const nombre = String(state.nombreProductoBuscado);
+
   useEffect(() => {
-    fetch(`http://localhost:8092/api/v1/productoName/${nombre}`)
-      .then(response => {
+    const fetchProductos = async () => {
+      try {
+        const response = await fetch(`http://localhost:8092/api/v1/productoName/${nombre}`);
         if (!response.ok) {
-          console.log("errore")
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        return response.json();
 
-      })
-      .then(data => mostrarProductosBuscados(data.object))
-      .catch(error => {
+        const data = await response.json();
+        const productos = data.object;
+
+        // Enriquecer los productos con las categorías
+        const productosConCategorias = await Promise.all(
+          productos.map(async (producto) => {
+            const categoria = await fetchCategoriaPorId(producto.categoria)
+            return { ...producto, categoria };
+          })
+        );
+        mostrarProductosBuscados(productosConCategorias);
+      } catch (error) {
         console.error("Error fetching products:", error);
-        setError("No se encontro este producto");
-        mostrarProductosBuscados([])
-      });
+        setError("No se encontraron productos");
+        mostrarProductosBuscados([]);
+      }
+    };
+
+    if (nombre) {
+      fetchProductos()
+    }
   }, [nombre]);
-
-  return { errorPro, objeto };
 };
-
-// export const useDevolviendoProductoCompleto=()=>{
-//   const {objeto}= useMapeandoProductosPorNombre()
-//   const [objetoCompleto, setObjetoCompleto] = useState({})
-
-
-//  if(objeto !== undefined) console.log(objeto[0])
-
-  
-// }

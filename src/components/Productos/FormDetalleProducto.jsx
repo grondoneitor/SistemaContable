@@ -153,8 +153,7 @@ export default function FormDetalleProducto() {
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    useMapeandoProductos()
-    useMapeandoProductosPorNombre()
+    
     const { state: statePro, borrarProductoI } = React.useContext(ProductoContext)
 
     // React.useEffect(()=>{

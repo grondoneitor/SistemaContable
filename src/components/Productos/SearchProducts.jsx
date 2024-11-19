@@ -4,7 +4,7 @@ import { useContext, useMemo } from 'react';
 import { ProductoContext } from '../../context/productos';
 
 // eslint-disable-next-line react/prop-types
-export default function Header() {
+export default function SearchProducts() {
     const { handleSubmit, handleVolver } = ServiciosSearch()
     const {state:statePro} = useContext(ProductoContext)
     const errors =useMemo(()=> statePro.nombreProductoBuscado !== "" && statePro.productosBuscados.length <= 0 && "No se encontro ese producto" ,[statePro.nombreProductoBuscado, statePro.productosBuscados])

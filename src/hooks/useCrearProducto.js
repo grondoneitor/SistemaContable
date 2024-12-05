@@ -16,7 +16,7 @@ export const  useCrearProducto = () => {
             if (!response.ok) {
                 throw new Error('Error al crear el producto');
             }
-            const datita = await response.json();
+            // const datita = await response.json();
             return response; 
         } catch (error) {
             setError(error)

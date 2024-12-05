@@ -24,6 +24,7 @@ import DetalleProducto from './DetalleProducto';
 import { ModalContext } from '../../context/modal';
 import { ProductoContext } from '../../context/productos';
 import { capitalizeFirstLetter } from '../../services/mayusculaPrimeraLetra';
+import { NavLink } from 'react-router-dom';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -151,8 +152,8 @@ export default function FormDetalleProducto() {
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    
-    const { state: statePro} = React.useContext(ProductoContext)
+
+    const { state: statePro } = React.useContext(ProductoContext)
 
 
     const { state, openModal } = React.useContext(ModalContext)
@@ -211,7 +212,7 @@ export default function FormDetalleProducto() {
         [order, orderBy, page, rowsPerPage, productosMostrar],
     );
     return (
-        <Box sx={{ marginRight: '45px'}}>
+        <Box sx={{ marginRight: '45px', marginLeft: '45px' }}>
             <Box sx={{ width: '100%', "& > .MuiBackdrop-root": { backdropFilter: "blur(2px)" } }}>
                 <Paper sx={{ width: '100%', mb: 2, background: "white" }}>
                     <EnhancedTableToolbar
@@ -263,10 +264,10 @@ export default function FormDetalleProducto() {
                                                 {capitalizeFirstLetter(row.producto)}
                                             </TableCell>
                                             <TableCell align="right">{row.precio}</TableCell>
-                                            <TableCell align="right"> 
-                                                {row.categoria?.categoria   
-                                                  ? capitalizeFirstLetter(row.categoria.categoria) 
-                                                  : "No tiene categoria"
+                                            <TableCell align="right">
+                                                {row.categoria?.categoria
+                                                    ? capitalizeFirstLetter(row.categoria.categoria)
+                                                    : "No tiene categoria"
                                                 }
                                             </TableCell>
                                             <TableCell align="right">{row.descripcion}</TableCell>
@@ -327,6 +328,12 @@ function EnhancedTableToolbar(props) {
                 },
             ]}
         >
+            <NavLink to="crear-producto" className="font-semibold">
+                <IconButton>
+                    +
+                </IconButton>
+            </NavLink>
+
             {numSelected > 0 ? (
                 <Typography
                     sx={{ flex: '1 1 100%' }}
@@ -347,11 +354,8 @@ function EnhancedTableToolbar(props) {
             )}
             {numSelected > 0 ? (
                 <>
-                    {/* <Tooltip onClick={handleDeleteAndUpdate} title="Delete"> 
-                        <IconButton>
-                            <DeleteIcon />
-                        </IconButton>
-                    </Tooltip> */}
+                    {
+                    }
                     {numSelected === 1 &&
                         <Tooltip onClick={() => openModal(selected)}>
                             <IconButton color="primary" >

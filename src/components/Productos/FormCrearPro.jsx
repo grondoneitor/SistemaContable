@@ -17,8 +17,8 @@ export default function FormCrearProducto() {
 
 
      const functionMoved = () => {
-     console.log(respons)
-         if (respons) {
+     console.log(error)
+         if (respons ) {
              setIsMoved(respons)
              setTimeout(() => {
                  setIsMoved(false)

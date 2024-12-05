@@ -9,22 +9,17 @@ function App() {
 
 
   return (
-    <>
+    <body>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path='/clientes' element={<h1>el cliente</h1>}></Route>
-        <Route path='/pro-cat/' element={<PreProductos />}>
+        <Route path="/" element={<Home />} >
+          <Route path="clientes" element={<h1>el cliente</h1>} />
+          <Route path='/productos' element={<ShowProductos />} />
+          <Route path='/categorias' element={<Categorias />} />
+          <Route path='productos/crear-producto' element={<FormCrearProducto />}></Route>
         </Route>
-        <Route path="/productos" element={<ShowProductos />} > </Route>
-        <Route path='productos/crear-producto' element={<FormCrearProducto/>}></Route>
-
-        <Route path='/productos/:id' element={<DetalleProducto/>} ></Route>
-        
-        <Route path="/categorias" element={<Categorias/>} />
-
       </Routes>
 
-    </>
+    </body>
   )
 }
 

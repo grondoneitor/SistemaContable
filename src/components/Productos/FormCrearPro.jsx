@@ -5,19 +5,19 @@ import { CategoriaContext } from "../../context/categorias";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from "../../services/validaciones";
+import { useMapeandoCategorias } from "../../hooks/useMapeandoCategorias";
 
 export default function FormCrearProducto() {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schema)
     })
-    const { onSubmit,respons, error} = ServiciosCrear(reset)
+    const { onSubmit,respons} = ServiciosCrear(reset)
     const { state } = useContext(CategoriaContext)
     const [isMoved, setIsMoved] = useState(respons)
-
+    useMapeandoCategorias()
 
 
      const functionMoved = () => {
-     console.log(error)
          if (respons ) {
              setIsMoved(respons)
              setTimeout(() => {
@@ -28,21 +28,23 @@ export default function FormCrearProducto() {
    
      useEffect(()=>{
         functionMoved() 
+     // eslint-disable-next-line react-hooks/exhaustive-deps
      },[respons])
    
     const handleSubmitAll = async(data)=>{
        await onSubmit(data)
        functionMoved()
     }
+    console.log(respons)
     return (
         <div className="flex items-center justify-center mt-10">
             <div className="md:w-1/2 lg:w-2/5 mx-5 w-full">
-                <h2 className="font-black text-3xl text-slate-800 text-center">Crear nuevo producto</h2>
+                <h2 className="font-black text-3xl text-slate-800 text-center mb-10">Crear nuevo producto</h2>
 
-                <p className="text-lg mt-5 text-center mb-10 text-slate-800 font-semibold">
+                {/* <p className="text-lg mt-5 text-center mb-10 text-slate-800 font-semibold">
                     Añade Productos y {''}
                     <span className="text-indigo-600 font-bold">Administralos</span>
-                </p>
+                </p> */}
 
                 <form
                     onSubmit={handleSubmit(handleSubmitAll)}
@@ -153,9 +155,9 @@ export default function FormCrearProducto() {
                 </form>
 
                 <div
-                     className={`transition-all duration-500 ease-linear ${
-                        isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"
-                    } fixed bottom-5 mt-10 w-60 h-16 flex justify-center items-center bg-green-600 text-white shadow-lg rounded-lg`}
+                     className={`transition-all duration-500 ease-linear  right-5 
+                        ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"} 
+                        fixed bottom-5 mt-10 w-60 h-16 flex justify-center items-center bg-green-600 text-white shadow-lg rounded-lg`}
                 >
                     <p>Producto creado con exito</p>
                 </div>

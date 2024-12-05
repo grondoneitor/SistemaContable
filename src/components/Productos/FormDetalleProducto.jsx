@@ -18,13 +18,14 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import EditIcon from '@mui/icons-material/Edit';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import DataSaverOnIcon from '@mui/icons-material/DataSaverOn';
 import { visuallyHidden } from '@mui/utils';
 import { Modal } from '@mui/material';
 import DetalleProducto from './DetalleProducto';
 import { ModalContext } from '../../context/modal';
 import { ProductoContext } from '../../context/productos';
 import { capitalizeFirstLetter } from '../../services/mayusculaPrimeraLetra';
-import { NavLink } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -328,11 +329,11 @@ function EnhancedTableToolbar(props) {
                 },
             ]}
         >
-            <NavLink to="crear-producto" className="font-semibold">
+            <Link to="crear-producto" className="font-semibold">
                 <IconButton>
-                    +
+                    <DataSaverOnIcon/>
                 </IconButton>
-            </NavLink>
+            </Link>
 
             {numSelected > 0 ? (
                 <Typography

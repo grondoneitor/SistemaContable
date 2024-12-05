@@ -13,7 +13,7 @@ export const ServiciosCrear = (reset) => {
     const onSubmit = async (data) => {
        const nuevoProducto = { data };
        const datita = await crearProductoReal(nuevoProducto);
-       if(!datita && datita !== undefined) setRespons(datita.ok)
+       if(datita && datita !== undefined) setRespons(datita.ok)
        reset()
     }
 

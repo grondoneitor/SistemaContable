@@ -8,7 +8,7 @@ export default function Home() {
 
        
        <main className="flex w-full   h-screen ">
-       <nav className=" ml-2  rounded-md bg-white w-72 h-full border-r-2 border-b-2 border-slate-800 ">
+       <nav className=" ml-2 pl-4  rounded-md bg-white w-72 h-full border-r-2 border-b-2 border-slate-800 ">
         <div className="flex justify-center items-center h-16">
           <div className="w-2/3 bg-black h-1"></div>
         </div>

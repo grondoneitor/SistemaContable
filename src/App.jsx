@@ -1,8 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import ShowProductos from './components/Productos/ShowProductos'
 import Home from './components/Home'
-import PreProductos from './components/PreProductos'
-import DetalleProducto from './components/Productos/DetalleProducto'
 import Categorias from '../src/components/Categorias/Categorias.jsx'
 import FormCrearProducto from './components/Productos/FormCrearPro.jsx'
 function App() {

@@ -1,19 +1,39 @@
 import { Link } from "react-router-dom";
 import { ServiciosCrear } from "../../services/serviciosCrear";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CategoriaContext } from "../../context/categorias";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from "../../services/validaciones";
 
 export default function FormCrearProducto() {
-    const { register, handleSubmit, formState : { errors },reset } = useForm({
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schema)
     })
-    const {  onSubmit } = ServiciosCrear(reset)
+    const { onSubmit,respons, error} = ServiciosCrear(reset)
     const { state } = useContext(CategoriaContext)
+    const [isMoved, setIsMoved] = useState(respons)
 
 
+
+     const functionMoved = () => {
+     console.log(respons)
+         if (respons) {
+             setIsMoved(respons)
+             setTimeout(() => {
+                 setIsMoved(false)
+             }, 2000)
+         }
+     }
+   
+     useEffect(()=>{
+        functionMoved() 
+     },[respons])
+   
+    const handleSubmitAll = async(data)=>{
+       await onSubmit(data)
+       functionMoved()
+    }
     return (
         <div className="flex items-center justify-center mt-10">
             <div className="md:w-1/2 lg:w-2/5 mx-5 w-full">
@@ -25,8 +45,8 @@ export default function FormCrearProducto() {
                 </p>
 
                 <form
-                    onSubmit={handleSubmit(onSubmit)}
-                    className="bg-white shadow-md rounded-lg py-4 px-5 mb-10 border border-indigo-800"
+                    onSubmit={handleSubmit(handleSubmitAll)}
+                    className="bg-white shadow-md rounded-lg py-4 px-5 mb-10 border border-indigo-800 relative"
                     noValidate
 
                 >
@@ -126,10 +146,19 @@ export default function FormCrearProducto() {
 
                     <button
                         type="submit"
-                        className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors">
+                        className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
+                        >
                         Guardar Producto
                     </button>
                 </form>
+
+                <div
+                     className={`transition-all duration-500 ease-linear ${
+                        isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"
+                    } fixed bottom-5 mt-10 w-60 h-16 flex justify-center items-center bg-green-600 text-white shadow-lg rounded-lg`}
+                >
+                    <p>Producto creado con exito</p>
+                </div>
             </div>
         </div>
     );

@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from "../../services/validaciones";
 import { ModalContext } from '../../context/modal';
 import '../../buttonCerrarStyle.css'
+
 function DetalleProducto(selected) {
     const id = selected.selected
     const { productosId, onSubmitModificar, handleDelete } = ServiciosDetalleProducto(id);
@@ -40,7 +41,6 @@ function DetalleProducto(selected) {
             <div className='flex justify-center items-center gap-4 w-2/3 '>
                 <div className='text-center w-2/3'>
                     <form
-                        // onSubmit={handleSubmit(onSubmitModificar,()=> closeModal())  }
                         onSubmit={handleSubmit((data) => {
                             onSubmitModificar(data),
                                 closeModal()
@@ -74,7 +74,7 @@ function DetalleProducto(selected) {
                             <select
                                 id="categoria"
                                 className="w-full p-3 border border-gray-100"
-                                value={selectedCategoria}
+                                defaultValue={selectedCategoria}
                                 onChange={handleSelectChange}
                                 {...register("categoria")}
                             >

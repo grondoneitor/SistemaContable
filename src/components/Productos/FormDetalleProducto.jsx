@@ -210,7 +210,6 @@ export default function FormDetalleProducto() {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
         [order, orderBy, page, rowsPerPage, productosMostrar],
     );
-
     return (
         <Box sx={{ marginRight: '45px'}}>
             <Box sx={{ width: '100%', "& > .MuiBackdrop-root": { backdropFilter: "blur(2px)" } }}>
@@ -264,7 +263,12 @@ export default function FormDetalleProducto() {
                                                 {capitalizeFirstLetter(row.producto)}
                                             </TableCell>
                                             <TableCell align="right">{row.precio}</TableCell>
-                                            <TableCell align="right">{capitalizeFirstLetter(row.categoria.categoria)}</TableCell>
+                                            <TableCell align="right"> 
+                                                {row.categoria?.categoria   
+                                                  ? capitalizeFirstLetter(row.categoria.categoria) 
+                                                  : "No tiene categoria"
+                                                }
+                                            </TableCell>
                                             <TableCell align="right">{row.descripcion}</TableCell>
                                             <TableCell align="right">{row.stock}</TableCell>
                                             <TableCell align="right">{row.stock_Min}</TableCell>

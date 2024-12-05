@@ -1,12 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { ProductoContext } from "../context/productos";
-import { fetchCategoriaPorId } from "./fetchCategoriaPorId";
+import { fetchCategoriaPorId } from "../services/fetchCategoriaPorId";
 
 export const  useMapeandoProductosPorNombre = () => {
-  const [setError] = useState(null);
   const { state, mostrarProductosBuscados } = useContext(ProductoContext);
   const nombre = String(state.nombreProductoBuscado);
 
+  console.log(nombre)
   useEffect(() => {
     const fetchProductos = async () => {
       try {
@@ -17,7 +17,7 @@ export const  useMapeandoProductosPorNombre = () => {
 
         const data = await response.json();
         const productos = data.object;
-
+        console.log(productos)
         // Enriquecer los productos con las categorías
         const productosConCategorias = await Promise.all(
           productos.map(async (producto) => {
@@ -28,7 +28,6 @@ export const  useMapeandoProductosPorNombre = () => {
         mostrarProductosBuscados(productosConCategorias);
       } catch (error) {
         console.error("Error fetching products:", error);
-        setError("No se encontraron productos");
         mostrarProductosBuscados([]);
       }
     };

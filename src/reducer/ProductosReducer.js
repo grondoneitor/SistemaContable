@@ -57,7 +57,8 @@ export const ProductReducer = (state = InitialState, action) => {
         }
         case ActionTypes.EDITAR_PRODUCTO: {
             const nuevosProductos = state.productos.map(producto => 
-                producto.id === ActionPayload.id ? { ...producto, ...ActionPayload } : producto
+                producto.id === ActionPayload.id ? { ...producto, ...ActionPayload }: producto
+               
             );
             return {
                 ...state,

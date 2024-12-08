@@ -32,7 +32,6 @@ export const ServiciosDetalleProducto = (id) => {
         const categoria = await fetchCategoriaPorId(Number(data.categoria))
 
         const dataFinal = { ...data, categoria }
-        console.log(dataFinal)
         const success = await modificarProducto(id, dataFinal);
         if (success) {
             editarProducto({ ...dataFinal, id });  // Llama a actualizarProducto para refrescar el estado

@@ -25,7 +25,8 @@ import DetalleProducto from './DetalleProducto';
 import { ModalContext } from '../../context/modal';
 import { ProductoContext } from '../../context/productos';
 import { capitalizeFirstLetter } from '../../services/mayusculaPrimeraLetra';
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import FormCrearProducto from './FormCrearPro';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -157,9 +158,9 @@ export default function FormDetalleProducto() {
     const { state: statePro } = React.useContext(ProductoContext)
 
 
-    const { state, openModal } = React.useContext(ModalContext)
+    const { state, openModal, openModalCreate } = React.useContext(ModalContext)
     const varOpen = React.useMemo(() => state.open, [state.open])
-
+    const varOpenModalCreate = React.useMemo(() => state.openModalCreate, [state.openModalCreate])
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -221,6 +222,7 @@ export default function FormDetalleProducto() {
                         selected={selected}
                         setSelected={setSelected}
                         openModal={openModal}
+                        openModalCreate={openModalCreate}
                     />
                     <TableContainer>
                         <Table
@@ -292,6 +294,13 @@ export default function FormDetalleProducto() {
 
                             </div>
                         </Modal>
+                        <Modal open={varOpenModalCreate} >
+                            <div >
+                                <FormCrearProducto
+                                />
+
+                            </div>
+                        </Modal>
                     </TableContainer>
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
@@ -310,7 +319,7 @@ export default function FormDetalleProducto() {
 }
 function EnhancedTableToolbar(props) {
     // eslint-disable-next-line react/prop-types
-    const { numSelected, selected, openModal } = props;
+    const { numSelected, selected, openModal,openModalCreate } = props;
     // const handleDeleteAndUpdate = async ()=>{
     //   await handleDelete()
     //     setSelected([])
@@ -329,10 +338,12 @@ function EnhancedTableToolbar(props) {
                 },
             ]}
         >
-            <Link to="crear-producto" className="font-semibold">
-                <IconButton>
-                    <DataSaverOnIcon/>
-                </IconButton>
+            <Link  className="font-semibold">
+                <Tooltip onClick={() => openModalCreate()}>
+                    <IconButton>
+                        <DataSaverOnIcon />
+                    </IconButton>
+                </Tooltip>
             </Link>
 
             {numSelected > 0 ? (

@@ -1,5 +1,4 @@
 import SearchProducts from "./SearchProducts";
-import { Link, NavLink } from "react-router-dom";
 import { useMapeandoCategorias } from "../../hooks/useMapeandoCategorias";
 import FormDetalleProducto from "./formDetalleProducto";
 import {  ModalProvider } from "../../context/modal";

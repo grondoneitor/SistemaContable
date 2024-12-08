@@ -22,7 +22,7 @@ export const  useCrearProducto = () => {
             setError(error)
         }
     };
-    useMapeandoProductos()
+    // useMapeandoProductos()
 
     return {crearProductoReal, error};
 };

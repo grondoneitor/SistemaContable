@@ -6,11 +6,13 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from "../../services/validaciones";
 import { useMapeandoCategorias } from "../../hooks/useMapeandoCategorias";
+import { ModalContext } from "../../context/modal";
 
 export default function FormCrearProducto() {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schema)
     })
+    const { state: stateModal, openModal, closeModalCreate } = useContext(ModalContext)
     const { onSubmit,respons} = ServiciosCrear(reset)
     const { state } = useContext(CategoriaContext)
     const [isMoved, setIsMoved] = useState(respons)
@@ -35,7 +37,7 @@ export default function FormCrearProducto() {
        await onSubmit(data)
        functionMoved()
     }
-    console.log(respons)
+
     return (
         <div className="flex items-center justify-center mt-10">
             <div className="md:w-1/2 lg:w-2/5 mx-5 w-full">
@@ -52,8 +54,8 @@ export default function FormCrearProducto() {
                     noValidate
 
                 >
-                    <button className='flex items-center mb-6' type="button"  >
-                        <Link to="/productos" >
+                    <button onClick={closeModalCreate} className='flex items-center mb-6' type="button"  >
+                        <Link  >
                             <svg className=' size-8' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" >
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                             </svg>

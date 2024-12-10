@@ -139,7 +139,7 @@ export default function Home() {
           </li>
         </ul>
       </nav>
-      <section className="mt-4 w-full ">
+      <section className="mt-4 w-full flex flex-col items-center">
         <Outlet />
       </section>
        </main>

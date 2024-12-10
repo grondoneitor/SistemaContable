@@ -7,7 +7,7 @@ import { fetchCategoriaPorId } from "./fetchCategoriaPorId";
 
 export const ServiciosCrear = (reset) => {
 
-     const { crearProducto,state } = useContext(ProductoContext);
+     const { crearProducto } = useContext(ProductoContext);
 
     const { crearProductoReal, error } = useCrearProducto();
     const [respons, setRespons] = useState()

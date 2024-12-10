@@ -25,9 +25,8 @@ import DetalleProducto from './DetalleProducto';
 import { ModalContext } from '../../context/modal';
 import { ProductoContext } from '../../context/productos';
 import { capitalizeFirstLetter } from '../../services/mayusculaPrimeraLetra';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import FormCrearProducto from './FormCrearPro';
-
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -172,6 +171,7 @@ export default function FormDetalleProducto() {
             const newSelected = statePro.productos.map((n) => n.id);
             setSelected(newSelected);
             return;
+            
         }
         setSelected([]);
     };
@@ -191,6 +191,8 @@ export default function FormDetalleProducto() {
                 selected.slice(selectedIndex + 1),
             );
         }
+        console.log("vamos")
+
         setSelected(newSelected);
     };
 
@@ -214,112 +216,117 @@ export default function FormDetalleProducto() {
         [order, orderBy, page, rowsPerPage, productosMostrar],
     );
     return (
-        <Box sx={{ marginRight: '45px', marginLeft: '45px' }}>
-            <Box sx={{ width: '100%', "& > .MuiBackdrop-root": { backdropFilter: "blur(2px)" } }}>
-                <Paper sx={{ width: '100%', mb: 2, background: "white" }}>
-                    <EnhancedTableToolbar
-                        numSelected={selected.length}
-                        selected={selected}
-                        setSelected={setSelected}
-                        openModal={openModal}
-                        openModalCreate={openModalCreate}
-                    />
-                    <TableContainer>
-                        <Table
-                            sx={{ minWidth: 750 }}
-                            aria-labelledby="tableTitle"
-                        >
-                            <EnhancedTableHead
-                                numSelected={selected.length}
-                                order={order}
-                                orderBy={orderBy}
-                                onSelectAllClick={handleSelectAllClick}
-                                onRequestSort={handleRequestSort}
-                                rowCount={statePro.productos.length}
-                            />
-
-                            <TableBody >
-                                {visibleRows.map((row, index) => {
-                                    const isItemSelected = selected.includes(row.id);
-                                    const labelId = `enhanced-table-checkbox-${index}`;
-
-                                    return (
-                                        <TableRow
-                                            key={row.id}
-                                            hover
-                                            onClick={(event) => handleClick(event, row.id)} // Click individual
-                                            role="checkbox"
-                                            aria-checked={isItemSelected}
-                                            tabIndex={-1}
-                                            selected={isItemSelected}
-                                            sx={{ cursor: 'pointer', "& > .MuiBackdrop-root": { backdropFilter: "blur(2px)" } }}
-                                        >
-                                            <TableCell padding="checkbox">
-                                                <Checkbox
-                                                    color="primary"
-                                                    checked={isItemSelected}
-                                                    inputProps={{
-                                                        'aria-labelledby': labelId,
-                                                    }}
-                                                />
-                                            </TableCell>
-                                            <TableCell component="th" id={labelId} scope="row" padding="none">
-                                                {capitalizeFirstLetter(row.producto)}
-                                            </TableCell>
-                                            <TableCell align="right">{row.precio}</TableCell>
-                                            <TableCell align="right">
-                                                {row.categoria?.categoria
-                                                    ? capitalizeFirstLetter(row.categoria.categoria)
-                                                    : "No tiene categoria"
-                                                }
-                                            </TableCell>
-                                            <TableCell align="right">{row.descripcion}</TableCell>
-                                            <TableCell align="right">{row.stock}</TableCell>
-                                            <TableCell align="right">{row.stock_Min}</TableCell>
-                                            <TableCell align="right">
-                                                {row.estado === false ? "No disponible" : "Disponible"}
-                                            </TableCell>
-
-                                        </TableRow>
-
-                                    )
-                                })}
-                            </TableBody >
-                        </Table>
-                        <Modal open={varOpen} >
-                            <div >
-                                <DetalleProducto
-                                    selected={selected[0]}
+        <>
+            <Box sx={{ marginRight: '45px', marginLeft: '45px' }}>
+                <Box sx={{ width: '100%', "& > .MuiBackdrop-root": { backdropFilter: "blur(2px)" } }}>
+                    <Paper sx={{ width: '100%', mb: 2, background: "white" }}>
+                        <EnhancedTableToolbar
+                            numSelected={selected.length}
+                            selected={selected}
+                            setSelected={setSelected}
+                            openModal={openModal}
+                            openModalCreate={openModalCreate}
+                        />
+                        <TableContainer>
+                            <Table
+                                sx={{ minWidth: 750 }}
+                                aria-labelledby="tableTitle"
+                            >
+                                <EnhancedTableHead
+                                    numSelected={selected.length}
+                                    order={order}
+                                    orderBy={orderBy}
+                                    onSelectAllClick={handleSelectAllClick}
+                                    onRequestSort={handleRequestSort}
+                                    rowCount={statePro.productos.length}
                                 />
 
-                            </div>
-                        </Modal>
-                        <Modal open={varOpenModalCreate} >
-                            <div >
-                                <FormCrearProducto
-                                />
+                                <TableBody >
+                                    {visibleRows.map((row, index) => {
+                                        const isItemSelected = selected.includes(row.id);
+                                        const labelId = `enhanced-table-checkbox-${index}`;
 
-                            </div>
-                        </Modal>
-                    </TableContainer>
-                    <TablePagination
-                        rowsPerPageOptions={[5, 10, 25]}
-                        component="div"
-                        count={productosMostrar.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
-                </Paper>
+                                        return (
+                                            <TableRow
+                                                key={row.id}
+                                                hover
+                                                onClick={(event) => handleClick(event, row.id)} // Click individual
+                                                role="checkbox"
+                                                aria-checked={isItemSelected}
+                                                tabIndex={-1}
+                                                selected={isItemSelected}
+                                                sx={{ cursor: 'pointer', "& > .MuiBackdrop-root": { backdropFilter: "blur(2px)" } }}
+                                            >
+                                                <TableCell padding="checkbox">
+                                                    <Checkbox
+                                                        color="primary"
+                                                        checked={isItemSelected}
+                                                        inputProps={{
+                                                            'aria-labelledby': labelId,
+                                                        }}
+                                                    />
+                                                </TableCell>
+                                                <TableCell component="th" id={labelId} scope="row" padding="none">
+                                                    {capitalizeFirstLetter(row.producto)}
+                                                </TableCell>
+                                                <TableCell align="right">{row.precio}</TableCell>
+                                                <TableCell align="right">
+                                                    {row.categoria?.categoria
+                                                        ? capitalizeFirstLetter(row.categoria.categoria)
+                                                        : "No tiene categoria"
+                                                    }
+                                                </TableCell>
+                                                <TableCell align="right">{row.descripcion}</TableCell>
+                                                <TableCell align="right">{row.stock}</TableCell>
+                                                <TableCell align="right">{row.stock_Min}</TableCell>
+                                                <TableCell align="right">
+                                                    {row.estado === false ? "No disponible" : "Disponible"}
+                                                </TableCell>
 
+                                            </TableRow>
+
+                                        )
+                                    })}
+                                </TableBody >
+                            </Table>
+                            <Modal open={varOpen} >
+                                <div >
+                                    <DetalleProducto
+                                        selected={selected[0]}
+                                    />
+
+                                </div>
+                            </Modal>
+                            <Modal open={varOpenModalCreate} >
+                                <div >
+                                    <FormCrearProducto
+                                    />
+
+                                </div>
+                            </Modal>
+                        </TableContainer>
+                        <TablePagination
+                            rowsPerPageOptions={[5, 10, 25]}
+                            component="div"
+                            count={productosMostrar.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
+                    </Paper>
+
+                </Box>
             </Box>
-        </Box>
+            <section className='w-1/5 ml-11 mb-12 mt-12'>
+                <Outlet />
+            </section>
+        </>
     );
 }
 function EnhancedTableToolbar(props) {
     // eslint-disable-next-line react/prop-types
-    const { numSelected, selected, openModal,openModalCreate } = props;
+    const { numSelected, selected, openModal, openModalCreate } = props;
     // const handleDeleteAndUpdate = async ()=>{
     //   await handleDelete()
     //     setSelected([])
@@ -338,14 +345,20 @@ function EnhancedTableToolbar(props) {
                 },
             ]}
         >
-            <Link  className="font-semibold">
+            <Link className="font-semibold">
                 <Tooltip onClick={() => openModalCreate()}>
                     <IconButton>
                         <DataSaverOnIcon />
                     </IconButton>
                 </Tooltip>
             </Link>
-
+            <Link to="categorias" className="font-semibold">
+                <Tooltip>
+                    <IconButton>
+                        cat
+                    </IconButton>
+                </Tooltip>
+            </Link>
             {numSelected > 0 ? (
                 <Typography
                     sx={{ flex: '1 1 100%' }}

@@ -10,6 +10,7 @@
 // import { yupResolver } from "@hookform/resolvers/yup";
 // import * as yup from "yup";
 
+
 // const schemaCat = yup.object({
 //     categoria: yup.string()
 //         .required('La categoria es obligatoria')
@@ -119,43 +120,23 @@
 //         </div>
 //     )
 // }
-
-import * as React from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import { useContext } from 'react';
-import { CategoriaContext } from '../../context/categorias';
-import { capitalizeFirstLetter } from '../../services/mayusculaPrimeraLetra';
+import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Toolbar, Tooltip } from "@mui/material";
+import { capitalizeFirstLetter } from "../../services/mayusculaPrimeraLetra";
+import { EditNotificationsTwoTone } from "@mui/icons-material";
+import { useContext, useState } from "react";
+import { CategoriaContext } from "../../context/categorias";
+import { Link } from "react-router-dom";
+import EditIcon from '@mui/icons-material/Edit';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 const columns = [
     { id: 'categoria', label: 'Categoria', minWidth: 170 },
 
 ];
-
-function createData(name, code, population, size) {
-    const density = population / size;
-    return { name, code, population, size, density };
-}
-
-const rows = [
-    createData('India', 'IN', 1324171354, 3287263),
-    createData('China', 'CN', 1403500365, 9596961),
-    createData('Italy', 'IT', 60483973, 301340),
-    createData('United States', 'US', 327167434, 9833520),
-
-];
-
 export default function StickyHeadTable() {
-
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [selectedCategories, setSelectedCategories] = useState([]); // Array para manejar múltiples selecciones
     const { state } = useContext(CategoriaContext);
 
     const handleChangePage = (event, newPage) => {
@@ -168,12 +149,36 @@ export default function StickyHeadTable() {
     };
 
     const clickIndividual = (categoria) => {
-        console.log(categoria)
-        console.log(state.categorias)
-    }
+        const selectedId = categoria.id_Categoria;
+
+        if (selectedCategories.includes(selectedId)) {
+            // Si ya está seleccionado, eliminarlo
+            setSelectedCategories(selectedCategories.filter((id) => id !== selectedId));
+        } else {
+            // Si no está seleccionado, agregarlo
+            setSelectedCategories([...selectedCategories, selectedId]);
+        }
+    };
 
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+            <Toolbar>
+                <Link to="/productos" className="font-semibold">
+                    <Tooltip>
+                        <IconButton>
+                           <ArrowBackIosNewIcon/>
+                        </IconButton>
+                    </Tooltip>
+                </Link>
+
+                {selectedCategories.length > 0 && (
+                    <Tooltip>
+                        <IconButton color="primary">
+                            <EditIcon/>
+                        </IconButton>
+                    </Tooltip>
+                )}
+            </Toolbar>
             <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
@@ -196,13 +201,15 @@ export default function StickyHeadTable() {
                                 <TableRow
                                     onClick={() => clickIndividual(categoria)}
                                     hover
-                                    className="cursor-pointer hover:bg-gray-100"
+                                    className={`cursor-pointer hover:bg-gray-100 ${
+                                        selectedCategories.includes(categoria.id_Categoria) ? "bg-gray-200" : ""
+                                    }`}
                                     role="checkbox"
                                     tabIndex={-1}
                                     key={categoria.id_Categoria}
                                 >
                                     {columns.map((column) => {
-                                        const value = categoria[column.id]; // Obtiene el valor correspondiente al id de la columna
+                                        const value = categoria[column.id];
                                         return (
                                             <TableCell key={column.id} align={column.align}>
                                                 {capitalizeFirstLetter(value)}
@@ -212,13 +219,12 @@ export default function StickyHeadTable() {
                                 </TableRow>
                             ))}
                     </TableBody>
-
                 </Table>
             </TableContainer>
             <TablePagination
                 rowsPerPageOptions={[5, 25, 100]}
                 component="div"
-                count={rows.length}
+                count={state.categorias.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}

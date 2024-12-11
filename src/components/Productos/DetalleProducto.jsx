@@ -14,6 +14,7 @@ function DetalleProducto(selected) {
     const { state } = useContext(CategoriaContext);
     const { closeModal } = useContext(ModalContext)
     const [selectedCategoria, setSelectedCategoria] = useState('');
+    
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schema)
     });

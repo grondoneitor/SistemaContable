@@ -29,7 +29,9 @@ export function CategoriaProvider({ children }) {
      const categoriaCreada = (categ) =>{
         dispatch({ type: 'categoria_creada', payload: categ })
      }
-
+     const categoriaSeleccionada = (categoria)=>{
+        dispatch({ type: 'categoria_seleccionada', payload: categoria })
+     }
     return (
         <CategoriaContext.Provider value={{
             state,
@@ -39,7 +41,8 @@ export function CategoriaProvider({ children }) {
             crearCategoria,
             borrarCategoria,
             editarCategoria,
-            categoriaCreada
+            categoriaCreada,
+            categoriaSeleccionada
         }}>
             {children}
         </CategoriaContext.Provider>

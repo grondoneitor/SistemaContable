@@ -41,7 +41,7 @@ export default function FormCrearProducto() {
     return (
         <div className="flex items-center justify-center mt-10">
             <div className="md:w-1/2 lg:w-2/5 mx-5 w-full">
-                <h2 className="font-black text-3xl text-slate-800 text-center mb-10">Crear nuevo producto</h2>
+                {/* <h2 className="font-black text-3xl text-slate-800 text-center mb-10">Crear nuevo producto</h2> */}
 
                 {/* <p className="text-lg mt-5 text-center mb-10 text-slate-800 font-semibold">
                     Añade Productos y {''}

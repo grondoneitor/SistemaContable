@@ -4,7 +4,8 @@ export const InitialState = {
     categorias:[],
     categoriasBuscados: [],
     nombreCategoriaBuscado: "",
-    categoriaCreada:[]
+    categoriaCreada:[],
+    categoriaSeleccionada: []
 };
 
 // Tipos de acción
@@ -15,7 +16,8 @@ export const ActionTypes = {
     BORRAR_CATEGORIA: 'borrar_categoria',
     BUSCAR_CATEGORIA: 'buscar_categoria',
     GUARDAR_CAT_CATEGORIA: 'guardar_cat_categoria',
-    CATEGORIA_CREADA: 'categoria_creada'
+    CATEGORIA_CREADA: 'categoria_creada',
+    CATEGORIA_SELECCIONADA: 'categoria_seleccionada',
 };
 
 // Reducer
@@ -26,7 +28,7 @@ export const CategoriaReducer = (state = InitialState, action) => {
         case ActionTypes.MOSTRAR_CATEGORIAS: {
             return {
                 ...state,
-                categorias: ActionPayload, // Asignamos directamente los productos del payload
+                categorias: ActionPayload
             };
         }
         case ActionTypes.CREAR_CATEGORIA:{
@@ -71,6 +73,12 @@ export const CategoriaReducer = (state = InitialState, action) => {
             return{
                 ...state,
                 categoriaCreada: ActionPayload
+            }
+        }
+        case ActionTypes.CATEGORIA_SELECCIONADA:{
+            return{
+                ...state,
+                categoriaSeleccionada: ActionPayload
             }
         }
         default:

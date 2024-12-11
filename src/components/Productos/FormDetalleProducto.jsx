@@ -318,7 +318,7 @@ export default function FormDetalleProducto() {
 
                 </Box>
             </Box>
-            <section className='w-1/5 ml-11 mb-12 mt-12'>
+            <section className='w-full   ml-11 mb-12 mt-12'>
                 <Outlet />
             </section>
         </>

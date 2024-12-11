@@ -13,3 +13,7 @@ export const schema = yup.object({
         .positive("Tiene que ser mayor a 0"),
 }).required();
 
+export const schemaCategoria = yup.object({
+    categoria: yup.string()
+    .required('La categoria es obligatoria')
+}).required()

@@ -3,6 +3,8 @@ import ShowProductos from './components/Productos/ShowProductos'
 import Home from './components/Home'
 import Categorias from '../src/components/Categorias/Categorias.jsx'
 import FormCrearProducto from './components/Productos/FormCrearPro.jsx'
+import FormCrearCategoria from './components/Categorias/FormCrearCategoria.jsx'
+import SearchCategorias from './components/Categorias/SearchCategorias.jsx'
 function App() {
 
 
@@ -12,7 +14,9 @@ function App() {
         <Route path="/" element={<Home />} >
           <Route path="clientes" element={<h1>el cliente</h1>} />
           <Route path='productos' element={<ShowProductos />} >
-            <Route path='categorias' element={<Categorias />} />
+            <Route path='categorias' element={<Categorias />} >
+               <Route path='categorias-crear' element={<FormCrearCategoria/>}/>
+            </Route>
           </Route>
           <Route path='productos/crear-producto' element={<FormCrearProducto />}></Route>
         </Route>

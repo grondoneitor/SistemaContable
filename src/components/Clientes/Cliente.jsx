@@ -1,51 +1,107 @@
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
-import { useContext } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { ClienteContext } from '../../context/cliente';
+import { Box, IconButton, Modal, Toolbar, Tooltip } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import FormCrearCliente from './FormCrearCliente';
 
 const columns = [
-  { field: 'nombre_Completo', headerName: 'Nombre', width: 130 },
-  { field: 'mail', headerName: 'mail', width: 250 },
-  { field: 'telefono', headerName: 'telefono', width: 130 },
-  { field: 'direccion', headerName: 'direccion', width: 200 },
+  { field: 'nombre_Completo', headerName: 'Nombre', width: 200 },
+  { field: 'mail', headerName: 'Mail', width: 250 },
+  { field: 'telefono', headerName: 'Telefono', width: 130 },
+  { field: 'direccion', headerName: 'Direccion', width: 200 },
   { field: 'dni', headerName: 'DNI', width: 130 },
-//   {
-//     field: 'fullName',
-//     headerName: 'Full name',
-//     description: 'This column has a value getter and is not sortable.',
-//     sortable: false,
-//     width: 160,
-//     valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
-//   },
 ];
 
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-];
 
 const paginationModel = { page: 0, pageSize: 5 };
 
 export default function Cliente() {
-    const {state} = useContext(ClienteContext)
-    console.log(state.clientes)
+  const { state } = useContext(ClienteContext)
+  const [open, setOpen] = useState(false)
+  const varOpen = useMemo(()=> open,[open])
+  const closeModal = ()=>{
+    setOpen(false)
+  }
+
   return (
-    <Paper sx={{ height: 400, width: '100%' }}>
-      <DataGrid
-        rows={state.clientes}
-        columns={columns}
-        initialState={{ pagination: { paginationModel } }}
-        pageSizeOptions={[5, 10]}
-        checkboxSelection
-        sx={{ border: 0 }}
-      />
-    </Paper>
+    <>
+      <h1 className='text-4xl m-7 font-bold'>Clientes</h1>
+
+      <Paper sx={{ height: 400, width: '100%' }}>
+        <EnhancedTableToolbar
+        setOpen={setOpen}
+        />
+        <DataGrid
+          rows={state.clientes}
+          columns={columns}
+          initialState={{ pagination: { paginationModel } }}
+          pageSizeOptions={[5, 10]}
+          checkboxSelection
+          disableColumnResize
+          disableColumnReorder 
+          disableColumnMenu 
+        />
+      </Paper>
+      <Modal
+        open={varOpen}
+        onClose={closeModal}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Box
+          onClick={(e) => e.stopPropagation()} 
+          sx={{
+            position: 'relative',
+            padding: 4,
+            width: '100%',
+            maxWidth:"500px", 
+            borderRadius: '8px', 
+          }}
+        >
+          <FormCrearCliente />
+        </Box>
+      </Modal>
+    </>
+  );
+}
+
+
+function EnhancedTableToolbar(props) {
+  // eslint-disable-next-line react/prop-types
+  const { setOpen } = props;
+  const abriendo = () =>{
+    setOpen(true) 
+  }
+  return (
+    <Toolbar
+      sx={[
+        {
+          pl: { sm: 2 },
+          pr: { xs: 1, sm: 1 },
+        }
+      ]}
+    >
+      <Link className="font-semibold">
+        <Tooltip >
+          <IconButton onClick={abriendo}>
+            <FontAwesomeIcon icon={faPlus} />
+          </IconButton>
+        </Tooltip>
+      </Link>
+      {/* <Link >
+        <Tooltip>
+          <IconButton>
+            cat
+          </IconButton>
+        </Tooltip>
+      </Link> */}
+    </Toolbar>
   );
 }

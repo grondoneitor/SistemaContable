@@ -191,7 +191,6 @@ export default function FormDetalleProducto() {
                 selected.slice(selectedIndex + 1),
             );
         }
-        console.log("vamos")
 
         setSelected(newSelected);
     };

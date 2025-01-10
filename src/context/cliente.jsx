@@ -5,6 +5,7 @@ import { useClientes } from "../hooks/clientes/useClientes";
 
 export  const ClienteContext = createContext()
 
+// eslint-disable-next-line react/prop-types
 export function ClienteProvider ({children}) {
   const [state, dispatch] = useReducer(ClienteReducer,InitialState )
 

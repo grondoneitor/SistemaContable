@@ -17,3 +17,21 @@ export const schemaCategoria = yup.object({
     categoria: yup.string()
     .required('La categoria es obligatoria')
 }).required()
+
+export const schemaCliente = yup.object({
+    nombre: yup.string()
+        .required('El nombre es obligatorio')
+        .min(3, 'El nombre debe tener al menos 3 letras')
+        .max(70, 'El nombre no puede tener más de 70 letras'),
+    mail: yup.string()
+        .required("El mail es obligatorio")
+        .email("El mail no es válido"),
+    telefono: yup.string()
+          .required("El telefono es obligatorio")
+          .min(10, "El telefono debe tener 10 digitos")
+          .max(10, "El telefono debe tener 10 digitos"),
+    dni: yup.string()
+    .required("El DNI es obligatorio")
+    .min(8, "El DNI debe tener 8 digitos")
+    .max(8, "El DNI debe tener 8 digitos")
+}).required();

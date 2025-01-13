@@ -42,28 +42,18 @@ export default function Cliente() {
           pageSizeOptions={[5, 10]}
           checkboxSelection
           disableColumnResize
-          disableColumnReorder 
-          disableColumnMenu 
+          disableColumnReorder
+          disableColumnMenu
         />
       </Paper>
       <Modal
         open={varOpen}
         onClose={closeModal}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
+        className='flex items-center justify-center'
       >
         <Box
-          onClick={(e) => e.stopPropagation()} 
-          sx={{
-            position: 'relative',
-            padding: 4,
-            width: '100%',
-            maxWidth:"500px", 
-            borderRadius: '8px', 
-          }}
+          onClick={(e) => e.stopPropagation()}
+          className="relative p-4 w-full max-w-xl rounded-lg"
         >
           <FormCrearCliente />
         </Box>
@@ -77,16 +67,14 @@ function EnhancedTableToolbar(props) {
   // eslint-disable-next-line react/prop-types
   const { setOpen } = props;
   const abriendo = () =>{
-    setOpen(true) 
+    setOpen(true)
   }
   return (
     <Toolbar
-      sx={[
-        {
+      sx={[{
           pl: { sm: 2 },
           pr: { xs: 1, sm: 1 },
-        }
-      ]}
+        }]}
     >
       <Link className="font-semibold">
         <Tooltip >
@@ -95,13 +83,6 @@ function EnhancedTableToolbar(props) {
           </IconButton>
         </Tooltip>
       </Link>
-      {/* <Link >
-        <Tooltip>
-          <IconButton>
-            cat
-          </IconButton>
-        </Tooltip>
-      </Link> */}
     </Toolbar>
   );
 }

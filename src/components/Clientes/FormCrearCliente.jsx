@@ -4,7 +4,8 @@ import { useContext, useEffect, useState } from "react";
 import { CategoriaContext } from "../../context/categorias";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-import { schema, schemaCliente } from "../../services/validaciones";
+import { schema } from "../../services/validaciones";
+import { useMapeandoCategorias } from "../../hooks/useMapeandoCategorias";
 import { ModalContext } from "../../context/modal";
 import  ServiciosCrearCliente  from "../../services/Clientes/crearCliente";
 
@@ -31,15 +32,16 @@ export default function FormCrearCliente() {
     //     functionMoved() 
     //  // eslint-disable-next-line react-hooks/exhaustive-deps
     //  },[respons])
-    const {CrearCliente} = ServiciosCrearCliente()
-    const handleSubmitAll = (data) => {
-        CrearCliente(data)
-    }
+   
+    // const handleSubmitAll = async(data)=>{
+    //    await onSubmit(data)
+    //    functionMoved()
+    // }
 
     return (
         <div className="flex items-center justify-center  w-full ">
             <div className=" w-full">
-
+                {/* <h2 className="font-black text-3xl text-slate-800 text-center mb-10">Crear nuevo producto</h2> */}
 
 
                 <form
@@ -48,19 +50,15 @@ export default function FormCrearCliente() {
                     noValidate
 
                 >
-                    <div className="flex space-x-16">
-                        <button
-                            //  onClick={closeModalCreate} 
-                            className='flex items-center mb-6' type="button"  >
-                            <Link  >
-                                <svg className=' size-8' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" >
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-                                </svg>
-                            </Link>
-                        </button>
-                        <h2 className="font-black text-3xl text-slate-800 text-center mb-10">Crear nuevo nombre</h2>
-
-                    </div>
+                    <button
+                    //  onClick={closeModalCreate} 
+                     className='flex items-center mb-6' type="button"  >
+                        <Link  >
+                            <svg className=' size-8' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" >
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                            </svg>
+                        </Link>
+                    </button>
                     <div className="mb-5">
                         <label htmlFor="nombre" className="text-sm uppercase font-bold">
                             Nombre

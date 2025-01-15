@@ -22,11 +22,8 @@ export default function ServiciosCrearCliente() {
 const { crearClienteReal } = useCrearCliente()
   
   const CrearCliente = async (cliente) => {
-
     const clienteFinal = convertidor(cliente)
-    console.log(cliente)
     await crearClienteReal(clienteFinal)
-
   }
   
   return { CrearCliente }

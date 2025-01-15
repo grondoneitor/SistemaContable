@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import { ServiciosCrear } from "../../services/serviciosCrear";
-import { useContext, useEffect, useState } from "react";
-import { CategoriaContext } from "../../context/categorias";
+// import { ServiciosCrear } from "../../services/serviciosCrear";
+// import { useContext, useEffect, useState } from "react";
+// import { CategoriaContext } from "../../context/categorias";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-import { schema } from "../../services/validaciones";
-import { useMapeandoCategorias } from "../../hooks/useMapeandoCategorias";
-import { ModalContext } from "../../context/modal";
+import { schemaCliente } from "../../services/validaciones";
+// import { useMapeandoCategorias } from "../../hooks/useMapeandoCategorias";
+// import { ModalContext } from "../../context/modal";
 import  ServiciosCrearCliente  from "../../services/Clientes/crearCliente";
 
 export default function FormCrearCliente() {
@@ -32,12 +32,11 @@ export default function FormCrearCliente() {
     //     functionMoved() 
     //  // eslint-disable-next-line react-hooks/exhaustive-deps
     //  },[respons])
-   
-    // const handleSubmitAll = async(data)=>{
-    //    await onSubmit(data)
-    //    functionMoved()
-    // }
-
+    const {CrearCliente} = ServiciosCrearCliente()
+     const handleSubmitAll = async(cliente)=>{
+        await CrearCliente(cliente)
+     }
+  
     return (
         <div className="flex items-center justify-center  w-full ">
             <div className=" w-full">

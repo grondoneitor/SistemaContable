@@ -5,9 +5,8 @@ import { CategoriaContext } from "../../context/categorias";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema, schemaCliente } from "../../services/validaciones";
-import { useMapeandoCategorias } from "../../hooks/useMapeandoCategorias";
 import { ModalContext } from "../../context/modal";
-import { crearCliente } from "../../services/Clientes/crearCliente";
+import  ServiciosCrearCliente  from "../../services/Clientes/crearCliente";
 
 export default function FormCrearCliente() {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
@@ -32,9 +31,9 @@ export default function FormCrearCliente() {
     //     functionMoved() 
     //  // eslint-disable-next-line react-hooks/exhaustive-deps
     //  },[respons])
-
+    const {CrearCliente} = ServiciosCrearCliente()
     const handleSubmitAll = (data) => {
-        crearCliente(data)
+        CrearCliente(data)
     }
 
     return (

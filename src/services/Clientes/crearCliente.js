@@ -1,4 +1,7 @@
+import { useContext } from "react"
 import { useCrearCliente } from "../../hooks/clientes/useCrearCliente"
+import { ClienteContext } from "../../context/cliente"
+import { useClientes } from "../../hooks/clientes/useClientes"
 
 const prototypeCliente = {
   nombre_Completo: null,
@@ -20,10 +23,13 @@ const convertidor = (cliente) => {
 
 export default function ServiciosCrearCliente() {
 const { crearClienteReal } = useCrearCliente()
-  
+const {crearCliente} = useContext(ClienteContext)
   const CrearCliente = async (cliente) => {
     const clienteFinal = convertidor(cliente)
-    await crearClienteReal(clienteFinal)
+  const suucces =  await crearClienteReal(clienteFinal)
+    if(suucces ){
+      crearCliente(clienteFinal)
+    }
   }
   
   return { CrearCliente }

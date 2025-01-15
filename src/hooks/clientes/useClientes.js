@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import { ClienteContext } from "../../context/cliente"
 
 export const useClientes = ()=> {
-    const [clientesRetornados, setClientesRetornados] = useState([])
-
+   //  const [clientesRetornados, setClientesRetornados] = useState([])
+    const {state,guardarClientes} = useContext(ClienteContext)
     useEffect(()=>{
         fetch("http://localhost:8092/api/v1/clientes")
           .then(response =>{
@@ -11,8 +12,7 @@ export const useClientes = ()=> {
              }
              return response.json()
           })
-          .then(data => setClientesRetornados(data.object))
+          .then(data => guardarClientes(data.object))
           .catch(error => console.error(error))
-    },[])
-    return{clientesRetornados}
+    },[state.clienteCreadoNuevo])
 }

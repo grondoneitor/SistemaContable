@@ -8,6 +8,9 @@ import { schemaCliente } from "../../services/validaciones";
 // import { useMapeandoCategorias } from "../../hooks/useMapeandoCategorias";
 // import { ModalContext } from "../../context/modal";
 import  ServiciosCrearCliente  from "../../services/Clientes/crearCliente";
+import { useClientes } from "../../hooks/clientes/useClientes";
+import { useContext } from "react";
+import { ClienteContext } from "../../context/cliente";
 
 export default function FormCrearCliente() {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
@@ -32,6 +35,7 @@ export default function FormCrearCliente() {
     //     functionMoved() 
     //  // eslint-disable-next-line react-hooks/exhaustive-deps
     //  },[respons])
+
     const {CrearCliente} = ServiciosCrearCliente()
      const handleSubmitAll = async(cliente)=>{
         await CrearCliente(cliente)

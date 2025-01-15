@@ -9,16 +9,23 @@ export  const ClienteContext = createContext()
 export function ClienteProvider ({children}) {
   const [state, dispatch] = useReducer(ClienteReducer,InitialState )
 
-  const {clientesRetornados} = useClientes()
-
-  useEffect(() =>{
+  // const {clientesRetornados} = useClientes()
+  
+  const guardarClientes = (clientesRetornados)=>{
     dispatch({type:"guardar_clientes",payload:clientesRetornados })
-  },[clientesRetornados])
+
+  }
+  const crearCliente = (cliente) =>{
+    dispatch({type:"crear_cliente", payload: cliente})
+  }
     return(
 
         <ClienteContext.Provider 
           value={{
-            state
+            state,
+            dispatch,
+            guardarClientes,
+            crearCliente
           }}  
         >
         {children}

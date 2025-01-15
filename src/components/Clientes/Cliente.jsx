@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import FormCrearCliente from './FormCrearCliente';
+import { useClientes } from '../../hooks/clientes/useClientes';
 
 const columns = [
   { field: 'nombre_Completo', headerName: 'Nombre', width: 200 },
@@ -20,24 +21,27 @@ const columns = [
 const paginationModel = { page: 0, pageSize: 5 };
 
 export default function Cliente() {
-  const { state } = useContext(ClienteContext)
+
+  useClientes()
+  const { state} = useContext(ClienteContext)
   const [open, setOpen] = useState(false)
-  const varOpen = useMemo(()=> open,[open])
-  const closeModal = ()=>{
+  const varOpen = useMemo(() => open, [open])
+  const closeModal = () => {
     setOpen(false)
   }
-
+ console.log(state.clientes)
   return (
     <>
       <h1 className='text-4xl m-7 font-bold'>Clientes</h1>
 
       <Paper sx={{ height: 400, width: '100%' }}>
         <EnhancedTableToolbar
-        setOpen={setOpen}
+          setOpen={setOpen}
         />
         <DataGrid
           rows={state.clientes}
           columns={columns}
+          getRowId={ state.clientes.id }
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[5, 10]}
           checkboxSelection
@@ -66,15 +70,15 @@ export default function Cliente() {
 function EnhancedTableToolbar(props) {
   // eslint-disable-next-line react/prop-types
   const { setOpen } = props;
-  const abriendo = () =>{
+  const abriendo = () => {
     setOpen(true)
   }
   return (
     <Toolbar
       sx={[{
-          pl: { sm: 2 },
-          pr: { xs: 1, sm: 1 },
-        }]}
+        pl: { sm: 2 },
+        pr: { xs: 1, sm: 1 },
+      }]}
     >
       <Link className="font-semibold">
         <Tooltip >

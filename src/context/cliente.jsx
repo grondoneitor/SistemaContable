@@ -1,6 +1,5 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useReducer } from "react";
 import { ClienteReducer, InitialState } from "../reducer/ClienteReducer";
-import { useClientes } from "../hooks/clientes/useClientes";
 
 
 export  const ClienteContext = createContext()

@@ -16,32 +16,61 @@ const columns = [
   { field: 'direccion', headerName: 'Direccion', width: 200 },
   { field: 'dni', headerName: 'DNI', width: 130 },
 ];
-
+const campos = [{
+  titulo: "Nombre",
+  id: "nombre",
+  placeholder: "Nombre del cliente",
+  type: "text"
+},
+{
+  titulo: "Mail",
+  id: "mail",
+  placeholder: "Mail del cliente",
+  type: "email"
+},
+{
+  titulo: "Telefono",
+  id: "telefono",
+  placeholder: "Telefono del cliente",
+  type: "text"
+},
+{
+  titulo: "Direccion",
+  id: "direccion",
+  placeholder: "Direccion del cliente",
+  type: "text"
+},
+{
+  titulo: "DNI",
+  id: "dni",
+  placeholder: "DNI del cliente",
+  type: "text"
+}
+]
 
 const paginationModel = { page: 0, pageSize: 5 };
 
 export default function Cliente() {
 
   useClientes()
-  const { state} = useContext(ClienteContext)
+  const { state } = useContext(ClienteContext)
   const [open, setOpen] = useState(false)
   const varOpen = useMemo(() => open, [open])
   const closeModal = () => {
     setOpen(false)
   }
- console.log(state.clientes)
   return (
     <>
       <h1 className='text-4xl m-7 font-bold'>Clientes</h1>
 
-      <Paper sx={{ height: 400, width: '100%' }}>
+      <Paper sx={{ height: 400}}>
         <EnhancedTableToolbar
           setOpen={setOpen}
         />
         <DataGrid
           rows={state.clientes}
           columns={columns}
-          getRowId={ state.clientes.id }
+          getRowId={state.clientes.id}
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[5, 10]}
           checkboxSelection
@@ -59,12 +88,15 @@ export default function Cliente() {
           onClick={(e) => e.stopPropagation()}
           className="relative p-4 w-full max-w-xl rounded-lg"
         >
-          <FormCrearCliente />
+          <FormCrearCliente
+            campos={campos}
+          />
         </Box>
       </Modal>
     </>
   );
 }
+
 
 
 function EnhancedTableToolbar(props) {

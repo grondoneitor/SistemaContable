@@ -1,7 +1,6 @@
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useCrearCliente } from "../../hooks/clientes/useCrearCliente"
 import { ClienteContext } from "../../context/cliente"
-import { useClientes } from "../../hooks/clientes/useClientes"
 
 const prototypeCliente = {
   nombre_Completo: null,
@@ -21,16 +20,36 @@ const convertidor = (cliente) => {
 }
 
 
-export default function ServiciosCrearCliente() {
+export default function ServiciosCrearCliente(reset) {
 const { crearClienteReal } = useCrearCliente()
 const {crearCliente} = useContext(ClienteContext)
+const [isMoved, setIsMoved] = useState(false)
+
   const CrearCliente = async (cliente) => {
-    const clienteFinal = convertidor(cliente)
+  const clienteFinal = convertidor(cliente)
   const suucces =  await crearClienteReal(clienteFinal)
-    if(suucces ){
+    if(suucces.ok){
       crearCliente(clienteFinal)
+      setIsMoved(true)
+      console.log(isMoved)
+      functionMoved()
     }
+    reset()
   }
   
-  return { CrearCliente }
+  const functionMoved = () => {
+    if (isMoved === false ) {
+        setIsMoved(true)
+        setTimeout(() => {
+            setIsMoved(false)
+        }, 2000)
+    }
+}
+
+
+
+
+
+
+  return { CrearCliente,isMoved }
 }

@@ -13,5 +13,6 @@ export const useClientes = ()=> {
           })
           .then(data => guardarClientes(data.object))
           .catch(error => console.error(error))
-    },[state.clienteCreadoNuevo])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[state.clienteCreadoNuevo, state.clientesBorrados])
 }

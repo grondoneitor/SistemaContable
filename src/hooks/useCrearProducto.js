@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useMapeandoProductos } from "./useMapeandoProductos";
 
 export const  useCrearProducto = () => {
     const [error, setError] = useState(null)

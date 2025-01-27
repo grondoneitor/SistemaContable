@@ -18,16 +18,12 @@ export const useBorrarCategoria = () => {
             });
     
             if (!response.ok) {
-                const responseBody = await response.text();
-                console.error(`Error del servidor: ${responseBody}`);
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
     
-            console.log("Categoria eliminado con éxito");
             return true;
         } catch (err) {
             setError(err.message);
-            console.error('Error al eliminar el Categoria:', err);
             return false;
         }
     };

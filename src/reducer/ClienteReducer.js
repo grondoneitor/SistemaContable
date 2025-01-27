@@ -3,12 +3,14 @@
 
 export const InitialState = {
   clientes:[],
-  clienteCreadoNuevo:[]
+  clienteCreadoNuevo:[],
+  clientesBorrados:[]
 }
 
 const ActionTypes = {
     GUARDAR_CLIENTES: "guardar_clientes",
-    CREAR_CLIENTE: "crear_cliente"
+    CREAR_CLIENTE: "crear_cliente",
+    BORRAR_CLIENTE: "borrar_cliente",
 }
 
 export const ClienteReducer = (state = InitialState, action) => {
@@ -22,6 +24,12 @@ export const ClienteReducer = (state = InitialState, action) => {
             return{
                 ...state,
                 clienteCreadoNuevo:[ ActionPayload]
+            }
+        }
+        case ActionTypes.BORRAR_CLIENTE:{
+            return{
+                ...state,
+                clientesBorrados:[ActionPayload]
             }
         }
         default: return state

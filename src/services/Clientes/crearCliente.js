@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext,  useState } from "react"
 import { useCrearCliente } from "../../hooks/clientes/useCrearCliente"
 import { ClienteContext } from "../../context/cliente"
 
@@ -27,8 +27,8 @@ const [isMoved, setIsMoved] = useState(false)
 
   const CrearCliente = async (cliente) => {
   const clienteFinal = convertidor(cliente)
-  const suucces =  await crearClienteReal(clienteFinal)
-    if(suucces.ok){
+  const succes =  await crearClienteReal(clienteFinal)
+    if(succes.ok){
       crearCliente(clienteFinal)
       setIsMoved(true)
       console.log(isMoved)

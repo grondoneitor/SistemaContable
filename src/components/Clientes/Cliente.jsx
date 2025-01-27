@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import FormCrearCliente from './FormCrearCliente';
 import { useClientes } from '../../hooks/clientes/useClientes';
+import ServiciosBorrarCliente from '../../services/Clientes/borrarCliente';
 const columns = [
   { field: 'nombre_Completo', headerName: 'Nombre', width: 200 },
   { field: 'mail', headerName: 'Mail', width: 250 },
@@ -113,13 +114,14 @@ export default function Cliente() {
 
 // eslint-disable-next-line react/prop-types
 function EnhancedTableToolbar({ setOpen, rowSelectionModel : rows = []}) {
+  const {BorrarCliente} = ServiciosBorrarCliente()
   const abriendo = () => {
     setOpen(true);
     console.log("abriendo")
   };
 
-  const borrar = ()=>{
-     console.log(" se borro los clientes" + rows)
+  const borrar = async ()=>{
+     await BorrarCliente(rows)
   }
 
   return (

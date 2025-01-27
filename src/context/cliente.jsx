@@ -12,6 +12,7 @@ export function ClienteProvider ({children}) {
   
   const guardarClientes = (clientesRetornados)=>{
     dispatch({type:"guardar_clientes",payload:clientesRetornados })
+    console.log(clientesRetornados, ' clientes retornados')
 
   }
   const crearCliente = (cliente) =>{

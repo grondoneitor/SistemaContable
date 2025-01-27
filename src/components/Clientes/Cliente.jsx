@@ -1,6 +1,6 @@
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
-import { useContext,  useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { ClienteContext } from '../../context/cliente';
 import { Box, IconButton, Modal, Toolbar, Tooltip, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -62,13 +62,13 @@ export default function Cliente() {
     setOpen(false);
   };
 
-    const [rowSelectionModel, setRowSelectionModel] = useState([]);
+  const [rowSelectionModel, setRowSelectionModel] = useState([]);
 
-    const handleClick = (rowSelectionModel) => {
-      console.log(rowSelectionModel);
-    };
+  const handleClick = (rowSelectionModel) => {
+    console.log(rowSelectionModel);
+  };
 
-  
+
   return (
     <>
       <h1 className="text-4xl m-7 font-bold">Clientes</h1>
@@ -81,7 +81,7 @@ export default function Cliente() {
         <DataGrid
           rows={state.clientes}
           columns={columns}
-          getRowId={(row) => row.id} 
+          getRowId={(row) => row.id}
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[5, 10]}
           checkboxSelection
@@ -113,15 +113,15 @@ export default function Cliente() {
 }
 
 // eslint-disable-next-line react/prop-types
-function EnhancedTableToolbar({ setOpen, rowSelectionModel : rows = []}) {
-  const {BorrarCliente} = ServiciosBorrarCliente()
+function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [] }) {
+  const { BorrarCliente, isMoved } = ServiciosBorrarCliente()
   const abriendo = () => {
     setOpen(true);
     console.log("abriendo")
   };
 
-  const borrar = async ()=>{
-     await BorrarCliente(rows)
+  const borrar = async () => {
+    await BorrarCliente(rows)
   }
 
   return (
@@ -137,17 +137,24 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel : rows = []}) {
       <Tooltip>
         <IconButton onClick={abriendo}>
           <FontAwesomeIcon icon={faPlus} />
-         
+
         </IconButton>
         <IconButton onClick={borrar}>
-        { rows.length > 0 && <FontAwesomeIcon icon={faTrash} /> } 
+          {rows.length > 0 && <FontAwesomeIcon icon={faTrash} />}
         </IconButton>
       </Tooltip>
       <Typography variant="subtitle1" sx={{ ml: 2 }}>
-         {rows.length > 0
+        {rows.length > 0
           ? `${rows.length} seleccionados`
-          : 'No hay filas seleccionadas'} 
+          : 'No hay filas seleccionadas'}
       </Typography>
+      <div
+        className={`transition-all duration-500 ease-linear  right-5
+                     ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
+                     fixed bottom-5 mt-10 w-60 h-16 flex justify-center items-center bg-green-600 text-white shadow-lg rounded-lg`}
+      >
+        <p>Cliente/s borrados con exito</p>
+      </div>
     </Toolbar>
   );
 }

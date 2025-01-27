@@ -56,7 +56,7 @@ export default function FormCrearCliente({campos = []}) {
                      ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
                      fixed bottom-5 mt-10 w-60 h-16 flex justify-center items-center bg-green-600 text-white shadow-lg rounded-lg`}
                 >
-                    <p>Producto creado con exito</p>
+                    <p>Cliente creado con exito</p>
                 </div>
             </div>
         </div>

@@ -1,14 +1,12 @@
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
-import { useContext, useMemo, useState } from 'react';
+import { useContext,  useMemo, useState } from 'react';
 import { ClienteContext } from '../../context/cliente';
-import { Box, IconButton, Modal, Toolbar, Tooltip } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Box, IconButton, Modal, Toolbar, Tooltip, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import FormCrearCliente from './FormCrearCliente';
 import { useClientes } from '../../hooks/clientes/useClientes';
-
 const columns = [
   { field: 'nombre_Completo', headerName: 'Nombre', width: 200 },
   { field: 'mail', headerName: 'Mail', width: 250 },
@@ -50,75 +48,104 @@ const campos = [{
 
 const paginationModel = { page: 0, pageSize: 5 };
 
-export default function Cliente() {
 
-  useClientes()
-  const { state } = useContext(ClienteContext)
-  const [open, setOpen] = useState(false)
-  const varOpen = useMemo(() => open, [open])
+
+export default function Cliente() {
+  // const [selectionRow, setSelectionRow] = useState([]); // IDs seleccionados
+
+  useClientes();
+  const { state } = useContext(ClienteContext);
+  const [open, setOpen] = useState(false);
+  const varOpen = useMemo(() => open, [open]);
   const closeModal = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
+
+    const [rowSelectionModel, setRowSelectionModel] = useState([]);
+
+    const handleClick = (rowSelectionModel) => {
+      console.log(rowSelectionModel);
+    };
+
+  
   return (
     <>
-      <h1 className='text-4xl m-7 font-bold'>Clientes</h1>
+      <h1 className="text-4xl m-7 font-bold">Clientes</h1>
 
-      <Paper sx={{ height: 400}}>
+      <Paper sx={{ height: 400 }}>
         <EnhancedTableToolbar
           setOpen={setOpen}
+          rowSelectionModel={rowSelectionModel}
         />
         <DataGrid
           rows={state.clientes}
           columns={columns}
-          getRowId={state.clientes.id}
+          getRowId={(row) => row.id} 
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[5, 10]}
           checkboxSelection
+          onRowSelectionModelChange={(newRowSelectionModel) => {
+            setRowSelectionModel(newRowSelectionModel);
+          }}
+          onClick={handleClick(rowSelectionModel)}
           disableColumnResize
           disableColumnReorder
           disableColumnMenu
         />
       </Paper>
+
       <Modal
         open={varOpen}
         onClose={closeModal}
-        className='flex items-center justify-center'
+        className="flex items-center justify-center"
       >
         <Box
           onClick={(e) => e.stopPropagation()}
           className="relative p-4 w-full max-w-xl rounded-lg"
         >
-          <FormCrearCliente
-            campos={campos}
-          />
+          <FormCrearCliente campos={campos} />
         </Box>
       </Modal>
+
     </>
   );
 }
 
-
-
-function EnhancedTableToolbar(props) {
-  // eslint-disable-next-line react/prop-types
-  const { setOpen } = props;
+// eslint-disable-next-line react/prop-types
+function EnhancedTableToolbar({ setOpen, rowSelectionModel : rows = []}) {
   const abriendo = () => {
-    setOpen(true)
+    setOpen(true);
+    console.log("abriendo")
+  };
+
+  const borrar = ()=>{
+     console.log(" se borro los clientes" + rows)
   }
+
   return (
     <Toolbar
-      sx={[{
+      sx={{
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 },
-      }]}
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
     >
-      <Link className="font-semibold">
-        <Tooltip >
-          <IconButton onClick={abriendo}>
-            <FontAwesomeIcon icon={faPlus} />
-          </IconButton>
-        </Tooltip>
-      </Link>
+      <Tooltip>
+        <IconButton onClick={abriendo}>
+          <FontAwesomeIcon icon={faPlus} />
+         
+        </IconButton>
+        <IconButton onClick={borrar}>
+        { rows.length > 0 && <FontAwesomeIcon icon={faTrash} /> } 
+        </IconButton>
+      </Tooltip>
+      <Typography variant="subtitle1" sx={{ ml: 2 }}>
+         {rows.length > 0
+          ? `${rows.length} seleccionados`
+          : 'No hay filas seleccionadas'} 
+      </Typography>
     </Toolbar>
   );
 }

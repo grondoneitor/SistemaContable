@@ -4,10 +4,11 @@ import { useContext, useMemo, useState } from 'react';
 import { ClienteContext } from '../../context/cliente';
 import { Box, IconButton, Modal, Toolbar, Tooltip, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import FormCrearCliente from './FormCrearCliente';
 import { useClientes } from '../../hooks/clientes/useClientes';
 import ServiciosBorrarCliente from '../../services/Clientes/borrarCliente';
+import FormEditarCliente from './FormEditarClient';
 const columns = [
   { field: 'nombre_Completo', headerName: 'Nombre', width: 200 },
   { field: 'mail', headerName: 'Mail', width: 250 },
@@ -52,7 +53,6 @@ const paginationModel = { page: 0, pageSize: 5 };
 
 
 export default function Cliente() {
-  // const [selectionRow, setSelectionRow] = useState([]); // IDs seleccionados
 
   useClientes();
   const { state } = useContext(ClienteContext);
@@ -63,11 +63,7 @@ export default function Cliente() {
   };
 
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
-
-  const handleClick = (rowSelectionModel) => {
-    console.log(rowSelectionModel);
-  };
-
+  const [valores, setValores] = useState({})
 
   return (
     <>
@@ -77,6 +73,7 @@ export default function Cliente() {
         <EnhancedTableToolbar
           setOpen={setOpen}
           rowSelectionModel={rowSelectionModel}
+          valores={valores}
         />
         <DataGrid
           rows={state.clientes}
@@ -87,8 +84,15 @@ export default function Cliente() {
           checkboxSelection
           onRowSelectionModelChange={(newRowSelectionModel) => {
             setRowSelectionModel(newRowSelectionModel);
+            if (newRowSelectionModel.length > 0) {
+              const selectedRow = state.clientes.find(
+                (cliente) => cliente.id === newRowSelectionModel[0]
+              );
+              setValores(selectedRow || {}); 
+            } else {
+              setValores({}); 
+            }
           }}
-          onClick={handleClick(rowSelectionModel)}
           disableColumnResize
           disableColumnReorder
           disableColumnMenu
@@ -113,8 +117,18 @@ export default function Cliente() {
 }
 
 // eslint-disable-next-line react/prop-types
-function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [] }) {
+function  EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores }) {
   const { BorrarCliente, isMoved } = ServiciosBorrarCliente()
+  
+  const [openEdit, setOpenEdit] = useState(false)
+  
+  const varOpenEdit = useMemo(()=> openEdit,[openEdit])
+ 
+ 
+  const closeModalEdit = () =>{
+    setOpenEdit(false)
+  }
+
   const abriendo = () => {
     setOpen(true);
     console.log("abriendo")
@@ -123,6 +137,11 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [] }) {
   const borrar = async () => {
     await BorrarCliente(rows)
   }
+
+  const editar = async () => {
+    setOpenEdit(true);
+
+  };
 
   return (
     <Toolbar
@@ -135,13 +154,19 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [] }) {
       }}
     >
       <Tooltip>
+
         <IconButton onClick={abriendo}>
           <FontAwesomeIcon icon={faPlus} />
-
         </IconButton>
+
         <IconButton onClick={borrar}>
           {rows.length > 0 && <FontAwesomeIcon icon={faTrash} />}
         </IconButton>
+        
+        <IconButton onClick={editar}  >
+          {rows.length === 1  && <FontAwesomeIcon icon={faPen} />}
+        </IconButton>
+      
       </Tooltip>
       <Typography variant="subtitle1" sx={{ ml: 2 }}>
         {rows.length > 0
@@ -155,6 +180,18 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [] }) {
       >
         <p>Cliente/s borrados con exito</p>
       </div>
+      <Modal
+        open={varOpenEdit}
+        onClose={closeModalEdit}
+        className="flex items-center justify-center"
+      >
+        <Box
+          onClick={(e) => e.stopPropagation()}
+          className="relative p-4 w-full max-w-xl rounded-lg"
+        >
+          <FormEditarCliente  valores={valores}  />
+        </Box>
+      </Modal>
     </Toolbar>
   );
 }

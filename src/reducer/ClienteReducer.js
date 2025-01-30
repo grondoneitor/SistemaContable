@@ -4,13 +4,15 @@
 export const InitialState = {
   clientes:[],
   clienteCreadoNuevo:[],
-  clientesBorrados:[]
+  clientesBorrados:[],
+  clienteParaEditar:[]
 }
 
 const ActionTypes = {
     GUARDAR_CLIENTES: "guardar_clientes",
     CREAR_CLIENTE: "crear_cliente",
     BORRAR_CLIENTE: "borrar_cliente",
+    CLIENTE_PARA_EDITAR: "cliente_para_editar"
 }
 
 export const ClienteReducer = (state = InitialState, action) => {
@@ -30,6 +32,12 @@ export const ClienteReducer = (state = InitialState, action) => {
             return{
                 ...state,
                 clientesBorrados:[ActionPayload]
+            }
+        }
+        case ActionTypes.CLIENTE_PARA_EDITAR:{
+            return{
+                ...state,
+                clienteParaEditar: [ActionPayload]
             }
         }
         default: return state

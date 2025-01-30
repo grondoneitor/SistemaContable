@@ -21,6 +21,9 @@ export function ClienteProvider ({children}) {
   const borrarCliente = (clientes) =>{
     dispatch({type:"borrar_cliente", payload:clientes})
   }
+  const clienteParaEditar = (cliente) =>{
+    dispatch({type:"cliente_para_editar", payload:cliente})
+  }
     return(
 
         <ClienteContext.Provider 
@@ -29,7 +32,8 @@ export function ClienteProvider ({children}) {
             dispatch,
             guardarClientes,
             crearCliente,
-            borrarCliente
+            borrarCliente,
+            clienteParaEditar
           }}  
         >
         {children}

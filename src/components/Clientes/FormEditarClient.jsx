@@ -11,27 +11,24 @@ export default function FormEditarCliente({ valores }) {
         resolver: yupResolver(schemaCliente),
         defaultValues: valores
     });
-const {EditarCliente} = ServiciosEditarCliente()
-    // 🔹 Actualiza valores cuando cambian
+    const { EditarCliente, isMoved } = ServiciosEditarCliente()
     useEffect(() => {
         reset(valores);
     }, [valores, reset]);
 
     const handleSubmitAll = async (cliente) => {
-        console.log("Datos enviados:", cliente);
         await EditarCliente(cliente)
     };
 
     const verdaderosValores = {
         id: valores.id,
-        nombre:valores.nombre_Completo,
-        direccion:valores.direcion,
-        dni :valores.dni,
+        nombre: valores.nombre_Completo,
+        direccion: valores.direcion,
+        dni: valores.dni,
         mail: valores.mail,
-        telefono:valores.telefono
+        telefono: valores.telefono
     }
 
-    console.log(verdaderosValores); // Debug para ver errores
 
     return (
         <div className="flex items-center justify-center w-full">
@@ -46,24 +43,24 @@ const {EditarCliente} = ServiciosEditarCliente()
                     </h2>
 
                     {Object.entries(verdaderosValores)
-                    .filter(([clave]) => clave !== "id")
-                    .map(([clave, valor]) => (
+                        .filter(([clave]) => clave !== "id")
+                        .map(([clave, valor]) => (
 
-                        <div className="mb-5" key={clave}>
-                            <label htmlFor={clave} className="text-sm uppercase font-bold">
-                                {clave}
-                            </label>
-                            <input
-                                {...register(clave)}
-                                id={clave}
-                                className="w-full p-3 border border-gray-100"
-                                type="text"
-                                placeholder={`Ingrese ${clave}`}
-                                defaultValue={valor ?? ""}
-                            />
-                            {errors[clave] && <p className="text-red-500">{errors[clave].message}</p>}
-                        </div>
-                    ))}
+                            <div className="mb-5" key={clave}>
+                                <label htmlFor={clave} className="text-sm uppercase font-bold">
+                                    {clave}
+                                </label>
+                                <input
+                                    {...register(clave)}
+                                    id={clave}
+                                    className="w-full p-3 border border-gray-100"
+                                    type="text"
+                                    placeholder={`Ingrese ${clave}`}
+                                    defaultValue={valor ?? ""}
+                                />
+                                {errors[clave] && <p className="text-red-500">{errors[clave].message}</p>}
+                            </div>
+                        ))}
 
                     <button
                         type="submit"
@@ -72,6 +69,15 @@ const {EditarCliente} = ServiciosEditarCliente()
                         EDITAR CLIENTE
                     </button>
                 </form>
+
+                <div
+                    className={`transition-all duration-500 ease-linear  right-5
+                     ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
+                     fixed bottom-5 mt-10 w-60 h-16 flex justify-center items-center bg-green-600 text-white shadow-lg rounded-lg`}
+                >
+                    <p>Cliente actualizado con exito</p>
+                </div>
+
             </div>
         </div>
     );

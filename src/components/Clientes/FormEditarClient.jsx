@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaCliente } from "../../services/validaciones";
 import { useEffect } from "react";
+import ServiciosEditarCliente from "../../services/Clientes/editarCliente";
 
 // eslint-disable-next-line react/prop-types
 export default function FormEditarCliente({ valores }) {
@@ -10,14 +11,15 @@ export default function FormEditarCliente({ valores }) {
         resolver: yupResolver(schemaCliente),
         defaultValues: valores
     });
-
+const {EditarCliente} = ServiciosEditarCliente()
     // 🔹 Actualiza valores cuando cambian
     useEffect(() => {
         reset(valores);
     }, [valores, reset]);
 
-    const handleSubmitAll = (cliente) => {
+    const handleSubmitAll = async (cliente) => {
         console.log("Datos enviados:", cliente);
+        await EditarCliente(cliente)
     };
 
     const verdaderosValores = {

@@ -15,7 +15,7 @@ export const useEditarCliente = () => {
                         "direccion": cliente.direccion,
                         "dni": cliente.dni,
                         "mail": cliente.mail,
-                        "nombre_Completo": cliente.nombre_Completo,
+                        "nombre_Completo": cliente.nombre,
                         "telefono": cliente.telefono
                     })
                 })

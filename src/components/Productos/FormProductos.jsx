@@ -9,6 +9,8 @@ import { useMapeandoProductos } from '../../hooks/productos/useMapeandoProductos
 import FormCrearProducto from './FormCrearPro';
 import { ServiciosProducto } from '../../services/Productos/productoServicios';
 import FormEditarProducto from './FormEditarProducto';
+
+
 const columns = [
   { field: 'producto', headerName: 'Producto', width: 200 },
   { field: 'descripcion', headerName: 'Descripcion', width: 250 },
@@ -49,12 +51,12 @@ const campos = [{
   placeholder: "Stock minimo del producto",
   type: "number"
 }
-// ,{
-//     titulo: "Categoria",
-//     id: "categoria",
-//     placeholder:"Categoria del producto",
-//     type: "option"
-// }
+  // ,{
+  //     titulo: "Categoria",
+  //     id: "categoria",
+  //     placeholder:"Categoria del producto",
+  //     type: "option"
+  // }
 ]
 
 const paginationModel = { page: 0, pageSize: 5 };
@@ -66,90 +68,101 @@ export default function Productos() {
 
   const { state } = useContext(ProductoContext);
   const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false)
 
-   const modalCrearOpen = useMemo(() => open, [open]);
-   const closeModalCrear = () => {
-     setOpen(false);
+  const modalCrearOpen = useMemo(() => open, [open]);
+  const closeModalCrear = () => {
+    setOpen(false);
+    setRowSelectionModel([]);
   };
-  
+
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
   const [valores, setValores] = useState({})
 
+
   return (
     <>
-       {/* <h1 className="text-4xl m-7 font-bold">Productos</h1>  */}
+      {/* <h1 className="text-4xl m-7 font-bold">Productos</h1>  */}
 
-       <Paper sx={{ height: 400 }}>
+      <Paper sx={{ height: 400 }}>
         <EnhancedTableToolbar
-           setOpen={setOpen}
-           rowSelectionModel={rowSelectionModel}
-           valores={valores}
-           modalCrearOpen={modalCrearOpen}
-        /> 
-         <DataGrid
+          setOpen={setOpen}
+          rowSelectionModel={rowSelectionModel}
+          valores={valores}
+          modalCrearOpen={modalCrearOpen}
+          setRowSelectionModel={setRowSelectionModel}
+          setValores={setValores}
+          setOpenEdit={setOpenEdit}
+          openEdit={openEdit}
+        />
+        <DataGrid
           rows={state.productos}
           columns={columns}
           getRowId={(row) => row.id}
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[5, 10]}
-          checkboxSelection
+          checkboxSelection = {true}
           onRowSelectionModelChange={(newRowSelectionModel) => {
-             setRowSelectionModel(newRowSelectionModel);
-             if (newRowSelectionModel.length > 0) {
-               const selectedRow = state.productos.find(
-                 (producto) => producto.id === newRowSelectionModel[0]
-               );
-               setValores(selectedRow || {}); 
-             } else {
-               setValores({}); 
-             }
-           }}
+            setRowSelectionModel(newRowSelectionModel);
+            if (newRowSelectionModel.length > 0) {
+              const selectedRow = state.productos.find(
+                (producto) => producto.id === newRowSelectionModel[0]
+              );
+              setValores(selectedRow || {});
+            } else {
+              setValores({});
+              
+            }
+          }}
+          rowSelectionModel={rowSelectionModel}
+          keepNonExistentRowsSelected
+          disableRowSelectionOnClick 
           disableColumnResize
           disableColumnReorder
           disableColumnMenu
-        /> 
-     </Paper> 
+        />
+      </Paper>
 
-       <Modal
+      <Modal
         open={modalCrearOpen}
         onClose={closeModalCrear}
         className="flex items-center justify-center"
-      > 
-         <Box
+      >
+        <Box
           onClick={(e) => e.stopPropagation()}
           className="relative p-4 w-full max-w-xl rounded-lg"
-        > 
+        >
           <FormCrearProducto campos={campos} />
-         </Box> 
-      </Modal> 
+        </Box>
+      </Modal>
 
     </>
   );
 }
 
 // eslint-disable-next-line react/prop-types
-function  EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores }) {
-   const { borrarProductoServ, isMoved } = ServiciosProducto()
-   console.log(rows, " seleccionados")
-  const [openEdit, setOpenEdit] = useState(false)
-  
-  const varOpenEdit = useMemo(()=> openEdit,[openEdit])
- 
- 
-  const closeModalEdit = () =>{
-    setOpenEdit(false)
-  }
+function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, setRowSelectionModel, setValores,setOpenEdit, openEdit }) {
+  const { borrarProductoServ, isMoved } = ServiciosProducto()
 
+  const varOpenEdit = useMemo(() => openEdit, [openEdit])
+
+  const closeModalEdit = () => {
+    setOpenEdit(false);
+    setTimeout(() => { // Espera un pequeño tiempo antes de actualizar
+      setRowSelectionModel([]);
+      setValores({});
+    }, 0);
+  };
+  
   const abriendo = () => {
     setOpen(true);
-    console.log("abriendo")
   };
 
   const borrar = async () => {
-     await borrarProductoServ(rows)
+    await borrarProductoServ(rows)
   }
 
-  const editar = async () => {
+  const editar = () => {
     setOpenEdit(true);
 
   };
@@ -173,11 +186,11 @@ function  EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores 
         <IconButton onClick={borrar}>
           {rows.length > 0 && <FontAwesomeIcon icon={faTrash} />}
         </IconButton>
-        
+
         <IconButton onClick={editar}  >
-          {rows.length === 1  && <FontAwesomeIcon icon={faPen} />}
+          {rows.length === 1 && <FontAwesomeIcon icon={faPen} />}
         </IconButton>
-      
+
       </Tooltip>
       <Typography variant="subtitle1" sx={{ ml: 2 }}>
         {rows.length > 0
@@ -200,7 +213,7 @@ function  EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores 
           onClick={(e) => e.stopPropagation()}
           className="relative p-4 w-full max-w-xl rounded-lg"
         >
-           <FormEditarProducto  valores={valores}  rows={rows}  /> 
+          <FormEditarProducto valores={valores} rows={rows} />
         </Box>
       </Modal>
     </Toolbar>

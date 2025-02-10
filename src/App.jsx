@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
-import ShowProductos from './components/Productos/ShowProductos'
+import Productos from './components/Productos/Productos.jsx'
 import Home from './components/Home'
 import Categorias from '../src/components/Categorias/Categorias.jsx'
 import FormCrearProducto from './components/Productos/FormCrearPro.jsx'
@@ -25,7 +25,7 @@ function App() {
             />
           } >
           <Route path="clientes" element={<Cliente/>} />
-          <Route path='productos' element={<ShowProductos />} >
+          <Route path='productos' element={<Productos />} >
             <Route path='categorias' element={<Categorias />} >
             <Route path='categorias-crear' element={<FormCrearCategoria/>}/>
             <Route path='categorias-detalle' element={<FormDetalleCategoria/>}/>

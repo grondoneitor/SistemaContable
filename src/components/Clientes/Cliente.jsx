@@ -9,6 +9,7 @@ import FormCrearCliente from './FormCrearCliente';
 import { useClientes } from '../../hooks/clientes/useClientes';
 import ServiciosCliente from '../../services/Clientes/clienteServicios';
 import FormEditarCliente from './FormEditarClient';
+
 const columns = [
   { field: 'nombre_Completo', headerName: 'Nombre', width: 200 },
   { field: 'mail', headerName: 'Mail', width: 250 },
@@ -60,6 +61,7 @@ export default function Cliente() {
   const varOpen = useMemo(() => open, [open]);
   const closeModal = () => {
     setOpen(false);
+    setRowSelectionModel([])
   };
 
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
@@ -74,6 +76,7 @@ export default function Cliente() {
           setOpen={setOpen}
           rowSelectionModel={rowSelectionModel}
           valores={valores}
+          setRowSelectionModel={setRowSelectionModel}
         />
         <DataGrid
           rows={state.clientes}
@@ -93,6 +96,7 @@ export default function Cliente() {
               setValores({}); 
             }
           }}
+          rowSelectionModel={rowSelectionModel}
           disableColumnResize
           disableColumnReorder
           disableColumnMenu
@@ -117,7 +121,7 @@ export default function Cliente() {
 }
 
 // eslint-disable-next-line react/prop-types
-function  EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores }) {
+function  EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, setRowSelectionModel }) {
   const { BorrarCliente, isMoved } = ServiciosCliente()
   
   const [openEdit, setOpenEdit] = useState(false)
@@ -127,6 +131,7 @@ function  EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores 
  
   const closeModalEdit = () =>{
     setOpenEdit(false)
+    setRowSelectionModel([])
   }
 
   const abriendo = () => {

@@ -10,7 +10,7 @@ export default function FormCrearProducto({campos = []}) {
         resolver: yupResolver(schema)
     })
 
-     const { crearProductoServ } = ServiciosProducto(reset)
+     const { crearProductoServ, isMoved } = ServiciosProducto(reset)
     const handleSubmitAll = async (cliente) => {
          await crearProductoServ(cliente)
     }
@@ -51,13 +51,13 @@ export default function FormCrearProducto({campos = []}) {
                     </button>
                 </form>
 
-                {/* <div
+                <div
                     className={`transition-all duration-500 ease-linear  right-5
                      ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
                      fixed bottom-5 mt-10 w-60 h-16 flex justify-center items-center bg-green-600 text-white shadow-lg rounded-lg`}
                 >
                     <p>Producto creado con exito</p>
-                </div> */}
+                </div> 
             </div>
         </div>
     );

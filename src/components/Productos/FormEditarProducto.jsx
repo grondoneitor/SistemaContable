@@ -28,7 +28,6 @@ export default function FormEditarProducto({ valores}) {
 
     const handleSubmitAll = async (producto) => {
         await editarProductoServ(producto)
-        console.log(producto, " nuevooo")
     };
 
     return (

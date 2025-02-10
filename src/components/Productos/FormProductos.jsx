@@ -189,7 +189,7 @@ function  EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores 
                      ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
                      fixed bottom-5 mt-10 w-60 h-16 flex justify-center items-center bg-green-600 text-white shadow-lg rounded-lg`}
       >
-        <p>Cliente/s borrados con exito</p>
+        <p>Producto/s borrados con exito</p>
       </div>
       <Modal
         open={varOpenEdit}

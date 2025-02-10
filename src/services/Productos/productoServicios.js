@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 // import { ProductoContext } from "../context/productos";
 import { useCrearProducto } from "../../hooks/productos/useCrearProducto";
 import { ProductoContext } from "../../context/productos";
@@ -12,6 +12,7 @@ export const ServiciosProducto = (reset) => {
   const { crearProductoReal } = useCrearProducto();
   const { borrarProducto } = useBorrarProducto()
   const { modificarProducto } = useModificarProducto()
+  const [isMoved, setIsMoved] = useState(false) 
 
   const crearProductoServ = async (producto) => {
     console.log(producto)
@@ -19,7 +20,7 @@ export const ServiciosProducto = (reset) => {
     //  const dataFinal = { ...data, categoria }
     const succes = await crearProductoReal(producto);
     if (succes) {
-      console.log(succes)
+      functionMoved()
       crearProducto(producto)
     }
     reset()
@@ -27,9 +28,9 @@ export const ServiciosProducto = (reset) => {
 
   const borrarProductoServ = async (id) => {
 
-    const succes = await borrarProducto(id)
-    if (succes) {
-      console.log(succes)
+    const success = await borrarProducto(id)
+    if (success) {
+      functionMoved()
       borrarProductoI(id)
     }
 
@@ -39,14 +40,23 @@ export const ServiciosProducto = (reset) => {
     const succes = await modificarProducto(producto)
     console.log(succes)
     if (succes) {
-      console.log("vamos a editar")
+      functionMoved()
       editarProducto(producto)
+      reset()
     }
 
   }
 
+  const functionMoved = () =>{
+    if(isMoved === false){
+        setIsMoved(true)
+        setTimeout(() => {
+            setIsMoved(false)
+        },[2000])
+    }
 
+}
 
-  return { crearProductoServ, borrarProductoServ, editarProductoServ }
+  return { crearProductoServ, borrarProductoServ, editarProductoServ, isMoved }
 
 }

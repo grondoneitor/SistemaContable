@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import FormCrearCliente from './FormCrearCliente';
 import { useClientes } from '../../hooks/clientes/useClientes';
-import ServiciosBorrarCliente from '../../services/Clientes/borrarCliente';
+import ServiciosCliente from '../../services/Clientes/clienteServicios';
 import FormEditarCliente from './FormEditarClient';
 const columns = [
   { field: 'nombre_Completo', headerName: 'Nombre', width: 200 },
@@ -118,7 +118,7 @@ export default function Cliente() {
 
 // eslint-disable-next-line react/prop-types
 function  EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores }) {
-  const { BorrarCliente, isMoved } = ServiciosBorrarCliente()
+  const { BorrarCliente, isMoved } = ServiciosCliente()
   
   const [openEdit, setOpenEdit] = useState(false)
   

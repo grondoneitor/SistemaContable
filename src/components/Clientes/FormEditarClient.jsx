@@ -3,15 +3,15 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaCliente } from "../../services/validaciones";
 import { useEffect } from "react";
-import ServiciosEditarCliente from "../../services/Clientes/editarCliente";
+import ServiciosCliente from "../../services/Clientes/clienteServicios";
 
-// eslint-disable-next-line react/prop-types
+ 
 export default function FormEditarCliente({ valores }) {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schemaCliente),
         defaultValues: valores
     });
-    const { EditarCliente, isMoved } = ServiciosEditarCliente()
+    const { EditarCliente, isMoved } = ServiciosCliente()
     useEffect(() => {
         reset(valores);
     }, [valores, reset]);

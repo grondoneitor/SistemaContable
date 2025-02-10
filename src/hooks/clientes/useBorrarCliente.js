@@ -11,11 +11,10 @@ export const useBorrarCliente = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(ids), // Asegúrate de que `ids` sea un array
+        body: JSON.stringify(ids)
       });
 
       if (!response.ok) {
-        // Manejo de error para respuestas no exitosas
         const errorMessage = await response.text();
         throw new Error(
           `Error ${response.status}: ${response.statusText} - ${errorMessage}`

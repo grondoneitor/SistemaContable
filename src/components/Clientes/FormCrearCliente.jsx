@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schemaCliente } from "../../services/validaciones";
-import ServiciosCrearCliente from "../../services/Clientes/crearCliente";
+import ServiciosCliente from "../../services/Clientes/clienteServicios";
 
 
 // eslint-disable-next-line react/prop-types
@@ -10,7 +10,7 @@ export default function FormCrearCliente({campos = []}) {
         resolver: yupResolver(schemaCliente)
     })
 
-    const { CrearCliente, isMoved } = ServiciosCrearCliente(reset)
+    const { CrearCliente, isMoved } = ServiciosCliente(reset)
     const handleSubmitAll = async (cliente) => {
         await CrearCliente(cliente)
     }

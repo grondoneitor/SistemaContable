@@ -2,11 +2,13 @@
 export const InitialState = {
     productos: [],
     productosBuscados: [],
+    productosCreado:[],
+    productoEliminado:[],
+    productoEditado:[],
     nombreProductoBuscado: "",
     detalleProducto: null
 };
 
-// Tipos de acción
 export const ActionTypes = {
     MOSTRAR_PRODUCTOS: 'mostrar_productos',
     BUSCADOR_PRODUCTOS: 'buscador_productos',
@@ -17,7 +19,6 @@ export const ActionTypes = {
     DETALLE_PRODUCTO: 'detalle_producto',
 };
 
-// Reducer
 export const ProductReducer = (state = InitialState, action) => {
     const { type: ActionType, payload: ActionPayload } = action;
 
@@ -45,24 +46,20 @@ export const ProductReducer = (state = InitialState, action) => {
             
             return{
                 ...state,
-                productos: [...state.productos, ActionPayload]
+                productosCreado: [ActionPayload]
             }
         }
         case ActionTypes.BORRAR_PRODUCTO: {
-            const nuevoProductos = state.productos.filter(pro => pro.id !== ActionPayload)
+            // const nuevoProductos = state.productos.filter(pro => pro.id !== ActionPayload)
             return {
                 ...state,
-                productos: nuevoProductos,
+                productoEliminado: [ActionPayload],
             };
         }
         case ActionTypes.EDITAR_PRODUCTO: {
-            const nuevosProductos = state.productos.map(producto => 
-                producto.id === ActionPayload.id ? { ...producto, ...ActionPayload }: producto
-               
-            );
             return {
                 ...state,
-                productos: nuevosProductos,
+                productoEditado: [ActionPayload],
             };
         }
         
@@ -74,6 +71,6 @@ export const ProductReducer = (state = InitialState, action) => {
         }
 
         default:
-            return state; // Retorna el estado actual si no coincide la acción
+            return state; 
     }
 };

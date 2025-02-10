@@ -1,11 +1,9 @@
 import SearchProducts from "./SearchProducts";
 import { useMapeandoCategorias } from "../../hooks/useMapeandoCategorias";
-import FormDetalleProducto from "./formDetalleProducto";
 import {  ModalProvider } from "../../context/modal";
-import { useMapeandoProductos } from "../../hooks/useMapeandoProductos";
+import Productos from "./FormProductos";
 
 export default function ShowProductos() {
-    useMapeandoProductos()
     useMapeandoCategorias()
     return (
         <>
@@ -14,7 +12,7 @@ export default function ShowProductos() {
                 <main className="w-full ml-4">
                     <div>
                         <ModalProvider>
-                            <FormDetalleProducto />
+                             <Productos/>
                         </ModalProvider>
                     </div>
                 </main>

@@ -7,7 +7,7 @@ import { useModificarProducto } from "../../hooks/productos/useModificarProducto
 
 export const ServiciosProducto = (reset) => {
 
-  const { crearProducto, borrarProductoI, editarProducto } = useContext(ProductoContext);
+  const { crearProducto, borrarProductoI, editarProducto, guardarNombreProBuscados } = useContext(ProductoContext);
 
   const { crearProductoReal } = useCrearProducto();
   const { borrarProducto } = useBorrarProducto()
@@ -15,7 +15,6 @@ export const ServiciosProducto = (reset) => {
   const [isMoved, setIsMoved] = useState(false) 
 
   const crearProductoServ = async (producto) => {
-    console.log(producto)
     //  const categoria = await fetchCategoriaPorId(Number(data.categoria))
     //  const dataFinal = { ...data, categoria }
     const succes = await crearProductoReal(producto);
@@ -47,6 +46,12 @@ export const ServiciosProducto = (reset) => {
 
   }
 
+  const buscandoProductoServ =  (producto) =>{
+      guardarNombreProBuscados(producto)
+      console.log(producto)
+    
+  }
+
   const functionMoved = () =>{
     if(isMoved === false){
         setIsMoved(true)
@@ -57,6 +62,6 @@ export const ServiciosProducto = (reset) => {
 
 }
 
-  return { crearProductoServ, borrarProductoServ, editarProductoServ, isMoved }
+  return { crearProductoServ, borrarProductoServ, editarProductoServ,buscandoProductoServ, isMoved }
 
 }

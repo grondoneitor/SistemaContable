@@ -1,4 +1,3 @@
-
 export const InitialState = {
     productos: [],
     productosBuscados: [],
@@ -30,6 +29,7 @@ export const ProductReducer = (state = InitialState, action) => {
             };
         }
         case ActionTypes.BUSCADOR_PRODUCTOS:{
+           
             return{
                 ...state,
                 productosBuscados:ActionPayload

@@ -3,14 +3,15 @@ import Paper from '@mui/material/Paper';
 import { useContext, useMemo, useState } from 'react';
 import { Box, IconButton, Modal, Toolbar, Tooltip, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {  faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ProductoContext } from '../../context/productos';
 import { useMapeandoProductos } from '../../hooks/productos/useMapeandoProductos';
 import FormCrearProducto from './FormCrearPro';
 import { ServiciosProducto } from '../../services/Productos/productoServicios';
 import FormEditarProducto from './FormEditarProducto';
-
-
+import { InputAdornment, TextField } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import { useMapeandoProductosPorNombre } from '../../hooks/productos/useMapeandoProductosPorNombre';
 const columns = [
   { field: 'producto', headerName: 'Producto', width: 200 },
   { field: 'descripcion', headerName: 'Descripcion', width: 250 },
@@ -78,6 +79,7 @@ export default function Productos() {
 
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
   const [valores, setValores] = useState({})
+  console.log(state.productosBuscados)
 
 
   return (
@@ -96,12 +98,12 @@ export default function Productos() {
           openEdit={openEdit}
         />
         <DataGrid
-          rows={state.productos}
+          rows={ state.productosBuscados.length > 0 ? state.productosBuscados : state.productos}
           columns={columns}
           getRowId={(row) => row.id}
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[5, 10]}
-          checkboxSelection = {true}
+          checkboxSelection={true}
           onRowSelectionModelChange={(newRowSelectionModel) => {
             setRowSelectionModel(newRowSelectionModel);
             if (newRowSelectionModel.length > 0) {
@@ -111,12 +113,12 @@ export default function Productos() {
               setValores(selectedRow || {});
             } else {
               setValores({});
-              
+
             }
           }}
           rowSelectionModel={rowSelectionModel}
           keepNonExistentRowsSelected
-          disableRowSelectionOnClick 
+          disableRowSelectionOnClick
           disableColumnResize
           disableColumnReorder
           disableColumnMenu
@@ -141,25 +143,28 @@ export default function Productos() {
 }
 
 // eslint-disable-next-line react/prop-types
-function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, setRowSelectionModel, setValores,setOpenEdit, openEdit }) {
-  const { borrarProductoServ, isMoved } = ServiciosProducto()
+function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, setRowSelectionModel, setValores, setOpenEdit, openEdit }) {
+  useMapeandoProductosPorNombre()
+  const { borrarProductoServ,buscandoProductoServ, isMoved } = ServiciosProducto()
 
   const varOpenEdit = useMemo(() => openEdit, [openEdit])
 
   const closeModalEdit = () => {
     setOpenEdit(false);
-    setTimeout(() => { // Espera un pequeño tiempo antes de actualizar
+    setTimeout(() => { 
       setRowSelectionModel([]);
       setValores({});
     }, 0);
   };
-  
+
   const abriendo = () => {
     setOpen(true);
   };
 
   const borrar = async () => {
     await borrarProductoServ(rows)
+    setRowSelectionModel([]);
+    setValores({});
   }
 
   const editar = () => {
@@ -167,6 +172,11 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
 
   };
 
+  const handleChange = (event) =>{
+    buscandoProductoServ(event.target.value)
+    console.log(event.target.value)
+
+  }
   return (
     <Toolbar
       sx={{
@@ -175,10 +185,12 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
+
       }}
     >
-      <Tooltip>
-
+      <Tooltip
+        className=' flex gap-2s '
+      >
         <IconButton onClick={abriendo}>
           <FontAwesomeIcon icon={faPlus} />
         </IconButton>
@@ -191,19 +203,32 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
           {rows.length === 1 && <FontAwesomeIcon icon={faPen} />}
         </IconButton>
 
+
+
+
       </Tooltip>
+      <TextField
+        variant="standard"
+        placeholder="Buscar..."
+        onChange={handleChange}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+        }}
+      />;
+
+
       <Typography variant="subtitle1" sx={{ ml: 2 }}>
         {rows.length > 0
           ? `${rows.length} seleccionados`
           : 'No hay filas seleccionadas'}
       </Typography>
-      <div
-        className={`transition-all duration-500 ease-linear  right-5
-                     ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
-                     fixed bottom-5 mt-10 w-60 h-16 flex justify-center items-center bg-green-600 text-white shadow-lg rounded-lg`}
-      >
-        <p>Producto/s borrados con exito</p>
-      </div>
+
+
+
       <Modal
         open={varOpenEdit}
         onClose={closeModalEdit}
@@ -216,6 +241,14 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
           <FormEditarProducto valores={valores} rows={rows} />
         </Box>
       </Modal>
+      <div
+        className={`transition-all duration-500 ease-linear  right-5
+                     ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
+                     fixed bottom-5 mt-10 w-60 h-16 flex justify-center items-center bg-green-600 text-white shadow-lg rounded-lg`}
+      >
+        <p>Producto/s borrados con exito</p>
+      </div>
     </Toolbar>
+
   );
 }

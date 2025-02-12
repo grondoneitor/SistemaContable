@@ -47,8 +47,9 @@ export const ServiciosProducto = (reset) => {
   }
 
   const buscandoProductoServ =  (producto) =>{
-      guardarNombreProBuscados(producto)
-      console.log(producto)
+    const nombre = producto.length === 0 ? "" : producto
+    console.log(nombre)
+      guardarNombreProBuscados(nombre)
     
   }
 

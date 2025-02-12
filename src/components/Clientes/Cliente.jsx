@@ -2,7 +2,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import { useContext, useMemo, useState } from 'react';
 import { ClienteContext } from '../../context/cliente';
-import { Box, IconButton, Modal, Toolbar, Tooltip, Typography } from '@mui/material';
+import { Box,  Modal, Toolbar, Tooltip, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import FormCrearCliente from './FormCrearCliente';
@@ -53,6 +53,7 @@ const paginationModel = { page: 0, pageSize: 5 };
 
 
 
+
 export default function Cliente() {
 
   useClientes();
@@ -63,6 +64,20 @@ export default function Cliente() {
     setOpen(false);
     setRowSelectionModel([])
   };
+  
+  const funcionParaSeleccionar = (newRowSelectionModel) =>{
+    setRowSelectionModel(newRowSelectionModel);
+    if (newRowSelectionModel.length > 0) {
+      const selectedRow = state.clientes.find(
+        (cliente) => cliente.id === newRowSelectionModel[0]
+      );
+      setValores(selectedRow || {}); 
+    } else {
+      setValores({}); 
+    }
+  
+  }
+
 
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
   const [valores, setValores] = useState({})
@@ -86,16 +101,8 @@ export default function Cliente() {
           pageSizeOptions={[5, 10]}
           checkboxSelection
           onRowSelectionModelChange={(newRowSelectionModel) => {
-            setRowSelectionModel(newRowSelectionModel);
-            if (newRowSelectionModel.length > 0) {
-              const selectedRow = state.clientes.find(
-                (cliente) => cliente.id === newRowSelectionModel[0]
-              );
-              setValores(selectedRow || {}); 
-            } else {
-              setValores({}); 
-            }
-          }}
+            funcionParaSeleccionar(newRowSelectionModel)
+        }}
           rowSelectionModel={rowSelectionModel}
           disableColumnResize
           disableColumnReorder
@@ -158,26 +165,24 @@ function  EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores,
         alignItems: 'center',
       }}
     >
-      <Tooltip>
+      <Tooltip 
+         className='flex gap-4'
+      >
 
-        <IconButton onClick={abriendo}>
-          <FontAwesomeIcon icon={faPlus} />
-        </IconButton>
+          <FontAwesomeIcon onClick={abriendo} className='hover:cursor-pointer text-2xl' icon={faPlus} />
 
-        <IconButton onClick={borrar}>
-          {rows.length > 0 && <FontAwesomeIcon icon={faTrash} />}
-        </IconButton>
+          {rows.length > 0 && <FontAwesomeIcon onClick={borrar} className='hover:cursor-pointer text-2xl' icon={faTrash} />}
         
-        <IconButton onClick={editar}  >
-          {rows.length === 1  && <FontAwesomeIcon icon={faPen} />}
-        </IconButton>
+          {rows.length === 1  && <FontAwesomeIcon onClick={editar} className='hover:cursor-pointer text-2xl' icon={faPen} />}
       
       </Tooltip>
+
       <Typography variant="subtitle1" sx={{ ml: 2 }}>
         {rows.length > 0
           ? `${rows.length} seleccionados`
           : 'No hay filas seleccionadas'}
       </Typography>
+
       <div
         className={`transition-all duration-500 ease-linear  right-5
                      ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}

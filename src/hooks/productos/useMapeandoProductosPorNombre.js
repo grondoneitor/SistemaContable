@@ -14,9 +14,9 @@ export const useMapeandoProductosPorNombre = () => {
         })
         .then(data => mostrarProductosBuscados(data.object))
         .catch(error => {
+          mostrarProductosBuscados([])
           console.error("Error fetching products:", error);
           setError("En este momento no hay productos disponibles");
-          mostrarProductosBuscados([])
         })
 
     }, [state.nombreProductoBuscado,state.productosCreado, state.productoEliminado, state.productoEditado])

@@ -16,7 +16,7 @@ export const useModificarProducto = () => {
                     "stock": Number(producto.stock),
                     "precio": producto.precio,
                     "descripcion": producto.descripcion,
-                    // "categoria":Number(producto.categoria),
+                    "categoria":(producto.categoria),
                     "stock_Min": Number(producto.stock_Min),
                     "producto": producto.producto
                 })

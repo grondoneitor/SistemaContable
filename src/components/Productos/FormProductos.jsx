@@ -12,6 +12,7 @@ import FormEditarProducto from './FormEditarProducto';
 import { InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useMapeandoProductosPorNombre } from '../../hooks/productos/useMapeandoProductosPorNombre';
+import { useMapeandoCategorias } from '../../hooks/useMapeandoCategorias';
 const columns = [
   { field: 'producto', headerName: 'Producto', width: 200 },
   { field: 'descripcion', headerName: 'Descripcion', width: 250 },
@@ -52,12 +53,12 @@ const campos = [{
   placeholder: "Stock minimo del producto",
   type: "number"
 }
-  // ,{
-  //   titulo: "Categoria",
-  //   id: "categoria",
-  //   placeholder:"Categoria del producto",
-  //   type: "option"
-  //   }
+,{
+     titulo: "Categoria",
+     id: "categoria",
+     placeholder:"Categoria del producto",
+     type: "option"
+  }
 ]
 
 const paginationModel = { page: 0, pageSize: 5 };
@@ -67,10 +68,10 @@ const paginationModel = { page: 0, pageSize: 5 };
 export default function Productos() {
   useMapeandoProductos()
   useMapeandoProductosPorNombre()
+  useMapeandoCategorias()
   const { state } = useContext(ProductoContext);
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false)
-  console.log(state.productos)
 
 
 
@@ -98,7 +99,6 @@ export default function Productos() {
 
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
   const [valores, setValores] = useState({})
-  console.log("productos buscados ", state.productosBuscados)
 
 
   return (
@@ -174,7 +174,7 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
   const { borrarProductoServ, buscandoProductoServ, isMoved } = ServiciosProducto()
 
   const varOpenEdit = useMemo(() => openEdit, [openEdit])
-
+  console.log("Valores", valores)
   const closeModalEdit = () => {
     setOpenEdit(false);
     setTimeout(() => {
@@ -253,7 +253,7 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
           onClick={(e) => e.stopPropagation()}
           className="relative p-4 w-full max-w-xl rounded-lg"
         >
-          <FormEditarProducto valores={valores} rows={rows} />
+          <FormEditarProducto valores={valores} />
         </Box>
       </Modal>
       <div

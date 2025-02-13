@@ -19,6 +19,7 @@ export const useMapeandoProductosPorNombre = () => {
           setError("En este momento no hay productos disponibles");
         })
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state.nombreProductoBuscado,state.productosCreado, state.productoEliminado, state.productoEditado])
 
 };

@@ -3,14 +3,16 @@ import {  useState } from 'react';
 
 export const useBorrarProducto = () => {
     const [error, setError] = useState(null);
-    const borrarProducto = async (id ) => {
+    const borrarProducto = async (ids ) => {
         try {
-            console.log(`Intentando eliminar producto con ID: ${id}`);
-            const response = await fetch(`http://localhost:8092/api/v1/producto/${id}`, {
+            console.log(`Intentando eliminar producto con ID: ${ids}`);
+            const response = await fetch(`http://localhost:8092/api/v1/producto`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                }
+                },
+                body: JSON.stringify(ids)
+             
             });
     
             if (!response.ok) {

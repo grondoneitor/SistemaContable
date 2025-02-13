@@ -3,16 +3,14 @@ import Paper from '@mui/material/Paper';
 import { useContext, useMemo, useState } from 'react';
 import { Box, Modal, Toolbar, Tooltip, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faFontAwesome, faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ProductoContext } from '../../context/productos';
-import { useMapeandoProductos } from '../../hooks/productos/useMapeandoProductos';
 import FormCrearProducto from './FormCrearPro';
 import { ServiciosProducto } from '../../services/Productos/productoServicios';
 import FormEditarProducto from './FormEditarProducto';
 import { InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { useMapeandoProductosPorNombre } from '../../hooks/productos/useMapeandoProductosPorNombre';
-import { useMapeandoCategorias } from '../../hooks/useMapeandoCategorias';
+import { Link } from 'react-router-dom';
 const columns = [
   { field: 'producto', headerName: 'Producto', width: 200 },
   { field: 'descripcion', headerName: 'Descripcion', width: 250 },
@@ -52,23 +50,21 @@ const campos = [{
   id: "stock_Min",
   placeholder: "Stock minimo del producto",
   type: "number"
+},
+{
+  titulo: "Categoria",
+  id: "categoria",
+  placeholder: "Categoria del producto",
+  type: "option"
 }
-,{
-     titulo: "Categoria",
-     id: "categoria",
-     placeholder:"Categoria del producto",
-     type: "option"
-  }
 ]
 
 const paginationModel = { page: 0, pageSize: 5 };
 
 
 
-export default function Productos() {
-  useMapeandoProductos()
-  useMapeandoProductosPorNombre()
-  useMapeandoCategorias()
+export default function FormProductos() {
+
   const { state } = useContext(ProductoContext);
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false)
@@ -92,10 +88,7 @@ export default function Productos() {
       setValores({});
 
     }
-
-
   }
-
 
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
   const [valores, setValores] = useState({})
@@ -117,22 +110,22 @@ export default function Productos() {
           openEdit={openEdit}
         />
         <DataGrid
-       rows={
-        state.productosBuscados.length > 0
-          ? (state.productosBuscados 
-                   ? state.productosBuscados.map((producto) => ({
-            ...producto,
-            categoria: producto.categoria ? producto.categoria.categoria : "No tiene categoria"
-          }))
-        : [])
-        : state.productos
-            ? state.productos.map((producto) => ({
-                ...producto,
-                categoria: producto.categoria ? producto.categoria.categoria : "No tiene categoria"
-              }))
-            : []
-      }
-      
+          rows={
+            state.productosBuscados.length > 0
+              ? (state.productosBuscados
+                ? state.productosBuscados.map((producto) => ({
+                  ...producto,
+                  categoria: producto.categoria ? producto.categoria.categoria : "No tiene categoria"
+                }))
+                : [])
+              : state.productos
+                ? state.productos.map((producto) => ({
+                  ...producto,
+                  categoria: producto.categoria ? producto.categoria.categoria : "No tiene categoria"
+                }))
+                : []
+          }
+
           getRowId={(row) => row.id} // Usa el ID del producto
           columns={columns}
           initialState={{ pagination: { paginationModel } }}
@@ -174,7 +167,6 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
   const { borrarProductoServ, buscandoProductoServ, isMoved } = ServiciosProducto()
 
   const varOpenEdit = useMemo(() => openEdit, [openEdit])
-  console.log("Valores", valores)
   const closeModalEdit = () => {
     setOpenEdit(false);
     setTimeout(() => {
@@ -235,14 +227,22 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
             </InputAdornment>
           ),
         }}
-      />;
+      />
 
 
-      <Typography variant="subtitle1" sx={{ ml: 2 }}>
-        {rows.length > 0
-          ? `${rows.length} seleccionados`
-          : 'No hay filas seleccionadas'}
-      </Typography>
+      <Box
+        className="flex gap-2"
+      >
+        <Link to={"categorias"}>
+          <FontAwesomeIcon className='text-2xl' icon={faFontAwesome} />
+        </Link>
+        <Typography variant="subtitle1" sx={{ ml: 2 }} className='text-2xl'>
+          {rows.length > 0
+            ? `${rows.length} `
+            : '-'}
+        </Typography>
+      </Box>
+
 
       <Modal
         open={varOpenEdit}
@@ -253,7 +253,7 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
           onClick={(e) => e.stopPropagation()}
           className="relative p-4 w-full max-w-xl rounded-lg"
         >
-          <FormEditarProducto valores={valores} />
+          <FormEditarProducto  valores={valores} />
         </Box>
       </Modal>
       <div

@@ -26,9 +26,7 @@ export function CategoriaProvider({ children }) {
      const editarCategoria = (categoria) =>{
          dispatch({ type: 'editar_categoria', payload: categoria })
      }
-     const categoriaCreada = (categ) =>{
-        dispatch({ type: 'categoria_creada', payload: categ })
-     }
+
      const categoriaSeleccionada = (categoria)=>{
         dispatch({ type: 'categoria_seleccionada', payload: categoria })
      }
@@ -41,7 +39,6 @@ export function CategoriaProvider({ children }) {
             crearCategoria,
             borrarCategoria,
             editarCategoria,
-            categoriaCreada,
             categoriaSeleccionada
         }}>
             {children}

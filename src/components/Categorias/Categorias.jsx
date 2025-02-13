@@ -1,131 +1,202 @@
-
-import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Toolbar, Tooltip } from "@mui/material";
-import { capitalizeFirstLetter } from "../../services/mayusculaPrimeraLetra";
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { CategoriaContext } from "../../context/categorias";
-import { Link, Outlet } from "react-router-dom";
-import EditIcon from '@mui/icons-material/Edit';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import DataSaverOnIcon from '@mui/icons-material/DataSaverOn';
+import { DataGrid } from "@mui/x-data-grid";
+import { Box, Modal, Paper, Toolbar, Tooltip, Typography } from "@mui/material";
+import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import FormCrearCategoria from './FormCrearCategoria.jsx'
+import FormEditarCategoria from './FormEditarCategoria.jsx'
+import { ServiciosCategoria } from "../../services/Categorias/serviciosCategoria.js";
+
 const columns = [
-    { id: 'categoria', label: 'Categoria', minWidth: 170 },
+    { field: 'categoria', headerName: 'Categoria', flex: 1 }
 
 ];
-export default function StickyHeadTable() {
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [selectedCategories, setSelectedCategories] = useState([]); // Array para manejar múltiples selecciones
-    const { state, categoriaSeleccionada } = useContext(CategoriaContext);
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
+const campos = [{
+    titulo: "Categoria",
+    id: "categoria",
+    placeholder: "Categoria...",
+    type: "text"
+}
+]
+
+const paginationModel = { page: 0, pageSize: 5 };
+
+
+
+
+export default function FormCategorias() {
+
+    const { state } = useContext(CategoriaContext);
+    const [open, setOpen] = useState(false);
+    const [valores, setValores] = useState({})
+    const varOpen = useMemo(() => open, [open]);
+    const [openEdit, setOpenEdit] = useState(false)
+
+    const closeModal = () => {
+        setOpen(false);
+        setRowSelectionModel([])
     };
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
-
-    const clickIndividual = (categoria) => {
-        const selectedId = categoria.id_Categoria;
-        if (selectedCategories.includes(selectedId)) {
-            // Si ya está seleccionado, eliminarlo
-            setSelectedCategories(selectedCategories.filter((id) => id !== selectedId));
+    const modalCrearOpen = useMemo(() => open, [open]);
+    
+    const funcionParaSeleccionar = (newRowSelectionModel) => {
+        setRowSelectionModel(newRowSelectionModel);
+        if (newRowSelectionModel.length > 0) {
+            const selectedRow = state.categorias.find(
+                (categoria) => categoria.id_Categoria === newRowSelectionModel[0]
+            );
+            setValores(selectedRow || {});
         } else {
-            // Si no está seleccionado, agregarlo
-            setSelectedCategories([...selectedCategories, selectedId]);
-            categoriaSeleccionada(categoria)
-
+            setValores({});
         }
+    }
+
+    const [rowSelectionModel, setRowSelectionModel] = useState([]);
+
+    return (
+        <>
+            <h1 className="text-4xl m-7 font-bold">Categorias</h1>
+            <Paper sx={{ maxWidth: 300, width: "25%", display: "inline-block", padding: 2 }}>
+                <EnhancedTableToolbar
+               setOpen={setOpen}
+               rowSelectionModel={rowSelectionModel}
+               valores={valores}
+               modalCrearOpen={modalCrearOpen}
+               setRowSelectionModel={setRowSelectionModel}
+               setValores={setValores}
+               setOpenEdit={setOpenEdit}
+               openEdit={openEdit}
+                />
+                <DataGrid
+                    rows={state.categorias}
+                    columns={columns}
+                    className="w-auto display inline-block"
+                    pageSize={paginationModel.pageSize}
+                    getRowId={(row) => row.id_Categoria}
+                    initialState={{ pagination: { paginationModel } }}
+                    pageSizeOptions={[5, 10]}
+                    checkboxSelection
+                    onRowSelectionModelChange={(newRowSelectionModel) => {
+                        funcionParaSeleccionar(newRowSelectionModel);
+                    }}
+                    rowSelectionModel={rowSelectionModel}
+                    disableColumnResize
+                    disableColumnReorder
+                    disableColumnMenu
+                />
+            </Paper>
+
+
+            <Modal
+                open={varOpen}
+                onClose={closeModal}
+                className="flex items-center justify-center"
+            >
+                <Box
+                    onClick={(e) => e.stopPropagation()}
+                    className="relative p-4 w-full max-w-xl rounded-lg"
+                >
+                    <FormCrearCategoria campos={campos} />
+                </Box>
+            </Modal>
+
+        </>
+    );
+}
+
+// eslint-disable-next-line react/prop-types
+function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, setRowSelectionModel, setValores, setOpenEdit, openEdit }) {
+     const { borrarCategoriaServ, isMoved } = ServiciosCategoria()
+
+    //   const [openEdit, setOpenEdit] = useState(false)
+
+    const varOpenEdit = useMemo(() => openEdit, [openEdit])
+
+
+    const closeModalEdit = () => {
+        setOpenEdit(false);
+        setTimeout(() => {
+            setRowSelectionModel([]);
+            setValores({})
+        }, 0);
+    };
+    const abriendo = () => {
+        setOpen(true);
+
+    };
+
+      const borrar = async () => {
+        await borrarCategoriaServ(rows)
+      }
+
+    const editar =  () => {
+        setOpenEdit(true);
+
     };
 
     return (
-        <section className="flex flex-col w-full ">
-            <h1 className=" flex justify-center mb-9 text-3xl font-bold ">Categorias</h1>
-            <main className="flex justify-around">
-                <Paper sx={{ width: '33%', overflow: 'hidden' }} >
-                    <Toolbar class="w-full p-3 flex bg-slate-300">
-                        <Link to="/productos" className="font-semibold">
-                            <Tooltip>
-                                <IconButton color="primary">
-                                    <ArrowBackIosNewIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </Link>
-                        <div className="ml-auto " >
-                            {selectedCategories.length === 1 && (
-                                <Link to="categorias-detalle">
-                                    <Tooltip>
-                                        <IconButton color="primary">
-                                            <EditIcon />
-                                        </IconButton>
-                                    </Tooltip>
-                                </Link>
-                            )}
-                            <Link to="categorias-crear">
-                                <Tooltip>
-                                    <IconButton color="primary">
-                                        <DataSaverOnIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </Link>
-                        </div>
-                    </Toolbar>
-                    <TableContainer sx={{ maxHeight: 440 }}>
-                        <Table stickyHeader aria-label="sticky table">
-                            <TableHead>
-                                <TableRow>
-                                    {columns.map((column) => (
-                                        <TableCell
-                                            key={column.id}
-                                            align={column.align}
-                                            style={{ minWidth: column.minWidth, fontSize: "16px" }}
-                                        >
-                                            {column.label}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {state.categorias
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((categoria) => (
-                                        <TableRow
-                                            onClick={() => clickIndividual(categoria)}
-                                            hover
-                                            className={`cursor-pointer hover:bg-gray-100 ${selectedCategories.includes(categoria.id_Categoria) ? "bg-blue-100" : ""
-                                                }`}
-                                            role="checkbox"
-                                            tabIndex={-1}
-                                            key={categoria.id_Categoria}
-                                        >
-                                            {columns.map((column) => {
-                                                const value = categoria[column.id];
-                                                return (
-                                                    <TableCell key={column.id} align={column.align}>
-                                                        {capitalizeFirstLetter(value)}
-                                                    </TableCell>
-                                                );
-                                            })}
-                                        </TableRow>
-                                    ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    <TablePagination
-                        rowsPerPageOptions={[5, 25, 100]}
-                        component="div"
-                        count={state.categorias.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
-                </Paper>
+        <Toolbar
+            sx={{
+                pl: { sm: 2 },
+                pr: { xs: 1, sm: 1 },
+                display: "flex",
+                text: 24,
+                justifyContent: 'space-between',
+                // alignItems: 'center',
+                width: "auto",
+                padding: 2
+            }}
+        >
+            <Tooltip
+                className='flex gap-4'
+            >
 
-                <section className=" ">
-                    <Outlet/>
-                </section>
-            </main>
-        </section>
+                <FontAwesomeIcon
+                    onClick={abriendo}
+                    className='hover:cursor-pointer text-2xl'
+                    icon={faPlus} />
+
+                {rows.length > 0 && <FontAwesomeIcon
+                    onClick={borrar}
+                    className='hover:cursor-pointer text-2xl'
+                    icon={faTrash}
+                />}
+
+                {rows.length === 1 && <FontAwesomeIcon
+                    onClick={editar}
+                    className='hover:cursor-pointer text-2xl'
+                    icon={faPen}
+                />}
+
+            </Tooltip>
+
+            <Typography variant="subtitle1" sx={{ ml: 2 }}>
+                {rows.length > 0
+                    ? `${rows.length}`
+                    : '-'}
+            </Typography>
+
+            <Modal
+                open={varOpenEdit}
+                onClose={closeModalEdit}
+                className="flex items-center justify-center"
+            >
+                <Box
+                    onClick={(e) => e.stopPropagation()}
+                    className="relative p-4 w-full max-w-xl rounded-lg"
+                >
+                    <FormEditarCategoria valores={valores} />
+                </Box>
+            </Modal>
+            
+      <div
+        className={`transition-all duration-500 ease-linear  right-5
+                     ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
+                     fixed bottom-5 mt-10 w-60 h-16 flex justify-center items-center bg-green-600 text-white shadow-lg rounded-lg`}
+      >
+        <p>Categoria/s borradas con exito</p>
+      </div> 
+        </Toolbar>
     );
 }

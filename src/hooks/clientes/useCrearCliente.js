@@ -3,7 +3,6 @@ import { useState } from "react";
 export const  useCrearCliente = () => {
     const [error, setError] = useState(null)
     const crearClienteReal = async (cliente) => {
-        console.log(cliente)
         try {
             const response = await fetch('http://localhost:8092/api/v1/cliente', {
                 method: 'POST',

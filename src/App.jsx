@@ -4,7 +4,7 @@ import Home from './components/Home'
 import Categorias from '../src/components/Categorias/Categorias.jsx'
 import FormCrearProducto from './components/Productos/FormCrearPro.jsx'
 import FormCrearCategoria from './components/Categorias/FormCrearCategoria.jsx'
-import FormDetalleCategoria from './components/Categorias/FormDetalleCategoria.jsx'
+import FormEditarCategoria from './components/Categorias/FormEditarCategoria.jsx'
 import { faPeopleGroup, faBoxesStacked,faCartShopping, faBoxesPacking,faTableCells } from "@fortawesome/free-solid-svg-icons";
 import Cliente from './components/Clientes/Cliente.jsx'
 function App() {
@@ -28,7 +28,7 @@ function App() {
           <Route path='productos' element={<Productos />} >
             <Route path='categorias' element={<Categorias />} >
             <Route path='categorias-crear' element={<FormCrearCategoria/>}/>
-            <Route path='categorias-detalle' element={<FormDetalleCategoria/>}/>
+            <Route path='categorias-detalle' element={<FormEditarCategoria/>}/>
             </Route>
           </Route>
           <Route path='productos/crear-producto' element={<FormCrearProducto />}></Route>

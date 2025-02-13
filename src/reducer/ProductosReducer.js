@@ -50,7 +50,6 @@ export const ProductReducer = (state = InitialState, action) => {
             }
         }
         case ActionTypes.BORRAR_PRODUCTO: {
-            // const nuevoProductos = state.productos.filter(pro => pro.id !== ActionPayload)
             return {
                 ...state,
                 productoEliminado: [ActionPayload],

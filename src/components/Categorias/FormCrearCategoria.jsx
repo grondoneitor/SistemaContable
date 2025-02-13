@@ -1,48 +1,68 @@
-import { yupResolver } from "@hookform/resolvers/yup"
-import { useForm } from "react-hook-form"
-import { schemaCategoria } from "../../services/validaciones"
-import { Link } from "react-router-dom"
-import { IconButton, Tooltip } from "@mui/material"
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import {ServiciosCrearCategoria} from '../../services/serviciosCrearCategoria'
+import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { schemaCategoria } from "../../services/validaciones";
+import { ServiciosCategoria } from "../../services/Categorias/serviciosCategoria";
 
-export default function FormCrearCategoria() {
+
+// eslint-disable-next-line react/prop-types
+export default function FormCrearCategoria({ campos = [] }) {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schemaCategoria)
-    })
+    });
 
-    const {handleSubmitCrear} = ServiciosCrearCategoria(reset)
-    const handleSubmitAll = (data) => {
-        handleSubmitCrear(data)
-    }
-    console.log(errors)
+    const { crearCategoriaServ, isMoved } = ServiciosCategoria(reset);
+    const handleSubmitAll = async (categoria) => {
+        console.log(categoria)
+      await crearCategoriaServ(categoria);
+    };
 
     return (
-        <div className="flex items-center mb-3 ml-20">
-            <Link to="/productos/categorias" className="font-semibold mr-2 bg-slate-300 rounded-full">
-                <Tooltip>
-                    <IconButton color="primary">
-                        <ArrowBackIosNewIcon />
-                    </IconButton>
-                </Tooltip>
-            </Link>
-            <form action="" onSubmit={handleSubmit(handleSubmitAll)}>
-                <input
-                    type="text"
-                    className={`form-control w-96 p-4 rounded-l-xl border-2 ${errors.categoria ? "border-red-500" : " border-gray-500"}`}
-                    placeholder="Categoria"
-                    aria-describedby="button-addon2"
-                    {...register("categoria")}
-                />
-                <button
-                    className="relative p-4 rounded-r-full border-2 border-black bg-black z-20 text-white"
-                    type="submit"
+        <div className="flex items-center justify-center w-full">
+            <div className="w-full">
+                <form
+                    onSubmit={handleSubmit(handleSubmitAll)}
+                    className="bg-white shadow-md rounded-lg py-4 px-5 border border-indigo-800 relative w-full"
+                    noValidate
                 >
-                    Button
-                </button>
-                {errors.categoria && <p className="ml-2 mt-1 text-red-500 font-medium">{errors.categoria.message}</p>}
-            </form>
-        </div>
+                    <h2 className="font-black text-3xl text-slate-800 text-center mb-10">
+                        Crear nuevo producto
+                    </h2>
 
-    )
+                    {Array.isArray(campos) && campos.map(campo => (
+                        <div className="mb-5" key={campo.id}>
+                            <label htmlFor={campo.id} className="text-sm uppercase font-bold">
+                                {campo.titulo}
+                            </label>
+
+                                <input
+                                    {...register(campo.id)}
+                                    id={campo.id}
+                                    className="w-full p-3 border border-gray-100"
+                                    type={campo.type}
+                                    name={campo.id}
+                                    placeholder={campo.placeholder}
+                                />
+                           
+
+                            {errors[campo.id] && <p className="text-red-500">{errors[campo.id].message}</p>}
+                        </div>
+                    ))}
+
+                    <button
+                        className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
+                    >
+                        CREAR CATEGORIA
+                    </button>
+                </form>
+
+                <div
+                    className={`transition-all duration-500 ease-linear right-5
+                     ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
+                     fixed bottom-5 mt-10 w-60 h-16 flex justify-center items-center bg-green-600 text-white shadow-lg rounded-lg`}
+                >
+                    <p>Categoria creado con éxito</p>
+                </div>
+            </div>
+        </div>
+    );
 }

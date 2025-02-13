@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { ProductoContext } from "../../context/productos";
+import { CategoriaContext } from "../../context/categorias";
 
 export const useMapeandoProductos = () => {
   const [error, setError] = useState(null);
   const {state,mostrarProductos} = useContext(ProductoContext)
+  const {state : stateCategorias} = useContext(CategoriaContext)
   useEffect(() => {
     fetch(`http://localhost:8092/api/v1/productos`)
       .then(response => {
@@ -20,7 +22,7 @@ export const useMapeandoProductos = () => {
       // 
        setError(null)
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.productosCreado, state.productoEliminado, state.productoEditado]);
+  }, [state.productosCreado, state.productoEliminado, state.productoEditado, stateCategorias.categoriaCreada, stateCategorias.categoriaEditada, stateCategorias.categoriaEliminada]);
    
 
   return {  error };

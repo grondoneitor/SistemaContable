@@ -1,14 +1,14 @@
 
 export const useCrearCategoria = () => {
     const crearCategoriaReal = async (categoria) => {
-        console.log(categoria.categoria + " viendo el categoria")
+        console.log(categoria)
         try {
             const response = await fetch('http://localhost:8092/api/v1/categoria', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(categoria),
+                body: JSON.stringify({"categoria":categoria}),
             });
 
             if (!response.ok) {

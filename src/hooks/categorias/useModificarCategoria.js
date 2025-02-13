@@ -5,7 +5,6 @@ export const useModificarCategoria = () => {
     const [error, setError] = useState(null);
     const modificarCategoria = async ( objectFinal ) => {
         try {
-            console.log("Datos a enviar:",objectFinal);
 
             const response = await fetch(`http://localhost:8092/api/v1/categoria`, {
                 method: 'PUT',

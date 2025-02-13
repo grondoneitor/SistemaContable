@@ -1,5 +1,5 @@
 import {  useContext, useEffect, useState } from "react";
-import { CategoriaContext } from "../context/categorias";
+import { CategoriaContext } from "../../context/categorias";
 
 export const useMapeandoCategoriasPorNombre = () => {
      

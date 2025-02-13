@@ -5,6 +5,8 @@ export const InitialState = {
     categoriasBuscados: [],
     nombreCategoriaBuscado: "",
     categoriaCreada:[],
+    categoriaEditada: [],
+    categoriaEliminada: [],
     categoriaSeleccionada: []
 };
 
@@ -34,27 +36,20 @@ export const CategoriaReducer = (state = InitialState, action) => {
         case ActionTypes.CREAR_CATEGORIA:{
             return{
                 ...state,
-                categorias: [...state.categorias, ActionPayload]
+                categoriaCreada: [ ActionPayload]
             }
         }
         case ActionTypes.EDITAR_CATEGORIA: {
 
             return{
                 ...state,
-                categorias: state.categorias.map((categoria) => {
-                    if (categoria.id_Categoria === ActionPayload.id_Categoria) {
-                       return {...categoria, ...ActionPayload}
-                    }
-                    return categoria
-                })
+                categoriaEditada:[ActionPayload]
             }
         }
         case ActionTypes.BORRAR_CATEGORIA:{
             return{
                 ...state,
-                categorias: state.categorias.filter(categoria =>{
-                    return categoria.id_Categoria !== ActionPayload.id_Categoria
-                })
+                categoriaEliminada:[ActionPayload]
             }
         }
         case ActionTypes.BUSCAR_CATEGORIA: {

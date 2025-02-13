@@ -3,7 +3,6 @@ export const useEditarCliente = () => {
 
 
     const EditarClienteReal = async (cliente) => {
-        console.log(cliente)
         try {
             if (cliente !== null) {
                 const response = await fetch(`http://localhost:8092/api/v1/cliente/${cliente.id}`, {

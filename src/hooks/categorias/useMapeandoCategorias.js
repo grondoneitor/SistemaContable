@@ -1,9 +1,9 @@
 import {  useContext, useEffect, useState } from "react";
-import { CategoriaContext } from "../context/categorias";
+import { CategoriaContext } from "../../context/categorias";
 
 export const useMapeandoCategorias = () => {
   const [error, setError] = useState(null);
-  const { mostrarCategorias} = useContext(CategoriaContext)
+  const { state,mostrarCategorias} = useContext(CategoriaContext)
   useEffect(() => {
         fetch("http://localhost:8092/api/v1/categorias")
         .then(response =>{
@@ -17,7 +17,7 @@ export const useMapeandoCategorias = () => {
           console.error("Error fetching products:", error);
           setError("En este momento no hay productos disponibles");
         })
-  }, [])
+  }, [state.categoriaCreada, state.categoriaEditada, state.categoriaEliminada])
 
   return { error };
 };

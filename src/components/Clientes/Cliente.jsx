@@ -143,7 +143,7 @@ function  EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores,
 
   const abriendo = () => {
     setOpen(true);
-    console.log("abriendo")
+
   };
 
   const borrar = async () => {
@@ -179,8 +179,8 @@ function  EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores,
 
       <Typography variant="subtitle1" sx={{ ml: 2 }}>
         {rows.length > 0
-          ? `${rows.length} seleccionados`
-          : 'No hay filas seleccionadas'}
+          ? `${rows.length}`
+          : '-'}
       </Typography>
 
       <div

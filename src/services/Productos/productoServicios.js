@@ -4,6 +4,7 @@ import { useCrearProducto } from "../../hooks/productos/useCrearProducto";
 import { ProductoContext } from "../../context/productos";
 import { useBorrarProducto } from "../../hooks/productos/useBorrarProducto";
 import { useModificarProducto } from "../../hooks/productos/useModificarProducto";
+import { useMapeandoProductosPorNombre } from "../../hooks/productos/useMapeandoProductosPorNombre";
 
 export const ServiciosProducto = (reset) => {
 
@@ -25,19 +26,18 @@ export const ServiciosProducto = (reset) => {
     reset()
   }
 
-  const borrarProductoServ = async (id) => {
+  const borrarProductoServ = async (ids) => {
 
-    const success = await borrarProducto(id)
+    const success = await borrarProducto(ids)
     if (success) {
       functionMoved()
-      borrarProductoI(id)
+      borrarProductoI(ids)
     }
 
   }
   const editarProductoServ = async (producto) => {
 
     const succes = await modificarProducto(producto)
-    console.log(succes)
     if (succes) {
       functionMoved()
       editarProducto(producto)
@@ -48,7 +48,6 @@ export const ServiciosProducto = (reset) => {
 
   const buscandoProductoServ =  (producto) =>{
     const nombre = producto.length === 0 ? "" : producto
-    console.log(nombre)
       guardarNombreProBuscados(nombre)
     
   }

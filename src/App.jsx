@@ -1,12 +1,9 @@
 import { Routes, Route } from 'react-router-dom'
-import Productos from './components/Productos/Productos.jsx'
 import Home from './components/Home'
 import Categorias from '../src/components/Categorias/Categorias.jsx'
-import FormCrearProducto from './components/Productos/FormCrearPro.jsx'
-import FormCrearCategoria from './components/Categorias/FormCrearCategoria.jsx'
-import FormEditarCategoria from './components/Categorias/FormEditarCategoria.jsx'
 import { faPeopleGroup, faBoxesStacked,faCartShopping, faBoxesPacking,faTableCells } from "@fortawesome/free-solid-svg-icons";
 import Cliente from './components/Clientes/Cliente.jsx'
+import FormProductos from './components/Productos/FormProductos.jsx';
 function App() {
   const array = [
     {url:"/",nombre:"Home",icono:faCartShopping},
@@ -26,13 +23,10 @@ function App() {
             />
           } >
           <Route path="clientes" element={<Cliente/>} />
-          <Route path='productos' element={<Productos />} >
+          <Route path='productos' element={<FormProductos />} >
             <Route path='categorias' element={<Categorias />} >
-            <Route path='categorias-crear' element={<FormCrearCategoria/>}/>
-            <Route path='categorias-detalle' element={<FormEditarCategoria/>}/>
             </Route>
           </Route>
-          <Route path='productos/crear-producto' element={<FormCrearProducto />}></Route>
         </Route>
       </Routes>
 

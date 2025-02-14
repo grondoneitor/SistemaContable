@@ -1,7 +1,7 @@
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import { useContext, useMemo, useState } from 'react';
-import { Box, Modal, Toolbar, Tooltip, Typography } from '@mui/material';
+import { Alert, Box, Modal, Toolbar, Tooltip, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFontAwesome, faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ProductoContext } from '../../context/productos';
@@ -10,14 +10,17 @@ import { ServiciosProducto } from '../../services/Productos/productoServicios';
 import FormEditarProducto from './FormEditarProducto';
 import { InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
+import { useMapeandoProductos } from '../../hooks/productos/useMapeandoProductos';
+import { useMapeandoProductosPorNombre } from '../../hooks/productos/useMapeandoProductosPorNombre';
+import { useMapeandoCategorias } from '../../hooks/categorias/useMapeandoCategorias';
 const columns = [
-  { field: 'producto', headerName: 'Producto', width: 200 },
-  { field: 'descripcion', headerName: 'Descripcion', width: 250 },
-  { field: 'precio', headerName: 'Precio', width: 130 },
-  { field: 'stock', headerName: 'Stock', width: 200 },
-  { field: 'stock_Min', headerName: 'Stock Mininmo', width: 130 },
-  { field: 'categoria', headerName: 'Categoria', width: 200 },
+  { field: 'producto', headerName: 'Producto', flex: 1 },
+  { field: 'descripcion', headerName: 'Descripcion',  flex: 1 },
+  { field: 'precio', headerName: 'Precio',  flex: 1},
+  { field: 'stock', headerName: 'Stock',  flex: 1 },
+  { field: 'stock_Min', headerName: 'Stock Mininmo', flex: 1 },
+  { field: 'categoria', headerName: 'Categoria',  flex: 1},
 ];
 
 
@@ -61,10 +64,91 @@ const campos = [{
 
 const paginationModel = { page: 0, pageSize: 5 };
 
+import { outlinedInputClasses } from '@mui/material/OutlinedInput';
+import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+
+const customTheme = (outerTheme) =>
+  createTheme({
+    palette: {
+      mode: outerTheme.palette.mode,
+    },
+    components: {
+      MuiTextField: {
+        styleOverrides: {
+          root: {
+            '--TextField-brandBorderColor': '#E0E3E7',
+            '--TextField-brandBorderHoverColor': '#B2BAC2',
+            '--TextField-brandBorderFocusedColor': '#ffffff',
+            '& label.Mui-focused': {
+              color: 'var(--TextField-brandBorderFocusedColor)',
+            },
+          },
+        },
+      },
+      MuiInputLabel: { // 🔥 Aquí se cambia el color del label a blanco
+        styleOverrides: {
+          root: {
+            color: 'white', // Color del label por defecto
+          },
+          focused: {
+            color: 'white', // Color del label cuando el input está enfocado
+          },
+        },
+      },
+      MuiOutlinedInput: {
+        styleOverrides: {
+          notchedOutline: {
+            borderColor: 'var(--TextField-brandBorderColor)',
+          },
+          root: {
+            [`&:hover .${outlinedInputClasses.notchedOutline}`]: {
+              borderColor: 'var(--TextField-brandBorderHoverColor)',
+            },
+            [`&.Mui-focused .${outlinedInputClasses.notchedOutline}`]: {
+              borderColor: 'var(--TextField-brandBorderFocusedColor)',
+            },
+          },
+        },
+      },
+      MuiFilledInput: {
+        styleOverrides: {
+          root: {
+            '&::before, &::after': {
+              borderBottom: '2px solid var(--TextField-brandBorderColor)',
+            },
+            '&:hover:not(.Mui-disabled, .Mui-error):before': {
+              borderBottom: '2px solid var(--TextField-brandBorderHoverColor)',
+            },
+            '&.Mui-focused:after': {
+              borderBottom: '2px solid var(--TextField-brandBorderFocusedColor)',
+            },
+          },
+        },
+      },
+      MuiInput: {
+        styleOverrides: {
+          root: {
+            '&::before': {
+              borderBottom: '2px solid var(--TextField-brandBorderColor)',
+            },
+            '&:hover:not(.Mui-disabled, .Mui-error):before': {
+              borderBottom: '2px solid var(--TextField-brandBorderHoverColor)',
+            },
+            '&.Mui-focused:after': {
+              borderBottom: '2px solid var(--TextField-brandBorderFocusedColor)',
+            },
+          },
+        },
+      },
+    },
+  });
+
 
 
 export default function FormProductos() {
-
+  useMapeandoProductos()
+  useMapeandoProductosPorNombre()
+  useMapeandoCategorias()
   const { state } = useContext(ProductoContext);
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false)
@@ -98,7 +182,7 @@ export default function FormProductos() {
     <>
       {/* <h1 className="text-4xl m-7 font-bold">Productos</h1>  */}
 
-      <Paper sx={{ height: 400 }}>
+      <Paper sx={{ borderRadius: "24px", width: "100%" }}>
         <EnhancedTableToolbar
           setOpen={setOpen}
           rowSelectionModel={rowSelectionModel}
@@ -125,7 +209,27 @@ export default function FormProductos() {
                 }))
                 : []
           }
-
+          sx={{
+            boxShadow: 2,
+            border: "none",
+            width: "100%",
+            justifyItems: "space-between",
+            borderRadius: "0px 0px 24px 24px",
+            "& .MuiDataGrid-footerContainer": { // Contenedor de paginación en DataGrid
+              borderBottomLeftRadius: "24px",
+              borderBottomRightRadius: "24px",
+              overflow: "hidden",
+            },
+            "& .MuiTablePagination-root": { // Estilos de la paginación
+              backgroundColor: "#f0f0f0",
+              color: "black",
+              borderBottomLeftRadius: "24px",
+              borderBottomRightRadius: "24px",
+            },
+            "& .MuiTablePagination-actions button": {
+              color: "black",
+            },
+          }}
           getRowId={(row) => row.id} // Usa el ID del producto
           columns={columns}
           initialState={{ pagination: { paginationModel } }}
@@ -151,12 +255,12 @@ export default function FormProductos() {
       >
         <Box
           onClick={(e) => e.stopPropagation()}
-          className="relative p-4 w-full max-w-xl rounded-lg"
+          className="relative  w-full max-w-xl rounded-lg overflow-hidden shadow-lg border-fuchsia-950 border-4"
         >
           <FormCrearProducto campos={campos} />
         </Box>
       </Modal>
-
+      <Outlet />
     </>
   );
 }
@@ -194,6 +298,8 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
     buscandoProductoServ(event.target.value)
   }
 
+  const outerTheme = useTheme();
+
   return (
     <Toolbar
       sx={{
@@ -201,12 +307,12 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
         pr: { xs: 1, sm: 1 },
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'center',
-
+        alignItems: 'center'
       }}
+      className='bg-fuchsia-950 text-white rounded-t-3xl'
     >
       <Tooltip
-        className='flex gap-4'
+        className='flex gap-4 text-white'
       >
         <FontAwesomeIcon onClick={abriendo} className='hover:cursor-pointer text-2xl' icon={faPlus} />
 
@@ -215,19 +321,30 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
         {rows.length === 1 && <FontAwesomeIcon onClick={editar} className='hover:cursor-pointer text-2xl' icon={faPen} />}
 
       </Tooltip>
+      <ThemeProvider theme={customTheme(outerTheme)}>
 
       <TextField
+      className='text-white'
+        label="Buscar..."
         variant="standard"
-        placeholder="Buscar..."
         onChange={handleChange}
         InputProps={{
           endAdornment: (
             <InputAdornment position="start">
-              <SearchIcon />
+              <SearchIcon sx={{ color: "white" }} /> {/* Icono en blanco */}
             </InputAdornment>
           ),
         }}
+        sx={{
+          input: { color: "white" }, // Texto en blanco
+          "& .MuiInput-underline:before": { borderBottomColor: "white" }, // Línea blanca antes de enfocar
+          "& .MuiInput-underline:hover:before": { borderBottomColor: "white" }, // Línea blanca en hover
+          "& .MuiInput-underline:after": { borderBottomColor: "white" }, // Línea blanca después de enfocar
+        }}
       />
+
+      </ThemeProvider>
+ 
 
 
       <Box
@@ -251,19 +368,23 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
       >
         <Box
           onClick={(e) => e.stopPropagation()}
-          className="relative p-4 w-full max-w-xl rounded-lg"
+          className="relative  w-full max-w-xl rounded-lg overflow-hidden shadow-lg border-fuchsia-950 border-4"
         >
-          <FormEditarProducto  valores={valores} />
+          <FormEditarProducto valores={valores} />
         </Box>
       </Modal>
-      <div
-        className={`transition-all duration-500 ease-linear  right-5
-                     ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
-                     fixed bottom-5 mt-10 w-60 h-16 flex justify-center items-center bg-green-600 text-white shadow-lg rounded-lg`}
+      <Alert
+        variant="filled"
+        severity="success"
+        className={`transition-all duration-500 ease-linear w-64  right-5
+                   ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
+                   fixed bottom-5 mt-10  h-16 flex justify-center items-center  `}
       >
-        <p>Producto/s borrados con exito</p>
-      </div>
+        <p>Producto eliminado con exito</p>
+      </Alert>
     </Toolbar>
+
+    
 
   );
 }

@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schemaCategoria } from "../../services/validaciones";
 import { ServiciosCategoria } from "../../services/Categorias/serviciosCategoria";
+import { Alert } from "@mui/material";
 
 
 // eslint-disable-next-line react/prop-types
@@ -13,7 +14,7 @@ export default function FormCrearCategoria({ campos = [] }) {
     const { crearCategoriaServ, isMoved } = ServiciosCategoria(reset);
     const handleSubmitAll = async (categoria) => {
         console.log(categoria)
-      await crearCategoriaServ(categoria);
+        await crearCategoriaServ(categoria);
     };
 
     return (
@@ -34,34 +35,35 @@ export default function FormCrearCategoria({ campos = [] }) {
                                 {campo.titulo}
                             </label>
 
-                                <input
-                                    {...register(campo.id)}
-                                    id={campo.id}
-                                    className="w-full p-3 border border-gray-100"
-                                    type={campo.type}
-                                    name={campo.id}
-                                    placeholder={campo.placeholder}
-                                />
-                           
+                            <input
+                                {...register(campo.id)}
+                                id={campo.id}
+                                className="w-full p-3 border border-gray-100"
+                                type={campo.type}
+                                name={campo.id}
+                                placeholder={campo.placeholder}
+                            />
+
 
                             {errors[campo.id] && <p className="text-red-500">{errors[campo.id].message}</p>}
                         </div>
                     ))}
 
                     <button
-                        className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
-                    >
+                        className="bg-fuchsia-950 w-full p-3 text-white uppercase font-bold hover:bg-fuchsia-900 cursor-pointer transition-colors"
+                        >
                         CREAR CATEGORIA
                     </button>
                 </form>
-
-                <div
-                    className={`transition-all duration-500 ease-linear right-5
+                <Alert
+                    variant="filled"
+                    severity="success"
+                    className={`transition-all duration-500 ease-linear w-72  right-5
                      ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
-                     fixed bottom-5 mt-10 w-60 h-16 flex justify-center items-center bg-green-600 text-white shadow-lg rounded-lg`}
+                     fixed bottom-5 mt-10  h-16 flex justify-center items-center  `}
                 >
-                    <p>Categoria creado con éxito</p>
-                </div>
+                    <p>Categoria/s borrados con exito</p>
+                </Alert>
             </div>
         </div>
     );

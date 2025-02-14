@@ -4,6 +4,7 @@ import { schema } from "../../services/validaciones";
 import { ServiciosProducto } from "../../services/Productos/productoServicios";
 import { CategoriaContext } from "../../context/categorias";
 import { useContext } from "react";
+import { Alert } from "@mui/material";
 
 
 // eslint-disable-next-line react/prop-types
@@ -27,7 +28,7 @@ export default function FormCrearProducto({ campos = [] }) {
             <div className="w-full">
                 <form
                     onSubmit={handleSubmit(handleSubmitAll)}
-                    className="bg-white shadow-md rounded-lg py-4 px-5 border border-indigo-800 relative w-full"
+                    className="bg-white shadow-md rounded-lg py-4 px-5 "
                     noValidate
                 >
                     <h2 className="font-black text-3xl text-slate-800 text-center mb-10">
@@ -69,19 +70,21 @@ export default function FormCrearProducto({ campos = [] }) {
                     ))}
 
                     <button
-                        className="bg-fucshia-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
+                        className="bg-fuchsia-950 w-full p-3 text-white uppercase font-bold hover:bg-fuchsia-900 cursor-pointer transition-colors"
                     >
                         CREAR PRODUCTO
                     </button>
                 </form>
 
-                <div
-                    className={`transition-all duration-500 ease-linear right-5
-                     ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
-                     fixed bottom-5 mt-10 w-60 h-16 flex justify-center items-center bg-green-600 text-white shadow-lg rounded-lg`}
+                <Alert
+                    variant="filled"
+                    severity="success"
+                    className={`transition-all duration-500 ease-linear w-64  right-5
+                   ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
+                   fixed bottom-5 mt-10  h-16 flex justify-center items-center  `}
                 >
-                    <p>Producto creado con éxito</p>
-                </div>
+                    <p>Producto creado con exito</p>
+                </Alert>
             </div>
         </div>
     );

@@ -3,7 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import { useContext, useMemo, useState } from 'react';
 import { ClienteContext } from '../../context/cliente';
-import { Box, Modal, Toolbar, Tooltip, Typography } from '@mui/material';
+import { Alert, Box, Modal, Toolbar, Tooltip, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import FormCrearCliente from './FormCrearCliente';
@@ -12,11 +12,11 @@ import ServiciosCliente from '../../services/Clientes/clienteServicios';
 import FormEditarCliente from './FormEditarClient';
 
 const columns = [
-  { field: 'nombre_Completo', headerName: 'Nombre', width: 200 },
-  { field: 'mail', headerName: 'Mail', width: 250 },
-  { field: 'telefono', headerName: 'Telefono', width: 130 },
-  { field: 'direccion', headerName: 'Direccion', width: 200 },
-  { field: 'dni', headerName: 'DNI', width: 130 },
+  { field: 'nombre_Completo', headerName: 'Nombre', flex: 1 },
+  { field: 'mail', headerName: 'Mail', flex: 1 },
+  { field: 'telefono', headerName: 'Telefono', flex: 1 },
+  { field: 'direccion', headerName: 'Direccion', flex: 1 },
+  { field: 'dni', headerName: 'DNI', flex: 1 },
 ];
 const campos = [{
   titulo: "Nombre",
@@ -50,6 +50,8 @@ const campos = [{
 }
 ]
 
+
+
 const paginationModel = { page: 0, pageSize: 5 };
 
 export default function Cliente() {
@@ -80,7 +82,7 @@ export default function Cliente() {
   return (
     <>
       {/* <h1 className="text-4xl m-4 font-bold">Clientes</h1>  */}
-      <Paper sx={{borderRadius: "24px" }} >
+      <Paper sx={{ borderRadius: "24px", width: "100%" }} >
         <EnhancedTableToolbar
           setOpen={setOpen}
           rowSelectionModel={rowSelectionModel}
@@ -99,18 +101,19 @@ export default function Cliente() {
           }}
           sx={{
             boxShadow: 2,
-            border: 2,
-            borderColor: "#4a044e",
+            border: "none",
+            width: "100%",
+            justifyItems: "space-between",
             borderRadius: "0px 0px 24px 24px",
             "& .MuiDataGrid-footerContainer": { // Contenedor de paginación en DataGrid
-              borderBottomLeftRadius: "24px", 
-              borderBottomRightRadius: "24px", 
+              borderBottomLeftRadius: "24px",
+              borderBottomRightRadius: "24px",
               overflow: "hidden",
             },
             "& .MuiTablePagination-root": { // Estilos de la paginación
               backgroundColor: "#f0f0f0",
               color: "black",
-              borderBottomLeftRadius: "24px", 
+              borderBottomLeftRadius: "24px",
               borderBottomRightRadius: "24px",
             },
             "& .MuiTablePagination-actions button": {
@@ -124,13 +127,13 @@ export default function Cliente() {
           disableColumnReorder
           disableColumnMenu
         />
-     
+
       </Paper>
 
       <Modal
         open={varOpen}
         onClose={closeModal}
-        className="flex items-center justify-center s"
+        className="flex items-center justify-center "
       >
         <Box
           onClick={(e) => e.stopPropagation()}
@@ -174,7 +177,7 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
         pr: { xs: 1, sm: 1 },
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'center'
       }}
       className='bg-fuchsia-950 text-white rounded-t-3xl'
     >
@@ -184,7 +187,7 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
         {rows.length === 1 && <FontAwesomeIcon onClick={editar} className='hover:cursor-pointer text-2xl text-white' icon={faPen} />}
       </Tooltip>
 
-      <Typography  sx={{ ml: 2, fontSize: "18px", marginRight: "5px" }} >
+      <Typography sx={{ ml: 2, fontSize: "18px", marginRight: "5px" }} >
         {rows.length > 0 ? `${rows.length}` : '-'}
       </Typography>
 
@@ -195,18 +198,20 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
       >
         <Box
           onClick={(e) => e.stopPropagation()}
-          className="relative p-4 w-full max-w-xl rounded-lg bg-white overflow-hidden shadow-lg"
+          className="relative  w-full max-w-xl rounded-lg overflow-hidden shadow-lg border-fuchsia-950 border-4"
         >
           <FormEditarCliente valores={valores} />
         </Box>
       </Modal>
-      <div
-        className={`transition-all duration-500 ease-linear  right-5
+      <Alert
+      variant="filled"
+        severity="success"
+        className={`transition-all duration-500 ease-linear w-64  right-5
                      ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
-                     fixed bottom-5 mt-10 w-60 h-16 flex justify-center items-center bg-green-600 text-white shadow-lg rounded-lg`}
+                     fixed bottom-5 mt-10  h-16 flex justify-center items-center  `}
       >
         <p>Cliente/s borrados con exito</p>
-      </div>
+      </Alert>
     </Toolbar>
   );
 }

@@ -1,7 +1,7 @@
 import { useContext, useMemo, useState } from "react";
 import { CategoriaContext } from "../../context/categorias";
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, Modal, Paper, Toolbar, Tooltip, Typography } from "@mui/material";
+import { Alert, Box, Modal, Paper, Toolbar, Tooltip, Typography } from "@mui/material";
 import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FormCrearCategoria from './FormCrearCategoria.jsx'
@@ -39,7 +39,7 @@ export default function FormCategorias() {
     };
 
     const modalCrearOpen = useMemo(() => open, [open]);
-    
+
     const funcionParaSeleccionar = (newRowSelectionModel) => {
         setRowSelectionModel(newRowSelectionModel);
         if (newRowSelectionModel.length > 0) {
@@ -57,16 +57,16 @@ export default function FormCategorias() {
     return (
         <>
             <h1 className="text-4xl m-7 font-bold">Categorias</h1>
-            <Paper sx={{ maxWidth: 300, width: "25%", display: "inline-block", padding: 2 }}>
+            <Paper sx={{ borderRadius: "24px", width: "30%" }}>
                 <EnhancedTableToolbar
-               setOpen={setOpen}
-               rowSelectionModel={rowSelectionModel}
-               valores={valores}
-               modalCrearOpen={modalCrearOpen}
-               setRowSelectionModel={setRowSelectionModel}
-               setValores={setValores}
-               setOpenEdit={setOpenEdit}
-               openEdit={openEdit}
+                    setOpen={setOpen}
+                    rowSelectionModel={rowSelectionModel}
+                    valores={valores}
+                    modalCrearOpen={modalCrearOpen}
+                    setRowSelectionModel={setRowSelectionModel}
+                    setValores={setValores}
+                    setOpenEdit={setOpenEdit}
+                    openEdit={openEdit}
                 />
                 <DataGrid
                     rows={state.categorias}
@@ -79,6 +79,27 @@ export default function FormCategorias() {
                     checkboxSelection
                     onRowSelectionModelChange={(newRowSelectionModel) => {
                         funcionParaSeleccionar(newRowSelectionModel);
+                    }}
+                    sx={{
+                        boxShadow: 2,
+                        border: "none",
+                        width: "100%",
+                        justifyItems: "space-between",
+                        borderRadius: "0px 0px 24px 24px",
+                        "& .MuiDataGrid-footerContainer": { // Contenedor de paginación en DataGrid
+                            borderBottomLeftRadius: "24px",
+                            borderBottomRightRadius: "24px",
+                            overflow: "hidden",
+                        },
+                        "& .MuiTablePagination-root": { // Estilos de la paginación
+                            backgroundColor: "#f0f0f0",
+                            color: "black",
+                            borderBottomLeftRadius: "24px",
+                            borderBottomRightRadius: "24px",
+                        },
+                        "& .MuiTablePagination-actions button": {
+                            color: "black",
+                        },
                     }}
                     rowSelectionModel={rowSelectionModel}
                     disableColumnResize
@@ -95,7 +116,8 @@ export default function FormCategorias() {
             >
                 <Box
                     onClick={(e) => e.stopPropagation()}
-                    className="relative p-4 w-full max-w-xl rounded-lg"
+                    className="relative  w-full max-w-xl rounded-lg overflow-hidden shadow-lg border-fuchsia-950 border-4"
+
                 >
                     <FormCrearCategoria campos={campos} />
                 </Box>
@@ -107,7 +129,7 @@ export default function FormCategorias() {
 
 // eslint-disable-next-line react/prop-types
 function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, setRowSelectionModel, setValores, setOpenEdit, openEdit }) {
-     const { borrarCategoriaServ, isMoved } = ServiciosCategoria()
+    const { borrarCategoriaServ, isMoved } = ServiciosCategoria()
 
     //   const [openEdit, setOpenEdit] = useState(false)
 
@@ -126,11 +148,11 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
 
     };
 
-      const borrar = async () => {
+    const borrar = async () => {
         await borrarCategoriaServ(rows)
-      }
+    }
 
-    const editar =  () => {
+    const editar = () => {
         setOpenEdit(true);
 
     };
@@ -140,13 +162,11 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
             sx={{
                 pl: { sm: 2 },
                 pr: { xs: 1, sm: 1 },
-                display: "flex",
-                text: 24,
+                display: 'flex',
                 justifyContent: 'space-between',
-                // alignItems: 'center',
-                width: "auto",
-                padding: 2
+                alignItems: 'center',
             }}
+            className='bg-fuchsia-950 text-white rounded-t-3xl'
         >
             <Tooltip
                 className='flex gap-4'
@@ -184,19 +204,21 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
             >
                 <Box
                     onClick={(e) => e.stopPropagation()}
-                    className="relative p-4 w-full max-w-xl rounded-lg"
+                    className="relative  w-full max-w-xl rounded-lg overflow-hidden shadow-lg border-fuchsia-950 border-4"
                 >
                     <FormEditarCategoria valores={valores} />
                 </Box>
             </Modal>
-            
-      <div
-        className={`transition-all duration-500 ease-linear  right-5
+
+            <Alert
+                variant="filled"
+                severity="success"
+                className={`transition-all duration-500 ease-linear 72 right-5
                      ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
-                     fixed bottom-5 mt-10 w-60 h-16 flex justify-center items-center bg-green-600 text-white shadow-lg rounded-lg`}
-      >
-        <p>Categoria/s borradas con exito</p>
-      </div> 
+                     fixed bottom-5 mt-10  h-16 flex justify-center items-center  `}
+            >
+                <p>Categoria/s borrados con exito</p>
+            </Alert>
         </Toolbar>
     );
 }

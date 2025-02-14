@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaCliente } from "../../services/validaciones";
 import { useEffect } from "react";
 import ServiciosCliente from "../../services/Clientes/clienteServicios";
+import { Alert } from "@mui/material";
 
  
 export default function FormEditarCliente({ valores }) {
@@ -64,19 +65,21 @@ export default function FormEditarCliente({ valores }) {
 
                     <button
                         type="submit"
-                        className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
+                        className="bg-fuchsia-950 w-full p-3 text-white uppercase font-bold hover:bg-fuchsia-900 cursor-pointer transition-colors"
                     >
                         EDITAR CLIENTE
                     </button>
                 </form>
 
-                <div
-                    className={`transition-all duration-500 ease-linear  right-5
-                     ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
-                     fixed bottom-5 mt-10 w-60 h-16 flex justify-center items-center bg-green-600 text-white shadow-lg rounded-lg`}
+                <Alert
+                    variant="filled"
+                    severity="success"
+                    className={`transition-all duration-500 ease-linear w-64  right-5
+                   ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
+                   fixed bottom-5 mt-10  h-16 flex justify-center items-center  `}
                 >
                     <p>Cliente actualizado con exito</p>
-                </div>
+                </Alert>
 
             </div>
         </div>

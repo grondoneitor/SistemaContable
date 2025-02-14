@@ -1,8 +1,9 @@
+/* eslint-disable react/prop-types */
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import { useContext, useMemo, useState } from 'react';
 import { ClienteContext } from '../../context/cliente';
-import { Box,  Modal, Toolbar, Tooltip, Typography } from '@mui/material';
+import { Box, Modal, Toolbar, Tooltip, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import FormCrearCliente from './FormCrearCliente';
@@ -51,11 +52,7 @@ const campos = [{
 
 const paginationModel = { page: 0, pageSize: 5 };
 
-
-
-
 export default function Cliente() {
-
   useClientes();
   const { state } = useContext(ClienteContext);
   const [open, setOpen] = useState(false);
@@ -64,29 +61,26 @@ export default function Cliente() {
     setOpen(false);
     setRowSelectionModel([])
   };
-  
-  const funcionParaSeleccionar = (newRowSelectionModel) =>{
+
+  const funcionParaSeleccionar = (newRowSelectionModel) => {
     setRowSelectionModel(newRowSelectionModel);
     if (newRowSelectionModel.length > 0) {
       const selectedRow = state.clientes.find(
         (cliente) => cliente.id === newRowSelectionModel[0]
       );
-      setValores(selectedRow || {}); 
+      setValores(selectedRow || {});
     } else {
-      setValores({}); 
+      setValores({});
     }
-  
   }
-
 
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
   const [valores, setValores] = useState({})
 
   return (
     <>
-      <h1 className="text-4xl m-7 font-bold">Clientes</h1>
-
-      <Paper sx={{ height: 400 }}>
+      {/* <h1 className="text-4xl m-4 font-bold">Clientes</h1>  */}
+      <Paper sx={{borderRadius: "24px" }} >
         <EnhancedTableToolbar
           setOpen={setOpen}
           rowSelectionModel={rowSelectionModel}
@@ -102,48 +96,67 @@ export default function Cliente() {
           checkboxSelection
           onRowSelectionModelChange={(newRowSelectionModel) => {
             funcionParaSeleccionar(newRowSelectionModel)
-        }}
+          }}
+          sx={{
+            boxShadow: 2,
+            border: 2,
+            borderColor: "#4a044e",
+            borderRadius: "0px 0px 24px 24px",
+            "& .MuiDataGrid-footerContainer": { // Contenedor de paginación en DataGrid
+              borderBottomLeftRadius: "24px", 
+              borderBottomRightRadius: "24px", 
+              overflow: "hidden",
+            },
+            "& .MuiTablePagination-root": { // Estilos de la paginación
+              backgroundColor: "#f0f0f0",
+              color: "black",
+              borderBottomLeftRadius: "24px", 
+              borderBottomRightRadius: "24px",
+            },
+            "& .MuiTablePagination-actions button": {
+              color: "black",
+            },
+          }}
+          pagination
+          className='rounded-t-3xl'
           rowSelectionModel={rowSelectionModel}
           disableColumnResize
           disableColumnReorder
           disableColumnMenu
         />
+     
       </Paper>
 
       <Modal
         open={varOpen}
         onClose={closeModal}
-        className="flex items-center justify-center"
+        className="flex items-center justify-center s"
       >
         <Box
           onClick={(e) => e.stopPropagation()}
-          className="relative p-4 w-full max-w-xl rounded-lg"
+          className="relative  w-full max-w-xl rounded-lg overflow-hidden shadow-lg border-fuchsia-950 border-4"
         >
           <FormCrearCliente campos={campos} />
         </Box>
       </Modal>
-
     </>
   );
 }
 
-// eslint-disable-next-line react/prop-types
-function  EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, setRowSelectionModel }) {
+function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, setRowSelectionModel }) {
   const { BorrarCliente, isMoved } = ServiciosCliente()
-  
+
   const [openEdit, setOpenEdit] = useState(false)
-  
-  const varOpenEdit = useMemo(()=> openEdit,[openEdit])
- 
- 
-  const closeModalEdit = () =>{
+
+  const varOpenEdit = useMemo(() => openEdit, [openEdit])
+
+  const closeModalEdit = () => {
     setOpenEdit(false)
     setRowSelectionModel([])
   }
 
   const abriendo = () => {
     setOpen(true);
-
   };
 
   const borrar = async () => {
@@ -152,7 +165,6 @@ function  EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores,
 
   const editar = async () => {
     setOpenEdit(true);
-
   };
 
   return (
@@ -164,32 +176,18 @@ function  EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores,
         justifyContent: 'space-between',
         alignItems: 'center',
       }}
+      className='bg-fuchsia-950 text-white rounded-t-3xl'
     >
-      <Tooltip 
-         className='flex gap-4'
-      >
-
-          <FontAwesomeIcon onClick={abriendo} className='hover:cursor-pointer text-2xl' icon={faPlus} />
-
-          {rows.length > 0 && <FontAwesomeIcon onClick={borrar} className='hover:cursor-pointer text-2xl' icon={faTrash} />}
-        
-          {rows.length === 1  && <FontAwesomeIcon onClick={editar} className='hover:cursor-pointer text-2xl' icon={faPen} />}
-      
+      <Tooltip className='flex gap-4 text-white'>
+        <FontAwesomeIcon onClick={abriendo} className='hover:cursor-pointer text-2xl text-white' icon={faPlus} />
+        {rows.length > 0 && <FontAwesomeIcon onClick={borrar} className='hover:cursor-pointer text-2xl text-white' icon={faTrash} />}
+        {rows.length === 1 && <FontAwesomeIcon onClick={editar} className='hover:cursor-pointer text-2xl text-white' icon={faPen} />}
       </Tooltip>
 
-      <Typography variant="subtitle1" sx={{ ml: 2 }}>
-        {rows.length > 0
-          ? `${rows.length}`
-          : '-'}
+      <Typography  sx={{ ml: 2, fontSize: "18px", marginRight: "5px" }} >
+        {rows.length > 0 ? `${rows.length}` : '-'}
       </Typography>
 
-      <div
-        className={`transition-all duration-500 ease-linear  right-5
-                     ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
-                     fixed bottom-5 mt-10 w-60 h-16 flex justify-center items-center bg-green-600 text-white shadow-lg rounded-lg`}
-      >
-        <p>Cliente/s borrados con exito</p>
-      </div>
       <Modal
         open={varOpenEdit}
         onClose={closeModalEdit}
@@ -197,11 +195,18 @@ function  EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores,
       >
         <Box
           onClick={(e) => e.stopPropagation()}
-          className="relative p-4 w-full max-w-xl rounded-lg"
+          className="relative p-4 w-full max-w-xl rounded-lg bg-white overflow-hidden shadow-lg"
         >
-          <FormEditarCliente  valores={valores}  />
+          <FormEditarCliente valores={valores} />
         </Box>
       </Modal>
+      <div
+        className={`transition-all duration-500 ease-linear  right-5
+                     ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
+                     fixed bottom-5 mt-10 w-60 h-16 flex justify-center items-center bg-green-600 text-white shadow-lg rounded-lg`}
+      >
+        <p>Cliente/s borrados con exito</p>
+      </div>
     </Toolbar>
   );
 }

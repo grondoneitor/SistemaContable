@@ -9,6 +9,7 @@ import { faPeopleGroup, faBoxesStacked,faCartShopping, faBoxesPacking,faTableCel
 import Cliente from './components/Clientes/Cliente.jsx'
 function App() {
   const array = [
+    {url:"/",nombre:"Home",icono:faCartShopping},
     {url: "/clientes", nombre:"Clientes", icono:faPeopleGroup},
     {url:"/productos",nombre:"Productos", icono:faBoxesStacked},
     {url:"/",nombre:"Ventas",icono:faCartShopping},
@@ -21,7 +22,7 @@ function App() {
       <Routes>
         <Route path="/" element={
           <Home
-            array={array}
+             array={array}
             />
           } >
           <Route path="clientes" element={<Cliente/>} />

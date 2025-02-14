@@ -69,7 +69,7 @@ export default function FormCrearProducto({ campos = [] }) {
                     ))}
 
                     <button
-                        className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
+                        className="bg-fucshia-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
                     >
                         CREAR PRODUCTO
                     </button>

@@ -45,7 +45,7 @@ export default function FormCrearCliente({campos = []}) {
                     ))}
                     <button
                         //  type="submit"
-                        className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
+                        className="bg-fuchsia-950 w-full p-3 text-white uppercase font-bold hover:bg-fuchsia-900 cursor-pointer transition-colors"
                     >
                         CREAR CLIENTE
                     </button>

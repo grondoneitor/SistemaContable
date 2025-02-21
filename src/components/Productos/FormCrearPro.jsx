@@ -15,12 +15,14 @@ export default function FormCrearProducto({ campos = [] }) {
 
     const { crearProductoServ, isMoved } = ServiciosProducto(reset);
     const { state } = useContext(CategoriaContext);
+
     const handleSubmitAll = async (producto) => {
 
         if (producto.categoria) {
             producto.categoria = JSON.parse(producto.categoria)
         }
         await crearProductoServ(producto);
+        
     };
 
     return (

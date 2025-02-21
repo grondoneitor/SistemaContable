@@ -144,7 +144,6 @@ const customTheme = (outerTheme) =>
   });
 
 
-
 export default function FormProductos() {
   useMapeandoProductos()
   useMapeandoProductosPorNombre()
@@ -207,8 +206,7 @@ export default function FormProductos() {
                   ...producto,
                   categoria: producto.categoria ? producto.categoria.categoria : "No tiene categoria"
                 }))
-                : []
-          }
+                : []}
           sx={{
             boxShadow: 2,
             border: "none",
@@ -230,9 +228,11 @@ export default function FormProductos() {
               color: "black",
             },
           }}
+          
           getRowId={(row) => row.id} // Usa el ID del producto
           columns={columns}
           initialState={{ pagination: { paginationModel } }}
+          rowsPerPageOptions 
           pageSizeOptions={[5, 10]}
           checkboxSelection={true}
           onRowSelectionModelChange={(newRowSelectionModel) => {

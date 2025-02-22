@@ -35,6 +35,10 @@ export default function FormEditarProducto({ valores }) {
     const handleSubmitAll = async (producto) => {
         if (producto.categoria) {
             producto.categoria = JSON.parse(producto.categoria);
+            producto.categoria.user  = null;
+            producto.user = null;
+            console.log(producto.user)
+
         }
         console.log("producto", producto)
         await editarProductoServ(producto);

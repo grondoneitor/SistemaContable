@@ -1,4 +1,3 @@
-
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schemaLogIn } from "../../services/validaciones";
@@ -21,7 +20,7 @@ const campos = [
     }
 ]
 
-// eslint-disable-next-line react/prop-types
+
 export default function LogIn() {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schemaLogIn)
@@ -34,11 +33,7 @@ export default function LogIn() {
     const { state } = useContext(AuthContext)
 
     const handleSubmitAll = async (usuario) => {
-
-        console.log(usuario)
-        await logIn(usuario)
-
-
+                await logIn(usuario)
     };
 
     return (
@@ -80,10 +75,9 @@ export default function LogIn() {
                 {
                     state.errorsMessage ?
                         <SuccessOrError message={state.errorsMessage} severity={"error"} moved={isMistake} />
-                        : 
+                        :
                         <SuccessOrError message={state.successMessage} severity={"success"} moved={isMoved} />
-
-                 }
+                }
 
             </div>
         </div>

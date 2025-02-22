@@ -15,17 +15,14 @@
 // }
 import { useContext, useEffect } from "react";
 import { ClienteContext } from "../../context/cliente";
-import { AuthContext } from "../../context/auth";
 
 export const useClientes = () => {
   const { state, guardarClientes } = useContext(ClienteContext);
-  const { state: stateAuth} = useContext(AuthContext)
-  useEffect(() => {  
+  // const { state: stateAuth} = useContext(AuthContext)
+  useEffect(() => {
 
-    console.log(stateAuth.tokenLogIn)
    const storage = localStorage.getItem("tokenLogin")
 
-   console.log(storage, " Este es desde el storage")
 
     fetch("http://localhost:8092/api/v1/clientes", {
       method: "GET",

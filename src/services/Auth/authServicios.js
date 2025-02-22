@@ -15,14 +15,14 @@ export const AuthServicios = () => {
     const { login } = useLogIn()
 
     const signUp = async (usuario) => {
-        console.log(usuario, " Usuarioo")
         const success = await registrar(usuario)
-        console.log(success)
         if (success) {
             isSuccess()
             setTimeout(()=>{
                 navigate("/login")
             },[1500])
+        }else{
+            isUnseccess()
         }
     }
 

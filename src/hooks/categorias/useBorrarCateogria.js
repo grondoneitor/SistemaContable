@@ -3,11 +3,14 @@ import {  useState } from 'react';
 export const useBorrarCategoria = () => {
     const [error, setError] = useState(null);
     const borrarCategoriaR = async (ids ) => {
-        console.log( ids)
+
+        const token = localStorage.getItem("tokenLogin")
+
         try {
             const response = await fetch(`http://localhost:8092/api/v1/categoria`, {
                 method: 'DELETE',
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(ids)

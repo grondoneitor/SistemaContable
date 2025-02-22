@@ -4,11 +4,12 @@ import {  useState } from 'react';
 export const useBorrarProducto = () => {
     const [error, setError] = useState(null);
     const borrarProducto = async (ids ) => {
+        const token = localStorage.getItem("tokenLogin")
         try {
-            console.log(`Intentando eliminar producto con ID: ${ids}`);
             const response = await fetch(`http://localhost:8092/api/v1/producto`, {
                 method: 'DELETE',
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(ids)

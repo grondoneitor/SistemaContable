@@ -4,7 +4,7 @@ import { AuthContext } from "../../context/auth"
 
 export const useLogIn = () =>{
 
-    const {guardarTokenLogin, guardarMensajeError,guardarMesnajeExito} = useContext(AuthContext)
+    const {guardarMensajeError,guardarMesnajeExito} = useContext(AuthContext)
     const login =  async(usuario) =>{
         guardarMesnajeExito("")
         guardarMensajeError("")
@@ -25,8 +25,8 @@ export const useLogIn = () =>{
                   localStorage.removeItem("tokenLogin")
              }
 
+            //  console.log(data.object.token)
              localStorage.setItem("tokenLogin", data.object.token)
-              guardarTokenLogin(localStorage.getItem("tokenLogin"))
               guardarMesnajeExito(data.mensaje)
             return data
             }

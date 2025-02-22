@@ -9,16 +9,16 @@ export const AuthContext = createContext()
 export function AuthProvider({children}){
 
     const [ state, dispatch ] = useReducer(AuthReducer, InititalState)
- 
-    const [token, setToken] = useState(localStorage.getItem("tokenLogin"))
 
-    useEffect(()=>{
-        if(token){
-            localStorage.setItem("tokenLogin", token)
-        }else{
-            localStorage.removeItem("tokenLogin")
-        }
-    },[token])
+    const [token, setToken] = useState(state.tokenLogIn)
+
+    // useEffect(()=>{
+    //     if(token){
+    //         localStorage.setItem("tokenLogin", token)
+    //     }else{
+    //         localStorage.removeItem("tokenLogin")
+    //     }
+    // },[token])
 
     const registrar = (usuario) =>{
 
@@ -42,7 +42,6 @@ export function AuthProvider({children}){
             state,
             registrar,
             guardarTokenLogin,
-            token, 
             setToken,
             guardarMensajeError,
             guardarMesnajeExito

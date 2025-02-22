@@ -4,8 +4,15 @@ import { ProductoContext } from "../../context/productos";
 export const useMapeandoProductosPorNombre = () => {
   const [setError] = useState(null);
   const { state, mostrarProductosBuscados } = useContext(ProductoContext);
+  const token = localStorage.getItem("tokenLogin")
   useEffect(() => {
-      fetch(`http://localhost:8092/api/v1/productoName/${state.nombreProductoBuscado}`)
+      fetch(`http://localhost:8092/api/v1/productoName/${state.nombreProductoBuscado}`,{
+        method: 'GET',
+        headers: {
+          'Authorizarion': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        }
+      })
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);

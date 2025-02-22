@@ -3,59 +3,61 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schemmaSignUp } from "../../services/validaciones";
 import { AuthServicios } from "../../services/Auth/authServicios";
-import { Alert } from "@mui/material";
+import { AuthContext } from "../../context/auth";
+import { useContext } from "react";
+import { SuccessOrError } from "../Messages/SuccessOrError";
 const campos = [
     {
-    titulo: "Username",
-    id: "username",
-    placeholder: "Usernam...",
-    type: "text"
-},
-{
-    titulo: "Contraseña",
-    id: "password",
-    placeholder: "Contraseña",
-    type: "password"
-},
-{
-    titulo: "Nombre",
-    id: "firstname",
-    placeholder: "Nombre...",
-    type: "text"
-},
-{
-    titulo: "Apellido",
-    id: "lastname",
-    placeholder: "Apellido...",
-    type: "text"
-},        {
-    titulo: "Mail",
-    id: "email",
-    placeholder: "Mail...",
-    type: "email"
-}
+        titulo: "Username",
+        id: "username",
+        placeholder: "Usernam...",
+        type: "text"
+    },
+    {
+        titulo: "Contraseña",
+        id: "password",
+        placeholder: "Contraseña",
+        type: "password"
+    },
+    {
+        titulo: "Nombre",
+        id: "firstname",
+        placeholder: "Nombre...",
+        type: "text"
+    },
+    {
+        titulo: "Apellido",
+        id: "lastname",
+        placeholder: "Apellido...",
+        type: "text"
+    }, {
+        titulo: "Mail",
+        id: "email",
+        placeholder: "Mail...",
+        type: "email"
+    }
 ]
 
-// eslint-disable-next-line react/prop-types
+
 export default function SignUp() {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schemmaSignUp)
     });
 
- 
 
-    const { signUp, isMoved} = AuthServicios(reset);
 
+    const { signUp, isMoved, isMistake } = AuthServicios(reset);
+    const { state } = useContext(AuthContext)
     const handleSubmitAll = async (usuario) => {
-  
+
         console.log(usuario)
         await signUp(usuario)
 
-        
+
     };
 
     return (
-        <div className="flex items-center justify-center  bg-[#d1c1f3] h-screen h-screen">
+        <div className="flex items-center justify-center  bg-[#d1c1f3] h-screen">
             <div className="w-1/3">
                 <form
                     onSubmit={handleSubmit(handleSubmitAll)}
@@ -63,20 +65,20 @@ export default function SignUp() {
                     noValidate
                 >
                     <h2 className="font-black text-3xl text-slate-800 text-center mb-10">
-                       Registrate
+                        Registrate
                     </h2>
 
                     {Array.isArray(campos) && campos.map(campo => (
                         <div className="mb-5" key={campo.id}>
-                                <input
-                                    {...register(campo.id)}
-                                    id={campo.id}
-                                    className="w-full p-3 border border-gray-600  "
-                                    type={campo.type}
-                                    name={campo.id}
-                                    placeholder={campo.placeholder}
-                                />
-                         
+                            <input
+                                {...register(campo.id)}
+                                id={campo.id}
+                                className="w-full p-3 border border-gray-600  "
+                                type={campo.type}
+                                name={campo.id}
+                                placeholder={campo.placeholder}
+                            />
+
 
                             {errors[campo.id] && <p className="text-red-500">{errors[campo.id].message}</p>}
                         </div>
@@ -88,15 +90,13 @@ export default function SignUp() {
                         REGISTRATE
                     </button>
                 </form>
-                <Alert
-                    variant="filled"
-                    severity="success"
-                    className={`transition-all duration-500 ease-linear w-64  right-5
-                   ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
-                   fixed bottom-5 mt-10  h-16 flex justify-center items-center  `}
-                >
-                    <p>Usuario registrado correctamente</p>
-                </Alert> 
+                {
+                    state.errorsMessage ?
+                        <SuccessOrError message={state.errorsMessage} severity={"error"} moved={isMistake} />
+                        :
+                        <SuccessOrError message={state.successMessage} severity={"success"} moved={isMoved} />
+
+                }
             </div>
         </div>
     );

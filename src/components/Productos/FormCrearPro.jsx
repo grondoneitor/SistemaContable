@@ -20,7 +20,13 @@ export default function FormCrearProducto({ campos = [] }) {
 
         if (producto.categoria) {
             producto.categoria = JSON.parse(producto.categoria)
+           
+            producto.categoria.user  = null;
+            console.log(producto.categoria.user )
         }
+        producto.stock_Min = Number(producto.stock_Min)
+
+        console.log(typeof(producto.stock))
         await crearProductoServ(producto);
         
     };

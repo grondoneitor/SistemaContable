@@ -41,8 +41,10 @@ export default function ServiciosCliente (reset) {
 
       const CrearCliente = async (cliente) => {
       const clienteFinal = convertidor(cliente)
-      const succes =  await crearClienteReal(clienteFinal)
-        if(succes.ok){
+      console.log(cliente)
+      const success =  await crearClienteReal(clienteFinal)
+        if(success){
+          console.log(success)
           crearCliente(clienteFinal)
           setIsMoved(true)
           functionMoved()

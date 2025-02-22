@@ -31,7 +31,8 @@ function App() {
             </Route>
           </Route>
         </Route>
-
+   
+       <Route path='*' element="Pagina no encontrada"/>
 
       </Routes>
 

@@ -3,11 +3,13 @@ import { useState } from "react";
 export const  useCrearCliente = () => {
     const [error, setError] = useState(null)
     const crearClienteReal = async (cliente) => {
+        const storage = localStorage.getItem("tokenLogin")
         try {
             const response = await fetch('http://localhost:8092/api/v1/cliente', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                'Authorization': `Bearer ${storage}`,    
+                'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(cliente),
             });
@@ -19,6 +21,7 @@ export const  useCrearCliente = () => {
             return response; 
         } catch (error) {
             setError(error)
+            console.log(error)
         }
     };
   

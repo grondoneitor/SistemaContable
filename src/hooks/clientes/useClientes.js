@@ -32,12 +32,12 @@ export const useClientes = () => {
       },
     })
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("No autorizado");
-        }
+        if(!response.ok) throw response.json()
         return response.json();
       })
-      .then((data) => guardarClientes(data.object))
+      .then((data) =>{
+        guardarClientes(data.object)}
+      )
       .catch((error) => console.error("Error:", error));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

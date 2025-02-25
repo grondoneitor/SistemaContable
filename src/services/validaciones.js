@@ -14,8 +14,8 @@ export const schema = yup.object({
 }).required();
 
 export const schemaCategoria = yup.object({
-    categoria: yup.string()
-    .required('La categoria es obligatoria')
+    // categoria: yup.string()
+    //     .required('La categoria es obligatoria')
 }).required()
 
 export const schemaCliente = yup.object({
@@ -27,38 +27,38 @@ export const schemaCliente = yup.object({
         .required("El mail es obligatorio")
         .email("El mail no es válido"),
     telefono: yup.string()
-          .required("El telefono es obligatorio")
-          .min(10, "El telefono debe tener 10 digitos")
-          .max(10, "El telefono debe tener 10 digitos"),
+        .required("El telefono es obligatorio")
+        .min(10, "El telefono debe tener 10 digitos")
+        .max(10, "El telefono debe tener 10 digitos"),
     dni: yup.string()
-    .required("El DNI es obligatorio")
-    .min(8, "El DNI debe tener 8 digitos")
-    .max(8, "El DNI debe tener 8 digitos")
+        .required("El DNI es obligatorio")
+        .min(8, "El DNI debe tener 8 digitos")
+        .max(8, "El DNI debe tener 8 digitos")
 }).required();
 
 export const schemmaSignUp = yup.object({
     username: yup.string()
-       .required("Es obligatorio")
-       .min(3, "El nombre debe tener al menos 3 letras"),
-       password: yup.string()
-       .required("Es obligatoria")
-       .min(8, "La contraseña debe tener al menos 8 caracteres"),
-       firstname: yup.string()
-       .required("El nombre obligatorio")
-       .min(3, "El nombre debe tener al menos 3 letras"),
-       lastname: yup.string()
-       .required("Es obligatoio el apellido")
-       .min(3, "El apellido debe tener al menos 3 letras"),
-       email: yup.string()
-       .required("El mail es obligatorio")
-       .email("El mail no es válido"),
-    })
+        .required("Es obligatorio")
+        .min(3, "El nombre debe tener al menos 3 letras"),
+    password: yup.string()
+        .required("Es obligatoria")
+        .min(8, "La contraseña debe tener al menos 8 caracteres"),
+    firstname: yup.string()
+        .required("El nombre obligatorio")
+        .min(3, "El nombre debe tener al menos 3 letras"),
+    lastname: yup.string()
+        .required("Es obligatoio el apellido")
+        .min(3, "El apellido debe tener al menos 3 letras"),
+    email: yup.string()
+        .required("El mail es obligatorio")
+        .email("El mail no es válido"),
+})
 
 export const schemaLogIn = yup.object({
     username: yup.string()
-    .required("Es obligatorio")
-    .min(3,"El minimo son 3 caracteres"),
+        .required("Es obligatorio")
+        .min(3, "El minimo son 3 caracteres"),
     password: yup.string()
-    .required("Es obligatorio")
-    .min(8, "La contraseña debe tener al menos 8 caracteres"),
+        .required("Es obligatorio")
+        .min(8, "La contraseña debe tener al menos 8 caracteres"),
 })    

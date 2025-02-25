@@ -23,6 +23,12 @@ export function ClienteProvider ({children}) {
   const clienteParaEditar = (cliente) =>{
     dispatch({type:"cliente_para_editar", payload:cliente})
   }
+  const mensajeError = (mensajeError) => {
+    dispatch({type:"mensaje_error", payload:mensajeError})
+  }
+  const mensajeExito = (mensajeExito) => {
+    dispatch({type:"mensaje_exito", payload:mensajeExito})
+  }
     return(
 
         <ClienteContext.Provider 
@@ -32,7 +38,9 @@ export function ClienteProvider ({children}) {
             guardarClientes,
             crearCliente,
             borrarCliente,
-            clienteParaEditar
+            clienteParaEditar,
+            mensajeError,
+            mensajeExito
           }}  
         >
         {children}

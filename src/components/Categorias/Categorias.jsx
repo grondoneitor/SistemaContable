@@ -1,12 +1,13 @@
 import { useContext, useMemo, useState } from "react";
 import { CategoriaContext } from "../../context/categorias";
 import { DataGrid } from "@mui/x-data-grid";
-import { Alert, Box, Modal, Paper, Toolbar, Tooltip, Typography } from "@mui/material";
+import {  Box, Modal, Paper, Toolbar, Tooltip, Typography } from "@mui/material";
 import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FormCrearCategoria from './FormCrearCategoria.jsx'
 import FormEditarCategoria from './FormEditarCategoria.jsx'
 import { ServiciosCategoria } from "../../services/Categorias/serviciosCategoria.js";
+import { SuccessOrError } from "../Messages/SuccessOrError.jsx";
 
 const columns = [
     { field: 'categoria', headerName: 'Categoria', flex: 1 }
@@ -129,8 +130,8 @@ export default function FormCategorias() {
 
 // eslint-disable-next-line react/prop-types
 function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, setRowSelectionModel, setValores, setOpenEdit, openEdit }) {
-    const { borrarCategoriaServ, isMoved } = ServiciosCategoria()
-
+    const { borrarCategoriaServ, isMoved, isMistake } = ServiciosCategoria()
+    const {state} = useContext(CategoriaContext)
     //   const [openEdit, setOpenEdit] = useState(false)
 
     const varOpenEdit = useMemo(() => openEdit, [openEdit])
@@ -210,15 +211,12 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
                 </Box>
             </Modal>
 
-            <Alert
-                variant="filled"
-                severity="success"
-                className={`transition-all duration-500 ease-linear 72 right-5
-                     ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
-                     fixed bottom-5 mt-10  h-16 flex justify-center items-center  `}
-            >
-                <p>Categoria/s borrados con exito</p>
-            </Alert>
+                {
+                    state.mensajeError ? 
+                    <SuccessOrError message={state.mensajeError} severity={"error"} moved={isMistake} />
+                    :
+                    <SuccessOrError message={state.mensajeExito} severity={"success"} moved={isMoved} />
+                }
         </Toolbar>
     );
 }

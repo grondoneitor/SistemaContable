@@ -5,7 +5,9 @@ export const InitialState = {
     productoEliminado:[],
     productoEditado:[],
     nombreProductoBuscado: "",
-    detalleProducto: null
+    detalleProducto: null,
+    mensajeError: "",
+    mensajeExito: ""
 };
 
 export const ActionTypes = {
@@ -16,6 +18,8 @@ export const ActionTypes = {
     BORRAR_PRODUCTO: 'borrar_producto',
     EDITAR_PRODUCTO: 'editar_producto',
     DETALLE_PRODUCTO: 'detalle_producto',
+    MENSAJE_ERROR: 'mensaje_error',
+    MENSAJE_EXITO: 'mensaje_exito'
 };
 
 export const ProductReducer = (state = InitialState, action) => {
@@ -66,6 +70,18 @@ export const ProductReducer = (state = InitialState, action) => {
             return{
                 ...state,
                 detalleProducto:ActionPayload
+            }
+        }
+        case ActionTypes.MENSAJE_ERROR:{
+            return{
+                ...state,
+                mensajeError:ActionPayload
+            }
+        }
+        case ActionTypes.MENSAJE_EXITO:{
+            return{
+                ...state,
+                mensajeExito:ActionPayload
             }
         }
 

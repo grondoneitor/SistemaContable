@@ -1,9 +1,11 @@
-// useBorrarProducto.js
-import {  useState } from 'react';
+import { useContext } from 'react';
+import { ProductoContext } from '../../context/productos';
 
 export const useBorrarProducto = () => {
-    const [error, setError] = useState(null);
-    const borrarProducto = async (ids ) => {
+    const { mensajeError, mensajeExito } = useContext(ProductoContext)
+    const borrarProducto = async (ids) => {
+        mensajeError("")
+        mensajeExito("")
         const token = localStorage.getItem("tokenLogin")
         try {
             const response = await fetch(`http://localhost:8092/api/v1/producto`, {
@@ -13,23 +15,19 @@ export const useBorrarProducto = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(ids)
-             
+
             });
-    
+            const data = await response.json()
             if (!response.ok) {
-                const responseBody = await response.text();
-                console.error(`Error del servidor: ${responseBody}`);
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                throw data
             }
-    
-            console.log("Producto eliminado con éxito");
-            return true;
-        } catch (err) {
-            setError(err.message);
-            console.error('Error al eliminar el producto:', err);
-            return false;
+            mensajeExito(data.mensaje)
+            return response;
+        } catch (error) {
+            mensajeError(error.mensaje);
+            return error;
         }
     };
-    
-    return { borrarProducto, error };
+
+    return { borrarProducto };
 };

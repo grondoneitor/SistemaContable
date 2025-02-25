@@ -1,7 +1,11 @@
+import { useContext } from "react";
+import { CategoriaContext } from "../../context/categorias";
 
 export const useCrearCategoria = () => {
+    const{     mensajeError,mensajeExito} = useContext(CategoriaContext)
     const crearCategoriaReal = async (categoria) => {
-        console.log(categoria.categoria)
+        mensajeError("")
+        mensajeExito("")
         const token = localStorage.getItem("tokenLogin")
         try {
             const response = await fetch('http://localhost:8092/api/v1/categoria', {
@@ -13,17 +17,16 @@ export const useCrearCategoria = () => {
                 body: JSON.stringify({"categoria": categoria}),
             });
 
-
-
-            const data = await response;
+            const data = await response.json();
 
             if (!response.ok) {
                 throw data
             }
-            console.log('Categoria creado:', data);
-            return data; // Podrías devolver los datos para manejar más adelante
+            mensajeExito(data.mensaje)
+            return response; 
         } catch (error) {
-            console.error( error);
+            mensajeError( error.mensaje);
+            return error
         }
     };
 

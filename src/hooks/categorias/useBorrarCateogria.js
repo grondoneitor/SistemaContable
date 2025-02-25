@@ -1,9 +1,11 @@
-import {  useState } from 'react';
+import {  useContext} from 'react';
+import { CategoriaContext } from '../../context/categorias';
 
 export const useBorrarCategoria = () => {
-    const [error, setError] = useState(null);
+    const {mensajeError, mensajeExito} = useContext(CategoriaContext)
     const borrarCategoriaR = async (ids ) => {
-
+       mensajeError("")
+       mensajeExito("")
         const token = localStorage.getItem("tokenLogin")
 
         try {
@@ -16,16 +18,21 @@ export const useBorrarCategoria = () => {
                 body: JSON.stringify(ids)
             });
     
+            const data = await response.json()
+             console.log("desde arriba ",response)
             if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                throw data;
             }
     
+            console.log(response)
+            mensajeExito(data.mensaje)
             return response;
         } catch (err) {
-            setError(err.message);
-            return false;
+            console.log(err)
+            mensajeError(err.mensaje);
+            return err;
         }
     };
     
-    return { borrarCategoriaR, error };
+    return { borrarCategoriaR };
 };

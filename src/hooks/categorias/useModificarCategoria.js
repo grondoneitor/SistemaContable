@@ -1,9 +1,12 @@
 // useModificarrProducto.js
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { CategoriaContext } from '../../context/categorias';
 
 export const useModificarCategoria = () => {
-    const [error, setError] = useState(null);
+    const {mensajeError, mensajeExito} = useContext(CategoriaContext)
     const modificarCategoria = async ( objectFinal ) => {
+        mensajeError("")
+        mensajeExito("")
         const token = localStorage.getItem("tokenLogin")
         try {
 
@@ -20,20 +23,18 @@ export const useModificarCategoria = () => {
                 })
             });
 
-            if (!response.ok) {
-                const responseBody = await response.text();
-                console.error(`Error del servidor: ${responseBody}`);
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
+            const data = await response.json()
 
-            console.log("Categoria actualizada con éxito");
-            return true;
+            if (!response.ok) {
+                throw data
+            }
+            mensajeExito(data.mensaje)
+            return response;
         } catch (err) {
-            setError(err.message);
-            console.error('Error al actualizar la categoria:', err);
+            mensajeError(err.mensaje);
             return false;
         }
     };
 
-    return { modificarCategoria, error };
+    return { modificarCategoria};
 };

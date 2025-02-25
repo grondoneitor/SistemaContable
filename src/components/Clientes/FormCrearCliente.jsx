@@ -2,7 +2,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schemaCliente } from "../../services/validaciones";
 import ServiciosCliente from "../../services/Clientes/clienteServicios";
-import { Alert } from "@mui/material";
+import { SuccessOrError } from "../Messages/SuccessOrError";
+import { useContext } from "react";
+import { ClienteContext } from "../../context/cliente";
 
 
 // eslint-disable-next-line react/prop-types
@@ -10,8 +12,8 @@ export default function FormCrearCliente({ campos = [] }) {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schemaCliente)
     })
-
-    const { CrearCliente, isMoved } = ServiciosCliente(reset)
+    const { state } = useContext(ClienteContext)
+    const { CrearCliente, isMoved, isMistake } = ServiciosCliente(reset)
     const handleSubmitAll = async (cliente) => {
         await CrearCliente(cliente)
     }
@@ -45,22 +47,18 @@ export default function FormCrearCliente({ campos = [] }) {
                         </div>
                     ))}
                     <button
-                        //  type="submit"
+                        type="submit"
                         className="bg-fuchsia-950 w-full p-3 text-white uppercase font-bold hover:bg-fuchsia-900 cursor-pointer transition-colors"
                     >
                         CREAR CLIENTE
                     </button>
                 </form>
-
-                <Alert
-                    variant="filled"
-                    severity="success"
-                    className={`transition-all duration-500 ease-linear w-64  right-5
-                   ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
-                   fixed bottom-5 mt-10  h-16 flex justify-center items-center  `}
-                >
-                    <p>Cliente creado con exito</p>
-                </Alert>
+                {
+                    state.errorsMessage ?
+                        <SuccessOrError message={state.errorsMessage} severity={"error"} moved={isMistake} />
+                        :
+                        <SuccessOrError message={state.successMessage} severity={"success"} moved={isMoved} />
+                }
             </div>
         </div>
     );

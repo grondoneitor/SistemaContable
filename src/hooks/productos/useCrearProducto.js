@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useContext} from "react";
+import { ProductoContext } from "../../context/productos";
 
 export const  useCrearProducto = () => {
-    const [error, setError] = useState(null)
+    const {mensajeError, mensajeExito } = useContext(ProductoContext)
     const crearProductoReal = async (producto) => {
-        console.log(producto)
+        mensajeError("")
+        mensajeExito("")
         const token = localStorage.getItem("tokenLogin")
         try {
             const response = await fetch('http://localhost:8092/api/v1/producto', {
@@ -20,13 +22,13 @@ export const  useCrearProducto = () => {
             if (!response.ok) {
                 throw datita
             }
-            return datita; 
+            mensajeExito(datita.mensaje)
+            return response; 
         } catch (error) {
-            setError(error)
-            console.log(error)
+            mensajeError(error.mensaje)
+            return error
         }
     };
-    // useMapeandoProductos()
 
-    return {crearProductoReal, error};
+    return {crearProductoReal};
 };

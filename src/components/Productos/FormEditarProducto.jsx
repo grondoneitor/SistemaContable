@@ -5,7 +5,8 @@ import { schema } from "../../services/validaciones";
 import { useContext, useEffect } from "react";
 import { ServiciosProducto } from "../../services/Productos/productoServicios";
 import { CategoriaContext } from "../../context/categorias";
-import { Alert } from "@mui/material";
+import { ProductoContext } from "../../context/productos";
+import { SuccessOrError } from "../Messages/SuccessOrError";
 
 export default function FormEditarProducto({ valores }) {
     const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm({
@@ -14,7 +15,10 @@ export default function FormEditarProducto({ valores }) {
     });
 
     const { state } = useContext(CategoriaContext);
-    const { editarProductoServ, isMoved } = ServiciosProducto();
+    const {state:stateProductos} = useContext(ProductoContext)
+    const { editarProductoServ, isMoved, isMistake } = ServiciosProducto();
+    // const {state} = useContext(ClienteContext)
+
 
     useEffect(() => {
         reset(valores);
@@ -102,15 +106,12 @@ export default function FormEditarProducto({ valores }) {
                     </button>
                 </form>
 
-                <Alert
-                    variant="filled"
-                    severity="success"
-                    className={`transition-all duration-500 ease-linear w-72  right-5
-                   ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
-                   fixed bottom-5 mt-10  h-16 flex justify-center items-center  `}
-                >
-                    <p>Producto actualizado con exito</p>
-                </Alert>
+              {
+                    stateProductos.mensajeError ?
+                        <SuccessOrError message={stateProductos.mensajeError} severity={"error"} moved={isMistake} />
+                        :
+                        <SuccessOrError message={stateProductos.mensajeExito} severity={"success"} moved={isMoved} />
+                } 
             </div>
         </div>
     );

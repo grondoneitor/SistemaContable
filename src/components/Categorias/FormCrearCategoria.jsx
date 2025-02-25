@@ -2,7 +2,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schemaCategoria } from "../../services/validaciones";
 import { ServiciosCategoria } from "../../services/Categorias/serviciosCategoria";
-import { Alert } from "@mui/material";
+import { useContext } from "react";
+import { CategoriaContext } from "../../context/categorias";
+import { SuccessOrError } from "../Messages/SuccessOrError";
 
 
 // eslint-disable-next-line react/prop-types
@@ -11,9 +13,9 @@ export default function FormCrearCategoria({ campos = [] }) {
         resolver: yupResolver(schemaCategoria)
     });
 
-    const { crearCategoriaServ, isMoved } = ServiciosCategoria(reset);
+    const { crearCategoriaServ, isMoved, isMistake } = ServiciosCategoria(reset);
+    const {state} = useContext(CategoriaContext)
     const handleSubmitAll = async (categoria) => {
-        console.log(categoria)
         await crearCategoriaServ(categoria);
     };
 
@@ -55,15 +57,12 @@ export default function FormCrearCategoria({ campos = [] }) {
                         CREAR CATEGORIA
                     </button>
                 </form>
-                <Alert
-                    variant="filled"
-                    severity="success"
-                    className={`transition-all duration-500 ease-linear w-72  right-5
-                     ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
-                     fixed bottom-5 mt-10  h-16 flex justify-center items-center  `}
-                >
-                    <p>Categoria/s borrados con exito</p>
-                </Alert>
+                {
+                    state.mensajeError ? 
+                    <SuccessOrError message={state.mensajeError} severity={"error"} moved={isMistake} />
+                    :
+                    <SuccessOrError message={state.mensajeExito} severity={"success"} moved={isMoved} />
+                }
             </div>
         </div>
     );

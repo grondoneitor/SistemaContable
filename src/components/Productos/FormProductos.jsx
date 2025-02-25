@@ -16,11 +16,11 @@ import { useMapeandoProductosPorNombre } from '../../hooks/productos/useMapeando
 import { useMapeandoCategorias } from '../../hooks/categorias/useMapeandoCategorias';
 const columns = [
   { field: 'producto', headerName: 'Producto', flex: 1 },
-  { field: 'descripcion', headerName: 'Descripcion',  flex: 1 },
-  { field: 'precio', headerName: 'Precio',  flex: 1},
-  { field: 'stock', headerName: 'Stock',  flex: 1 },
+  { field: 'descripcion', headerName: 'Descripcion', flex: 1 },
+  { field: 'precio', headerName: 'Precio', flex: 1 },
+  { field: 'stock', headerName: 'Stock', flex: 1 },
   { field: 'stock_Min', headerName: 'Stock Mininmo', flex: 1 },
-  { field: 'categoria', headerName: 'Categoria',  flex: 1},
+  { field: 'categoria', headerName: 'Categoria', flex: 1 },
 ];
 
 
@@ -66,6 +66,7 @@ const paginationModel = { page: 0, pageSize: 5 };
 
 import { outlinedInputClasses } from '@mui/material/OutlinedInput';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import { SuccessOrError } from '../Messages/SuccessOrError';
 
 const customTheme = (outerTheme) =>
   createTheme({
@@ -90,7 +91,7 @@ const customTheme = (outerTheme) =>
           root: {
             color: 'white', // Color del label por defecto
           },
-          focused: {
+          '&.Mui-focused': {
             color: 'white', // Color del label cuando el input está enfocado
           },
         },
@@ -228,11 +229,11 @@ export default function FormProductos() {
               color: "black",
             },
           }}
-          
+
           getRowId={(row) => row.id} // Usa el ID del producto
           columns={columns}
           initialState={{ pagination: { paginationModel } }}
-          rowsPerPageOptions 
+          rowsPerPageOptions
           pageSizeOptions={[5, 10]}
           checkboxSelection={true}
           onRowSelectionModelChange={(newRowSelectionModel) => {
@@ -268,8 +269,8 @@ export default function FormProductos() {
 // eslint-disable-next-line react/prop-types
 function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, setRowSelectionModel, setValores, setOpenEdit, openEdit }) {
 
-  const { borrarProductoServ, buscandoProductoServ, isMoved } = ServiciosProducto()
-
+  const { borrarProductoServ, buscandoProductoServ, isMoved, isMistake } = ServiciosProducto()
+  const { state } = useContext(ProductoContext)
   const varOpenEdit = useMemo(() => openEdit, [openEdit])
   const closeModalEdit = () => {
     setOpenEdit(false);
@@ -314,37 +315,39 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
       <Tooltip
         className='flex gap-4 text-white'
       >
-        <FontAwesomeIcon onClick={abriendo} className='hover:cursor-pointer text-2xl' icon={faPlus} />
+        <div>
+          <FontAwesomeIcon onClick={abriendo} className='hover:cursor-pointer text-2xl' icon={faPlus} />
 
-        {rows.length > 0 && <FontAwesomeIcon onClick={borrar} className='hover:cursor-pointer text-2xl' icon={faTrash} />}
+          {rows.length > 0 && <FontAwesomeIcon onClick={borrar} className='hover:cursor-pointer text-2xl' icon={faTrash} />}
 
-        {rows.length === 1 && <FontAwesomeIcon onClick={editar} className='hover:cursor-pointer text-2xl' icon={faPen} />}
+          {rows.length === 1 && <FontAwesomeIcon onClick={editar} className='hover:cursor-pointer text-2xl' icon={faPen} />}
 
+        </div>
       </Tooltip>
       <ThemeProvider theme={customTheme(outerTheme)}>
 
-      <TextField
-      className='text-white'
-        label="Buscar..."
-        variant="standard"
-        onChange={handleChange}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon sx={{ color: "white" }} /> {/* Icono en blanco */}
-            </InputAdornment>
-          ),
-        }}
-        sx={{
-          input: { color: "white" }, // Texto en blanco
-          "& .MuiInput-underline:before": { borderBottomColor: "white" }, // Línea blanca antes de enfocar
-          "& .MuiInput-underline:hover:before": { borderBottomColor: "white" }, // Línea blanca en hover
-          "& .MuiInput-underline:after": { borderBottomColor: "white" }, // Línea blanca después de enfocar
-        }}
-      />
+        <TextField
+          className='text-white'
+          label="Buscar..."
+          variant="standard"
+          onChange={handleChange}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon sx={{ color: "white" }} /> {/* Icono en blanco */}
+              </InputAdornment>
+            ),
+          }}
+          sx={{
+            input: { color: "white" }, // Texto en blanco
+            "& .MuiInput-underline:before": { borderBottomColor: "white" }, // Línea blanca antes de enfocar
+            "& .MuiInput-underline:hover:before": { borderBottomColor: "white" }, // Línea blanca en hover
+            "& .MuiInput-underline:after": { borderBottomColor: "white" }, // Línea blanca después de enfocar
+          }}
+        />
 
       </ThemeProvider>
- 
+
 
 
       <Box
@@ -373,7 +376,7 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
           <FormEditarProducto valores={valores} />
         </Box>
       </Modal>
-      <Alert
+      {/* <Alert
         variant="filled"
         severity="success"
         className={`transition-all duration-500 ease-linear w-64  right-5
@@ -381,10 +384,16 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
                    fixed bottom-5 mt-10  h-16 flex justify-center items-center  `}
       >
         <p>Producto eliminado con exito</p>
-      </Alert>
+      </Alert> */}
+      {
+        state.mensajeError ?
+          <SuccessOrError message={state.mensajeError} severity={"error"} moved={isMistake} />
+          :
+          <SuccessOrError message={state.mensajeExito} severity={"success"} moved={isMoved} />
+      }
     </Toolbar>
 
-    
+
 
   );
 }

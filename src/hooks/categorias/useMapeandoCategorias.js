@@ -15,14 +15,13 @@ export const useMapeandoCategorias = () => {
         })
         .then(response =>{
             if(!response.ok){
-              throw new Error(response.statusText)
+              throw response.json();
             }
             return response.json();
           })
         .then(data =>  mostrarCategorias(data.object))
         .catch(error => {
-          console.error("Error fetching products:", error);
-          setError("En este momento no hay productos disponibles");
+          setError(error);
         })
   }, [state.categoriaCreada, state.categoriaEditada, state.categoriaEliminada])
 

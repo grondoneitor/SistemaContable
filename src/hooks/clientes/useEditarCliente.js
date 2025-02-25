@@ -1,16 +1,20 @@
+import { useContext } from "react"
+import { ClienteContext } from "../../context/cliente"
 
 export const useEditarCliente = () => {
 
+    const { mensajeError, mensajeExito } = useContext(ClienteContext)
 
     const EditarClienteReal = async (cliente) => {
-
+        mensajeError("")
+        mensajeExito("")
         const storage = localStorage.getItem("tokenLogin")
         try {
             if (cliente !== null) {
                 const response = await fetch(`http://localhost:8092/api/v1/cliente/${cliente.id}`, {
                     method: 'PUT',
                     headers: {
-                        'Authorization':`Bearer ${storage}`, 
+                        'Authorization': `Bearer ${storage}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
@@ -21,11 +25,14 @@ export const useEditarCliente = () => {
                         "telefono": cliente.telefono
                     })
                 })
-                return response
-
+                const data = await response.json()
+                if (!response.ok) {throw data}
+                mensajeExito(data.mensaje)
+                return response;
             }
-        } catch (err) {
-            throw new Error(err)
+        } catch (data) {
+            mensajeError(data.mensaje)
+            return data
         }
     }
 

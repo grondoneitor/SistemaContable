@@ -29,6 +29,12 @@ export function ProductoProvider({ children }) {
     const detalleProducto = (id) =>{
         dispatch({ type: 'detalle_producto', payload: id })
     }
+    const mensajeError = (error) =>{
+        dispatch({ type: 'mensaje_error', payload: error })
+    }
+    const mensajeExito = (exito) =>{
+        dispatch({ type: 'mensaje_exito', payload: exito })
+    }
     return (
         <ProductoContext.Provider value={{
             state,
@@ -38,7 +44,9 @@ export function ProductoProvider({ children }) {
             crearProducto,
             borrarProductoI,
             editarProducto,
-            detalleProducto
+            detalleProducto,
+            mensajeError,
+            mensajeExito
         }}>
             {children}
         </ProductoContext.Provider>

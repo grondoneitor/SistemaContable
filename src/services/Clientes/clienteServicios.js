@@ -27,41 +27,51 @@ export default function ServiciosCliente (reset) {
     const {borrarCliente,crearCliente,clienteParaEditar} = useContext(ClienteContext)
     const { crearClienteReal } = useCrearCliente()
     const [isMoved, setIsMoved] = useState(false)
+    const [isMistake, setIsMistake] = useState(false)
     const { EditarClienteReal } = useEditarCliente()
 
 
     const BorrarCliente = async (ids) =>{
-        const succes = await borrarClienteReal(ids)
-        if(succes.ok){
+        const success = await borrarClienteReal(ids)
+        console.log(success)
+        if(success){
+          console.log("Se borrooo")
             borrarCliente(ids)
-            setIsMoved(true)
             functionMoved()
+        }else{
+          functionMistake()
         }
     }
 
       const CrearCliente = async (cliente) => {
       const clienteFinal = convertidor(cliente)
-      console.log(cliente)
       const success =  await crearClienteReal(clienteFinal)
-        if(success){
-          console.log(success)
+        if(success.ok ){
           crearCliente(clienteFinal)
-          setIsMoved(true)
-          functionMoved()
-        }
-        reset()
+          reset()
+           functionMoved()
+        }else{
+          functionMistake()
+        } 
+      
       }
       
 
 
 
     const EditarCliente = async (cliente) => {
-        const succes = await EditarClienteReal(cliente)
-        if (succes) {
+        const success = await EditarClienteReal(cliente)
+        console.log(success)
+        if (success.ok) {
             clienteParaEditar(cliente)
+            reset()
+            console.log("exito")
             functionMoved()
+        }else{
+          functionMistake()
+          console.log("error")
         }
-        reset()
+       
     }
 
     const functionMoved = () =>{
@@ -73,5 +83,14 @@ export default function ServiciosCliente (reset) {
         }
 
     }
-    return {BorrarCliente,CrearCliente,EditarCliente, isMoved}
+    const functionMistake = () =>{
+      if(isMistake === false){
+          setIsMistake(true)
+          setTimeout(() => {
+              setIsMistake(false)
+          },[2000])
+      }
+
+  }
+    return {BorrarCliente,CrearCliente,EditarCliente, isMoved, isMistake}
 }

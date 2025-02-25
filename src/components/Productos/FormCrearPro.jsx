@@ -4,8 +4,8 @@ import { schema } from "../../services/validaciones";
 import { ServiciosProducto } from "../../services/Productos/productoServicios";
 import { CategoriaContext } from "../../context/categorias";
 import { useContext } from "react";
-import { Alert } from "@mui/material";
-
+import { SuccessOrError } from "../Messages/SuccessOrError";
+import { ProductoContext } from "../../context/productos";
 
 // eslint-disable-next-line react/prop-types
 export default function FormCrearProducto({ campos = [] }) {
@@ -13,22 +13,18 @@ export default function FormCrearProducto({ campos = [] }) {
         resolver: yupResolver(schema)
     });
 
-    const { crearProductoServ, isMoved } = ServiciosProducto(reset);
+    const { crearProductoServ, isMoved, isMistake } = ServiciosProducto(reset);
     const { state } = useContext(CategoriaContext);
-
+    const {state:stateProductos} = useContext(ProductoContext)
     const handleSubmitAll = async (producto) => {
 
         if (producto.categoria) {
             producto.categoria = JSON.parse(producto.categoria)
            
             producto.categoria.user  = null;
-            console.log(producto.categoria.user )
         }
         producto.stock_Min = Number(producto.stock_Min)
-
-        console.log(typeof(producto.stock))
         await crearProductoServ(producto);
-        
     };
 
     return (
@@ -84,15 +80,12 @@ export default function FormCrearProducto({ campos = [] }) {
                     </button>
                 </form>
 
-                <Alert
-                    variant="filled"
-                    severity="success"
-                    className={`transition-all duration-500 ease-linear w-64  right-5
-                   ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
-                   fixed bottom-5 mt-10  h-16 flex justify-center items-center  `}
-                >
-                    <p>Producto creado con exito</p>
-                </Alert>
+                {
+                    stateProductos.mensajeError ?
+                        <SuccessOrError message={stateProductos.mensajeError} severity={"error"} moved={isMistake} />
+                        :
+                        <SuccessOrError message={stateProductos.mensajeExito} severity={"success"} moved={isMoved} />
+                } 
             </div>
         </div>
     );

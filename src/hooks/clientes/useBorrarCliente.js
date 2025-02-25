@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ClienteContext } from "../../context/cliente";
 
 export const useBorrarCliente = () => {
-  const [error, setError] = useState(null);
-
+  const {mensajeError, mensajeExito} = useContext(ClienteContext)
   const borrarClienteReal = async (ids) => {
-
+    mensajeError("")
+    mensajeExito("")
     const token = localStorage.getItem("tokenLogin")
+    console.log("aaca??")
 
     try {
       const response = await fetch('http://localhost:8092/api/v1/cliente', {
@@ -17,18 +19,17 @@ export const useBorrarCliente = () => {
         body: JSON.stringify(ids)
       });
 
+      const data = await response.json()
       if (!response.ok) {
-        const errorMessage = await response.text();
-        throw new Error(
-          `Error ${response.status}: ${response.statusText} - ${errorMessage}`
-        );
+        throw data
       }
+      console.log(data)
+      mensajeExito(data.mensaje)
      return response
     } catch (err) {
-      console.error("Error al eliminar clientes:", err.message);
-      setError(err.message); // Guarda el mensaje del error
+      mensajeError(err.message);
     }
   };
 
-  return { borrarClienteReal, error };
+  return { borrarClienteReal};
 };

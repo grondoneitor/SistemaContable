@@ -10,6 +10,7 @@ import FormCrearCliente from './FormCrearCliente';
 import { useClientes } from '../../hooks/clientes/useClientes';
 import ServiciosCliente from '../../services/Clientes/clienteServicios';
 import FormEditarCliente from './FormEditarClient';
+import { SuccessOrError } from '../Messages/SuccessOrError';
 
 const columns = [
   { field: 'nombre_Completo', headerName: 'Nombre', flex: 1 },
@@ -28,7 +29,7 @@ const campos = [{
   titulo: "Mail",
   id: "mail",
   placeholder: "Mail del cliente",
-  type: "email"
+  type: "text"
 },
 {
   titulo: "Telefono",
@@ -147,8 +148,8 @@ export default function Cliente() {
 }
 
 function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, setRowSelectionModel }) {
-  const { BorrarCliente, isMoved } = ServiciosCliente()
-
+  const { BorrarCliente, isMoved, isMistake } = ServiciosCliente()
+  const {state} = useContext(ClienteContext)
   const [openEdit, setOpenEdit] = useState(false)
 
   const varOpenEdit = useMemo(() => openEdit, [openEdit])
@@ -203,15 +204,13 @@ function EnhancedTableToolbar({ setOpen, rowSelectionModel: rows = [], valores, 
           <FormEditarCliente valores={valores} />
         </Box>
       </Modal>
-      <Alert
-      variant="filled"
-        severity="success"
-        className={`transition-all duration-500 ease-linear w-64  right-5
-                     ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
-                     fixed bottom-5 mt-10  h-16 flex justify-center items-center  `}
-      >
-        <p>Cliente/s borrados con exito</p>
-      </Alert>
+      {
+                    state.errorsMessage ?
+                        <SuccessOrError message={state.errorsMessage} severity={"error"} moved={isMistake} />
+                        :
+                        <SuccessOrError message={state.successMessage} severity={"success"} moved={isMoved} />
+
+                }
     </Toolbar>
   );
 }

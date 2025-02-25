@@ -3,7 +3,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaCategoria } from "../../services/validaciones";
 import { useForm } from "react-hook-form";
 import { ServiciosCategoria } from "../../services/Categorias/serviciosCategoria";
-import { Alert } from "@mui/material";
+import { useContext } from "react";
+import { CategoriaContext } from "../../context/categorias";
+import { SuccessOrError } from "../Messages/SuccessOrError";
 
 export default function FormEditarCategoria({valores = []}) {
     
@@ -16,8 +18,8 @@ export default function FormEditarCategoria({valores = []}) {
         defaultValues: valores
     });
     
-     const { modificarCategoriaServ, isMoved } = ServiciosCategoria(reset);
-
+     const { modificarCategoriaServ, isMoved, isMistake } = ServiciosCategoria(reset);
+    const {state} = useContext(CategoriaContext)
    const handleSubmitAll = async (categoria) => {
     console.log(categoria)
        await modificarCategoriaServ(categoria)
@@ -63,7 +65,7 @@ export default function FormEditarCategoria({valores = []}) {
                 </button>
             </form>
 
-   <Alert
+   {/* <Alert
       variant="filled"
         severity="success"
         className={`transition-all duration-500 ease-linear 72  right-5
@@ -71,8 +73,13 @@ export default function FormEditarCategoria({valores = []}) {
                      fixed bottom-5 mt-10  h-16 flex justify-center items-center  `}
       >
         <p>Categoria/s borrados con exito</p>
-      </Alert>
-
+      </Alert> */}
+                  {
+                        state.mensajeError ? 
+                        <SuccessOrError message={state.mensajeError} severity={"error"} moved={isMistake} />
+                        :
+                        <SuccessOrError message={state.mensajeExito} severity={"success"} moved={isMoved} />
+                    }
         </div>
     </div>
 );

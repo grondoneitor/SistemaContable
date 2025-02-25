@@ -1,9 +1,12 @@
 // useModificarrProducto.js
-import { useState } from 'react';
+import { useContext} from 'react';
+import { ProductoContext } from '../../context/productos';
 
 export const useModificarProducto = () => {
-    const [error, setError] = useState(null);
+    const {mensajeError, mensajeExito} = useContext(ProductoContext)
     const modificarProducto = async ( producto ) => {
+        mensajeError("")
+        mensajeExito("")
         const token = localStorage.getItem("tokenLogin")
         try {
             const response = await fetch(`http://localhost:8092/api/v1/producto/${producto.id}`, {
@@ -24,17 +27,19 @@ export const useModificarProducto = () => {
                 })
             });
 
+            const data =  await response.json()
+
             if (!response.ok) {
 
-                throw new Error( response);
+                throw data
             }
-
+             mensajeExito(data.mensaje)
             return response;
         } catch (err) {
-            setError(err);
-            return false;
+            mensajeError(err.mensaje);
+            return err;
         }
     };
 
-    return { modificarProducto, error };
+    return { modificarProducto };
 };

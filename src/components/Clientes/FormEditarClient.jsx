@@ -2,17 +2,22 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaCliente } from "../../services/validaciones";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import ServiciosCliente from "../../services/Clientes/clienteServicios";
-import { Alert } from "@mui/material";
+import { ClienteContext } from "../../context/cliente";
+import { SuccessOrError } from "../Messages/SuccessOrError";
 
- 
+
 export default function FormEditarCliente({ valores }) {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schemaCliente),
         defaultValues: valores
     });
-    const { EditarCliente, isMoved } = ServiciosCliente()
+
+    const { state } = useContext(ClienteContext)
+    const { EditarCliente, isMoved, isMistake } = ServiciosCliente(reset)
+
+
     useEffect(() => {
         reset(valores);
     }, [valores, reset]);
@@ -70,16 +75,13 @@ export default function FormEditarCliente({ valores }) {
                         EDITAR CLIENTE
                     </button>
                 </form>
+                {
+                    state.errorsMessage ?
+                        <SuccessOrError message={state.errorsMessage} severity={"error"} moved={isMistake} />
+                        :
+                        <SuccessOrError message={state.successMessage} severity={"success"} moved={isMoved} />
 
-                <Alert
-                    variant="filled"
-                    severity="success"
-                    className={`transition-all duration-500 ease-linear w-64  right-5
-                   ${isMoved ? "right-5 opacity-100" : "-right-72 opacity-0"}
-                   fixed bottom-5 mt-10  h-16 flex justify-center items-center  `}
-                >
-                    <p>Cliente actualizado con exito</p>
-                </Alert>
+                }
 
             </div>
         </div>

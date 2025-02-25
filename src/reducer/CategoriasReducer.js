@@ -7,10 +7,12 @@ export const InitialState = {
     categoriaCreada:[],
     categoriaEditada: [],
     categoriaEliminada: [],
-    categoriaSeleccionada: []
+    categoriaSeleccionada: [],
+    mensajeError: "",
+    mensajeExito:""
 };
 
-// Tipos de acción
+
 export const ActionTypes = {
     MOSTRAR_CATEGORIAS: 'mostrar_categorias',
     CREAR_CATEGORIA: 'crear_categoria',
@@ -20,6 +22,8 @@ export const ActionTypes = {
     GUARDAR_CAT_CATEGORIA: 'guardar_cat_categoria',
     CATEGORIA_CREADA: 'categoria_creada',
     CATEGORIA_SELECCIONADA: 'categoria_seleccionada',
+    MENSAJE_ERROR: 'mensaje_error',
+    MENSAJE_EXITO: 'mensaje_exito'
 };
 
 // Reducer
@@ -76,7 +80,19 @@ export const CategoriaReducer = (state = InitialState, action) => {
                 categoriaSeleccionada: ActionPayload
             }
         }
+        case ActionTypes.MENSAJE_ERROR:{
+            return{
+                ...state,
+                mensajeError: ActionPayload
+            }
+        }
+        case ActionTypes.MENSAJE_EXITO:{
+            return{
+               ...state,
+               mensajeExito:ActionPayload
+            }
+        }
         default:
-            return state; // Retorna el estado actual si no coincide la acción
+            return state;
     }
 };

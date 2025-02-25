@@ -15,7 +15,7 @@ export default function FormEditarProducto({ valores }) {
     });
 
     const { state } = useContext(CategoriaContext);
-    const {state:stateProductos} = useContext(ProductoContext)
+    const { state: stateProductos } = useContext(ProductoContext)
     const { editarProductoServ, isMoved, isMistake } = ServiciosProducto();
     // const {state} = useContext(ClienteContext)
 
@@ -39,7 +39,7 @@ export default function FormEditarProducto({ valores }) {
     const handleSubmitAll = async (producto) => {
         if (producto.categoria) {
             producto.categoria = JSON.parse(producto.categoria);
-            producto.categoria.user  = null;
+            producto.categoria.user = null;
             producto.user = null;
             console.log(producto.user)
 
@@ -106,12 +106,12 @@ export default function FormEditarProducto({ valores }) {
                     </button>
                 </form>
 
-              {
+                {
                     stateProductos.mensajeError ?
                         <SuccessOrError message={stateProductos.mensajeError} severity={"error"} moved={isMistake} />
                         :
                         <SuccessOrError message={stateProductos.mensajeExito} severity={"success"} moved={isMoved} />
-                } 
+                }
             </div>
         </div>
     );

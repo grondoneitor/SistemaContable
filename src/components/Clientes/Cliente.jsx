@@ -18,7 +18,7 @@ export default function Cliente() {
   const [valores, setValores] = useState({})
 
   return (
-    <>
+    <div  className="bg-white rounded-2xl p-6 w-full" >
       {/* <h1 className="text-4xl m-4 font-bold">Clientes</h1>  */}
       <Paper sx={{ borderRadius: "24px", width: "100%" }} >
         <EncabezadoTablaClientes
@@ -39,6 +39,6 @@ export default function Cliente() {
 
       <ModalCrearCliente open={open} setOpen={setOpen} setRowSelectionModel={setRowSelectionModel} />
 
-    </>
+    </div>
   );
 }

@@ -20,29 +20,32 @@ export default function FormProductos() {
   const [valores, setValores] = useState({})
 
   return (
-    <>
+    <div className="w-full flex flex-col gap-6">
+      <div className="bg-white w-full rounded-2xl p-6">
+        <Paper sx={{ borderRadius: "24px", width: "100%" }}>
+          <EncabezadoTableProductos
+            setOpen={setOpen}
+            rowSelectionModel={rowSelectionModel}
+            valores={valores}
+            setRowSelectionModel={setRowSelectionModel}
+            setOpenEdit={setOpenEdit}
+            openEdit={openEdit}
+          />
+          <TableProductos
+            setRowSelectionModel={setRowSelectionModel}
+            setValores={setValores}
+            rowSelectionModel={rowSelectionModel}
+          />
+        </Paper>
+        <ModalCrearProductos open={open} setOpen={setOpen} setRowSelectionModel={setRowSelectionModel} />
+      </div>
 
-      <Paper sx={{ borderRadius: "24px", width: "100%" }}>
-        <EncabezadoTableProductos
-          setOpen={setOpen}
-          rowSelectionModel={rowSelectionModel}
-          valores={valores}
-          setRowSelectionModel={setRowSelectionModel}
-          setOpenEdit={setOpenEdit}
-          openEdit={openEdit}
-        />
-
-        <TableProductos
-          setRowSelectionModel={setRowSelectionModel}
-          setValores={setValores}
-          rowSelectionModel={rowSelectionModel}
-
-        />
-
-      </Paper>
-
-      <ModalCrearProductos open={open} setOpen={setOpen} setRowSelectionModel={setRowSelectionModel} />
-      <Outlet />
-    </>
+      {/* Aquí está el Outlet, ajustado dinámicamente */}
+      <div className=" ">
+        <div className="  w-2/6 ">
+          <Outlet className="w-full" />
+        </div>
+      </div>
+    </div>
   );
 }

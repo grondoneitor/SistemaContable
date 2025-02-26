@@ -6,16 +6,17 @@ import { ServiciosCategoria } from "../../services/Categorias/serviciosCategoria
 import { useContext } from "react";
 import { CategoriaContext } from "../../context/categorias";
 import { SuccessOrError } from "../Messages/SuccessOrError";
+import { capitalizeFirstLetter } from "../../services/mayusculaPrimeraLetra";
 
 export default function FormEditarCategoria({valores = []}) {
     
    const verdaderosValores = {
     id_Categoria: valores.id_Categoria,
-    categoria: valores.categoria
+    categoria: capitalizeFirstLetter(valores.categoria)
 }
     const { register, handleSubmit,formState: { errors }, reset} = useForm({
         resolver: yupResolver(schemaCategoria),
-        defaultValues: valores
+        defaultValues: verdaderosValores
     });
     
      const { modificarCategoriaServ, isMoved, isMistake } = ServiciosCategoria(reset);
@@ -51,7 +52,7 @@ export default function FormEditarCategoria({valores = []}) {
                                 className="w-full p-3 border border-gray-100"
                                 type="text"
                                 placeholder={`Ingrese ${clave}`}
-                                defaultValue={valor ?? ""}
+                                defaultValue={capitalizeFirstLetter(valor) ?? ""}
                             />
                            {errors[clave] && <p className="text-red-500">{errors[clave].message}</p>}  
                         </div>

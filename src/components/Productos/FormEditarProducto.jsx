@@ -7,8 +7,21 @@ import { ServiciosProducto } from "../../services/Productos/productoServicios";
 import { CategoriaContext } from "../../context/categorias";
 import { ProductoContext } from "../../context/productos";
 import { SuccessOrError } from "../Messages/SuccessOrError";
+import { capitalizeFirstLetter } from "../../services/mayusculaPrimeraLetra";
 
 export default function FormEditarProducto({ valores }) {
+
+
+    const verdaderosValores = {
+        id: valores.id,
+        producto: capitalizeFirstLetter(valores.producto),
+        descripcion: valores.descripcion,
+        precio: valores.precio,
+        stock: valores.stock,
+        stock_Min: valores.stock_Min,
+        categoria: valores.categoria
+    }
+
     const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm({
         resolver: yupResolver(schema),
         defaultValues: valores
@@ -21,21 +34,13 @@ export default function FormEditarProducto({ valores }) {
 
 
     useEffect(() => {
-        reset(valores);
-        if (valores.categoria) {
+        reset(verdaderosValores);
+        if (verdaderosValores.categoria) {
             setValue("categoria", JSON.stringify(valores.categoria));  // Seteamos la categoría de forma manual
         }
 
     }, [valores, reset, setValue]);
-    const verdaderosValores = {
-        id: valores.id,
-        producto: valores.producto,
-        descripcion: valores.descripcion,
-        precio: valores.precio,
-        stock: valores.stock,
-        stock_Min: valores.stock_Min,
-        categoria: valores.categoria
-    }
+
     const handleSubmitAll = async (producto) => {
         if (producto.categoria) {
             producto.categoria = JSON.parse(producto.categoria);
@@ -76,7 +81,7 @@ export default function FormEditarProducto({ valores }) {
                                         <option value={JSON.stringify(null)}>Sin categoria</option>
                                         {state.categorias.map(cat => (
                                             <option key={cat.id_Categoria} value={JSON.stringify(cat)}>
-                                                {cat.categoria}
+                                                {capitalizeFirstLetter(cat.categoria)}
                                             </option>
                                         ))}
                                     </select>

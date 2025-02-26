@@ -1,4 +1,5 @@
 import { DataGrid } from "@mui/x-data-grid";
+import { capitalizeFirstLetter } from "../../services/mayusculaPrimeraLetra";
 
 const columns = [
     { field: 'categoria', headerName: 'Categoria', flex: 1 }
@@ -8,11 +9,10 @@ const paginationModel = { page: 0, pageSize: 5 };
 
 
 // eslint-disable-next-line react/prop-types
-export default function TableCategorias({ categorias, rowSelectionModel, setRowSelectionModel, setValores }) {
+export default function TableCategorias({ categorias=[], rowSelectionModel, setRowSelectionModel, setValores }) {
     const funcionParaSeleccionar = (newRowSelectionModel) => {
         setRowSelectionModel(newRowSelectionModel);
         if (newRowSelectionModel.length > 0) {
-            // eslint-disable-next-line react/prop-types
             const selectedRow = categorias.find(
                 (categoria) => categoria.id_Categoria === newRowSelectionModel[0]
             );
@@ -24,7 +24,10 @@ export default function TableCategorias({ categorias, rowSelectionModel, setRowS
 
     return (
         <DataGrid
-            rows={categorias}
+            rows={categorias.map(categoria=>({
+                ...categoria,
+                categoria: capitalizeFirstLetter(categoria.categoria),
+            }))}
             columns={columns}
             className="w-auto display inline-block"
             pageSize={paginationModel.pageSize}

@@ -4,6 +4,7 @@ import { ProductoContext } from '../../context/productos';
 export const useBorrarProducto = () => {
     const { mensajeError, mensajeExito } = useContext(ProductoContext)
     const borrarProducto = async (ids) => {
+        console.log(ids)
         mensajeError("")
         mensajeExito("")
         const token = localStorage.getItem("tokenLogin")

@@ -6,17 +6,20 @@ import { BrowserRouter } from 'react-router-dom'
 import { CategoriaProvider } from './context/categorias.jsx'
 import { ClienteProvider } from './context/cliente.jsx'
 import { AuthProvider } from './context/auth.jsx'
+import { VentasProvider } from './context/ventas.jsx'
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-  <AuthProvider>
-    <ProductoProvider>
-      <CategoriaProvider>
-        <ClienteProvider>
-        <App />
-        </ClienteProvider>
-      </CategoriaProvider>
-    </ProductoProvider>
+    <AuthProvider>
+      <ProductoProvider>
+        <CategoriaProvider>
+          <ClienteProvider>
+            <VentasProvider>
+              <App />
+            </VentasProvider>
+          </ClienteProvider>
+        </CategoriaProvider>
+      </ProductoProvider>
     </AuthProvider>
   </BrowserRouter>
 )

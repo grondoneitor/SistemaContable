@@ -19,7 +19,7 @@ function App() {
     { url: "/", nombre: "Estado de cuenta", icono: faTableCells }
   ]
   return (
-    <body className=''>
+    <div className=''>
 
       <Routes>
         <Route path="/signup" element={<SignUp />} />
@@ -40,7 +40,7 @@ function App() {
 
       </Routes>
 
-    </body>
+    </div>
   )
 }
 

@@ -1,102 +1,77 @@
-import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import EncabezadoTablaVentas from '../Ventas/EncabezadoTablaVentas';
 import { useContext, useState } from 'react';
 import { VentasContext } from '../../context/ventas';
 import useMapeandoVenta from '../../hooks/ventas/useMapeandoVentas';
-const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'producto', headerName: 'Producto', width: 130 },
-  { field: 'cliente', headerName: 'Cliente', width: 130 },
-  {
-    field: 'cantidad',
-    headerName: 'Cantidad',
-    type: 'number',
-    width: 90,
-  },
-  { field: 'precioTotal', headerName: 'Precio total', width: 130 },
-  { field: 'fecha', headerName: 'Fecha', width: 130 },
-  { field: 'modoDePago', headerName: 'Modo de pago', width: 130 },
-  { field: 'pendiente', headerName: 'Pendiente', width: 130 }
-];
+import { capitalizeFirstLetter } from '../../services/mayusculaPrimeraLetra';
+import { useMapeandoProductos } from '../../hooks/productos/useMapeandoProductos';
+import { useClientes } from '../../hooks/clientes/useClientes';
+import Table from '../Table';
+import ModalAll from '../Modal';
+import FormCrearVentas from './FormCrearVentas';
+import { campos, columns } from './constantes';
+import FormEditarVentas from './FormEditarVentas';
+import { SuccessOrError } from '../Messages/SuccessOrError';
+import VentasServicios from '../../services/Ventas/ventasServicios';
 
-
-const paginationModel = { pcantidad: 0, pcantidadSize: 5 };
 
 export default function Ventas() {
 
-    const {state} = useContext(VentasContext)
+    const { state } = useContext(VentasContext)
     useMapeandoVenta()
-    
-    const [rowSelectionModel, setRowSelectionModel] = useState(null)
+    useMapeandoProductos()
+    useClientes()
+
+    const [rowSelectionModel, setRowSelectionModel] = useState([])
     const [valores, setValores] = useState(null)
-    const funcionParaSeleccionar = (newRowSelectionModel) => {
-        setRowSelectionModel(newRowSelectionModel);
-        if (newRowSelectionModel.length > 0) {
-            const selectedRow = state.productos.find(
-                (producto) => producto.id === newRowSelectionModel[0]
-            );
-            setValores(selectedRow || {});
-        } else {
-            setValores({});
+    const { isMoved, isMistake } = VentasServicios()
 
-        }
-    }
 
-    const [open, setOpen ] = useState(false)
+    const [open, setOpen] = useState(false)
     const [openEdit, setOpenEdit] = useState(false)
 
-
-const clientes = state.ventas.map(venta =>({
-    ...venta,
-    producto: venta.producto.producto,
-    cliente: venta.cliente.nombre_Completo
-}))
+    const ventas = state.ventas.map(venta => ({
+        ...venta,
+        producto: capitalizeFirstLetter(venta.producto.producto),
+        cliente: venta.cliente.nombre_Completo,
+        fecha: (venta.fecha).split("T")[0]
+    }))
 
     return (
-    <Paper sx={{ height: 400, width: '100%' }}>
+        <div className="w-full flex flex-col gap-6">
+            <div className="bg-white w-full rounded-2xl p-6">
+                <Paper sx={{ borderRadius: "24px", width: '100%' }}>
 
-      <DataGrid
-        rows={clientes}
-        columns={columns}
-        sx={{
-            boxShadow: 2,
-            border: "none",
-            width: "100%",
-            justifyItems: "space-between",
-            borderRadius: "0px 0px 24px 24px",
-            "& .MuiDataGrid-footerContainer": { // Contenedor de paginación en DataGrid
-                borderBottomLeftRadius: "24px",
-                borderBottomRightRadius: "24px",
-                overflow: "hidden",
-            },
-            "& .MuiTablePagination-root": { // Estilos de la paginación
-                backgroundColor: "#f0f0f0",
-                color: "black",
-                borderBottomLeftRadius: "24px",
-                borderBottomRightRadius: "24px",
-            },
-            "& .MuiTablePagination-actions button": {
-                color: "black",
-            },
-        }
-        }
+                    <EncabezadoTablaVentas
+                        rowSelectionModel={rowSelectionModel}
+                        setRowSelectionModel={setRowSelectionModel}
+                        setOpenEdit={setOpenEdit}
+                        setOpen={setOpen}
+                    />
 
-        getRowId={(row) => row.id} 
-        initialState={{ pagination: { paginationModel } }}
-        rowsPerPageOptions
-        pageSizeOptions={[5, 10]}
-        checkboxSelection={true}
-        onRowSelectionModelChange={(newRowSelectionModel) => {
-            funcionParaSeleccionar(newRowSelectionModel)
-        }}
-        rowSelectionModel={rowSelectionModel}
-        keepNonExistentRowsSelected
-        disableRowSelectionOnClick
-        disableColumnResize
-        disableColumnReorder
-        disableColumnMenu
-      />
-    </Paper>
-  );
+                    <Table
+                        setRowSelectionModel={setRowSelectionModel}
+                        setValores={setValores}
+                        rowSelectionModel={rowSelectionModel}
+                        rows={ventas}
+                        columns={columns}
+                        seleccionar={state.ventas}
+                    />
+
+                    {/* modal crear */}
+                    <ModalAll open={open} setOpen={setOpen} setRowSelectionModel={setRowSelectionModel} Componente={<FormCrearVentas campos={campos} />} />
+
+                    {/* modal editar */}
+                    <ModalAll open={openEdit} setOpen={setOpenEdit} setRowSelectionModel={setRowSelectionModel} Componente={<FormEditarVentas valores={valores} />} />
+
+                    {
+                        state.mensajeError ?
+                            <SuccessOrError message={state.mensajeError} severity={"error"} moved={isMistake} />
+                            :
+                            <SuccessOrError message={state.mensajeExito} severity={"success"} moved={isMoved} />
+                    }
+                </Paper>
+            </div>
+        </div>
+    );
 }

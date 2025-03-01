@@ -36,7 +36,7 @@ export default function FormEditarProducto({ valores }) {
     useEffect(() => {
         reset(verdaderosValores);
         if (verdaderosValores.categoria) {
-            setValue("categoria", JSON.stringify(valores.categoria));  // Seteamos la categoría de forma manual
+            setValue("categoria", JSON.stringify(valores.categoria));  
         }
 
     }, [valores, reset, setValue]);
@@ -80,7 +80,7 @@ export default function FormEditarProducto({ valores }) {
                                     >
                                         <option value={JSON.stringify(null)}>Sin categoria</option>
                                         {state.categorias.map(cat => (
-                                            <option key={cat.id_Categoria} value={JSON.stringify(cat)}>
+                                            <option key={cat.id} value={JSON.stringify(cat)}>
                                                 {capitalizeFirstLetter(cat.categoria)}
                                             </option>
                                         ))}

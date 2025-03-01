@@ -1,5 +1,5 @@
 // useModificarrProducto.js
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { CategoriaContext } from '../../context/categorias';
 
 export const useModificarCategoria = () => {
@@ -18,7 +18,7 @@ export const useModificarCategoria = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    "id_Categoria": objectFinal.id_Categoria,
+                    "id": objectFinal.id,
                     "categoria": objectFinal.categoria
                 })
             });

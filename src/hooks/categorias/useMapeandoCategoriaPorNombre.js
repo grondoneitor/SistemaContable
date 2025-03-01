@@ -25,6 +25,7 @@ export const useMapeandoCategoriasPorNombre = () => {
             console.error("Error fetching products:", error);
             setError("No se encontro este producto");
           });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [nombre]);
 
       

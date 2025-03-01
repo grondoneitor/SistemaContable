@@ -28,7 +28,7 @@ export default function FormCrearCategoria({ campos = [] }) {
                     noValidate
                 >
                     <h2 className="font-black text-3xl text-slate-800 text-center mb-10">
-                        Crear nuevo producto
+                        Crear nueva categoria
                     </h2>
 
                     {Array.isArray(campos) && campos.map(campo => (

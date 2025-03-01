@@ -28,7 +28,6 @@ export const ServiciosCategoria = (reset) => {
 
     const modificarCategoriaServ = async (data) => {
         const success = await modificarCategoria(data)
-        console.log(success)
         if (success.ok) {
             editarCategoria(data)
             functionMoved()

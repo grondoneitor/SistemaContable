@@ -80,9 +80,7 @@ export default function FormEditarCliente({ valores }) {
                         <SuccessOrError message={state.errorsMessage} severity={"error"} moved={isMistake} />
                         :
                         <SuccessOrError message={state.successMessage} severity={"success"} moved={isMoved} />
-
                 }
-
             </div>
         </div>
     );

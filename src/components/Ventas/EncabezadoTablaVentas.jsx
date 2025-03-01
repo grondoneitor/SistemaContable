@@ -1,36 +1,22 @@
-import { Box, Toolbar, Tooltip} from "@mui/material";
+import { Box, Toolbar, Tooltip, Typography } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFontAwesome, faPen, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
-
+import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import VentasServicios from "../../services/Ventas/ventasServicios";
+import { SuccessOrError } from "../Messages/SuccessOrError";
+import { useContext } from "react";
+import { VentasContext } from "../../context/ventas";
 
 // eslint-disable-next-line react/prop-types
-export default function EncabezadoTablaVentas(
-    { setOpen, rowSelectionModel: rows = [], valores, setRowSelectionModel, setOpenEdit, openEdit }
-) {
-    // const { borrarProductoServ, buscandoProductoServ, isMoved, isMistake } = ServiciosProducto()
-    // const { state } = useContext(ProductoContext)
-    // const varOpenEdit = useMemo(() => openEdit, [openEdit])
+export default function EncabezadoTablaVentas({ rowSelectionModel = [], setRowSelectionModel, setOpenEdit, setOpen }) {
+    const { isMoved, isMistake, eliminarVentaServicio } = VentasServicios()
+    const { state } = useContext(VentasContext)
 
-    // const closeModalEdit = () => {
-    //     setOpenEdit(false);
-    //     setTimeout(() => {
-    //         setRowSelectionModel([]);
-    //     }, 0);
-    // };
-
-     const borrar = async () => {
-        console.log("borrar")
-        //  await borrarProductoServ(rows)
-         setRowSelectionModel([]);
-     }
-
-    // const handleChange = (event) => {
-    //     buscandoProductoServ(event.target.value)
-    // }
+    const borrar = async () => {
+        await eliminarVentaServicio(rowSelectionModel)
+        setRowSelectionModel([]);
+    }
 
     return (
-
         <Toolbar
             sx={{
                 pl: { sm: 2 },
@@ -47,38 +33,29 @@ export default function EncabezadoTablaVentas(
                 <div>
                     <FontAwesomeIcon onClick={() => setOpen(true)} className='hover:cursor-pointer text-2xl' icon={faPlus} />
 
-                    {rows.length > 0 && <FontAwesomeIcon onClick={borrar} className='hover:cursor-pointer text-2xl' icon={faTrash} />}
+                    {rowSelectionModel.length > 0 && <FontAwesomeIcon onClick={borrar} className='hover:cursor-pointer text-2xl' icon={faTrash} />}
 
-                    {rows.length === 1 && <FontAwesomeIcon onClick={() => setOpenEdit(true)} className='hover:cursor-pointer text-2xl' icon={faPen} />}
+                    {rowSelectionModel.length === 1 && <FontAwesomeIcon onClick={() => setOpenEdit(true)} className='hover:cursor-pointer text-2xl' icon={faPen} />}
 
-                </div> 
+                </div>
             </Tooltip>
-
-
             <Box
                 className="flex gap-2"
             >
-                <Link to={"categorias"}>
-                    <FontAwesomeIcon className='text-2xl' icon={faFontAwesome} />
-                </Link>
-                {/* <Typography variant="subtitle1" sx={{ ml: 2 }} className='text-2xl'>
-                    {rows.length > 0
-                        ? `${rows.length} `
+                <Typography variant="subtitle1" sx={{ ml: 2 }} className='text-2xl'>
+                    {rowSelectionModel.length > 0
+                        ? `${rowSelectionModel.length} `
                         : '-'}
-                </Typography> */}
+                </Typography>
             </Box>
 
-            {/* <ModalEditarProducto varOpenEdit={varOpenEdit} closeModalEdit={closeModalEdit} valores={valores} /> */}
-            {/* {
+            {
                 state.mensajeError ?
                     <SuccessOrError message={state.mensajeError} severity={"error"} moved={isMistake} />
                     :
                     <SuccessOrError message={state.mensajeExito} severity={"success"} moved={isMoved} />
-            } */}
+            }
         </Toolbar>
-
-
-
     );
 
 }

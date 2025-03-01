@@ -1,17 +1,17 @@
-import { Box, Modal } from "@mui/material"
-import { useMemo } from "react"
-import FormEditarCliente from "./FormEditarClient"
-
+import { Box, Modal } from "@mui/material";
+import { useMemo } from "react";
 
 // eslint-disable-next-line react/prop-types
-export default function ModalEditarCliente({openEdit, setOpenEdit, setRowSelectionModel, valores}){
-
-    const varOpenEdit = useMemo(() => openEdit, [openEdit])
-
+export default function ModalAll({open, setOpen,  setRowSelectionModel, Componente}){
+    const varOpenEdit = useMemo(() => open, [open])
+  
     const closeModalEdit = () => {
-        setOpenEdit(false)
-        setRowSelectionModel([])
-    }
+        setOpen(false);
+        setTimeout(() => {
+            setRowSelectionModel([]);
+        });
+    };
+    
     return(
         <Modal
         open={varOpenEdit}
@@ -22,7 +22,7 @@ export default function ModalEditarCliente({openEdit, setOpenEdit, setRowSelecti
             onClick={(e) => e.stopPropagation()}
             className="relative  w-full max-w-xl rounded-lg overflow-hidden shadow-lg border-fuchsia-950 border-4"
         >
-            <FormEditarCliente valores={valores} />
+            {Componente }
         </Box>
     </Modal>
     )

@@ -11,7 +11,7 @@ import { capitalizeFirstLetter } from "../../services/mayusculaPrimeraLetra";
 export default function FormEditarCategoria({valores = []}) {
     
    const verdaderosValores = {
-    id_Categoria: valores.id_Categoria,
+    id: valores.id,
     categoria: capitalizeFirstLetter(valores.categoria)
 }
     const { register, handleSubmit,formState: { errors }, reset} = useForm({
@@ -39,7 +39,7 @@ export default function FormEditarCategoria({valores = []}) {
                 </h2>
 
                 {Object.entries(verdaderosValores)
-                    .filter(([clave]) => clave !== "id_Categoria")
+                    .filter(([clave]) => clave !== "id")
                     .map(([clave, valor]) => (
 
                         <div className="mb-5" key={clave}>

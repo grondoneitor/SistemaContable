@@ -22,7 +22,7 @@ export const useCrearCliente = () => {
             }
             // const datita = await response.json();
             mensajeExito(data.mensaje)
-            return response;
+            return {response, data};
         } catch (data) {
             mensajeError(data.mensaje)
             return data

@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { CategoriaContext } from "../../context/categorias";
 
 export const useCrearCategoria = () => {
-    const{     mensajeError,mensajeExito} = useContext(CategoriaContext)
+    const { mensajeError, mensajeExito } = useContext(CategoriaContext)
     const crearCategoriaReal = async (categoria) => {
         mensajeError("")
         mensajeExito("")
@@ -11,10 +11,10 @@ export const useCrearCategoria = () => {
             const response = await fetch('http://localhost:8092/api/v1/categoria', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`,    
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({"categoria": categoria}),
+                body: JSON.stringify({ "categoria": categoria }),
             });
 
             const data = await response.json();
@@ -23,12 +23,12 @@ export const useCrearCategoria = () => {
                 throw data
             }
             mensajeExito(data.mensaje)
-            return response; 
+            return response;
         } catch (error) {
-            mensajeError( error.mensaje);
+            mensajeError(error.mensaje);
             return error
         }
     };
 
-    return {crearCategoriaReal};
+    return { crearCategoriaReal };
 };

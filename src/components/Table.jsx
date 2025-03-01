@@ -1,27 +1,16 @@
 import { DataGrid } from "@mui/x-data-grid"
-import { ProductoContext } from "../../context/productos";
-import { useContext } from "react";
-import { capitalizeFirstLetter } from "../../services/mayusculaPrimeraLetra";
 
-const columns = [
-    { field: 'producto', headerName: 'Producto', flex: 1 },
-    { field: 'descripcion', headerName: 'Descripcion', flex: 1 },
-    { field: 'precio', headerName: 'Precio', flex: 1 },
-    { field: 'stock', headerName: 'Stock', flex: 1 },
-    { field: 'stock_Min', headerName: 'Stock Mininmo', flex: 1 },
-    { field: 'categoria', headerName: 'Categoria', flex: 1 },
-];
+
 const paginationModel = { page: 0, pageSize: 5 };
 
 // eslint-disable-next-line react/prop-types
-export default function TableProductos({ setRowSelectionModel, setValores, rowSelectionModel }) {
-    const { state } = useContext(ProductoContext);
+export default function Table({rows,columns ,seleccionar =[] ,setRowSelectionModel, setValores, rowSelectionModel }) {
 
     const funcionParaSeleccionar = (newRowSelectionModel) => {
         setRowSelectionModel(newRowSelectionModel);
         if (newRowSelectionModel.length > 0) {
-            const selectedRow = state.productos.find(
-                (producto) => producto.id === newRowSelectionModel[0]
+            const selectedRow = seleccionar.find(
+                (elemento) => elemento.id === newRowSelectionModel[0]
             );
             setValores(selectedRow || {});
         } else {
@@ -30,25 +19,11 @@ export default function TableProductos({ setRowSelectionModel, setValores, rowSe
         }
     }
     
-    const productos = state.productosBuscados.length > 0
-        ? (state.productosBuscados
-            ? state.productosBuscados.map((producto) => ({
-                ...producto,
-                producto: capitalizeFirstLetter(producto.producto),
-                categoria: producto.categoria ? capitalizeFirstLetter(producto.categoria.categoria) : "No tiene categoria"
-            }))
-            : [])
-        : state.productos
-            ? state.productos.map((producto) => ({
-                ...producto,
-                producto: capitalizeFirstLetter(producto.producto),
-                categoria: producto.categoria ? capitalizeFirstLetter(producto.categoria.categoria) : "No tiene categoria"
-            }))
-            : []
+    
 
     return (
         <DataGrid
-            rows={productos}
+            rows={rows}
             sx={{
                 boxShadow: 2,
                 border: "none",
@@ -72,7 +47,7 @@ export default function TableProductos({ setRowSelectionModel, setValores, rowSe
             }
             }
 
-            getRowId={(row) => row.id} // Usa el ID del producto
+            getRowId={(row) => row.id} 
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             rowsPerPageOptions

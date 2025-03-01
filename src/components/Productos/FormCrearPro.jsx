@@ -53,7 +53,7 @@ export default function FormCrearProducto({ campos = [] }) {
                                 >
                                     <option value="">Seleccione una categoría</option>
                                     {state.categorias.map(cat => (
-                                        <option key={cat.id_Categoria} value={JSON.stringify(cat)}>
+                                        <option key={cat.id} value={JSON.stringify(cat)}>
                                             {cat.categoria}
                                         </option>
                                     ))}

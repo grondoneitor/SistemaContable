@@ -3,9 +3,9 @@ import { VentasContext } from "../../context/ventas";
 
 
 export default function useMapeandoVenta() {
-    const{guardarVentas} = useContext(VentasContext)
+    const{guardarVentas, state} = useContext(VentasContext)
     const token = localStorage.getItem("tokenLogin")
-
+   
     useEffect(() => {
         fetch("http://localhost:8092/api/v1/ventas", {
             method: "GET",
@@ -17,7 +17,7 @@ export default function useMapeandoVenta() {
             .then(response => response.json())
             .then(data => guardarVentas(data.object))
             .catch(err => console.log(err))
-    }, [])
+    }, [state.ventaCreada, state.vantaModificada, state.ventaEliminada])
 
 
 }

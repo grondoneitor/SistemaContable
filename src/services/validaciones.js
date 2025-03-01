@@ -61,4 +61,17 @@ export const schemaLogIn = yup.object({
     password: yup.string()
         .required("Es obligatorio")
         .min(8, "La contraseña debe tener al menos 8 caracteres"),
-})    
+})
+
+export const schemaVentas = yup.object({
+    producto: yup.string()
+        .required('El producto es obligatorio'),
+    cliente: yup.string()
+        .required("El cliente es obligatorio"),
+    cantidad: yup.string()
+        .required("El cantidad es obligatorio"),
+    precioTotal: yup.string()
+        .required("El precio es obligatorio"),
+    fecha: yup.string()
+    .required("La fecha es obligatorio")
+}).required();

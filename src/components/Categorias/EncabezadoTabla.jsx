@@ -1,27 +1,17 @@
-import { Box, Modal, Toolbar, Tooltip, Typography } from "@mui/material";
+import {  Toolbar, Tooltip, Typography } from "@mui/material";
 import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import FormEditarCategoria from './FormEditarCategoria.jsx'
 import { ServiciosCategoria } from "../../services/Categorias/serviciosCategoria.js";
 import { SuccessOrError } from "../Messages/SuccessOrError.jsx";
-import { useContext, useMemo } from "react";
+import { useContext } from "react";
 import { CategoriaContext } from "../../context/categorias.jsx";
 
 // eslint-disable-next-line react/prop-types
-export default function EncabezadoTabla({ setOpen, rowSelectionModel: rows = [], valores, setRowSelectionModel, setValores, setOpenEdit, openEdit }) {
+export default function EncabezadoTabla({ setOpen, rowSelectionModel: rows = [], setOpenEdit }) {
     const { borrarCategoriaServ, isMoved, isMistake } = ServiciosCategoria()
     const { state } = useContext(CategoriaContext)
 
-    const varOpenEdit = useMemo(() => openEdit, [openEdit])
 
-
-    const closeModalEdit = () => {
-        setOpenEdit(false);
-        setTimeout(() => {
-            setRowSelectionModel([]);
-            setValores({})
-        }, 0);
-    };
     return (
         <Toolbar
             sx={{
@@ -36,23 +26,25 @@ export default function EncabezadoTabla({ setOpen, rowSelectionModel: rows = [],
             <Tooltip
                 className='flex gap-4'
             >
+                <div>
 
-                <FontAwesomeIcon
-                    onClick={() => setOpen(true)}
-                    className='hover:cursor-pointer text-2xl'
-                    icon={faPlus} />
+                    <FontAwesomeIcon
+                        onClick={() => setOpen(true)}
+                        className='hover:cursor-pointer text-2xl'
+                        icon={faPlus} />
 
-                {rows.length > 0 && <FontAwesomeIcon
-                    onClick={async () => await borrarCategoriaServ(rows)}
-                    className='hover:cursor-pointer text-2xl'
-                    icon={faTrash}
-                />}
+                    {rows.length > 0 && <FontAwesomeIcon
+                        onClick={async () => await borrarCategoriaServ(rows)}
+                        className='hover:cursor-pointer text-2xl'
+                        icon={faTrash}
+                    />}
 
-                {rows.length === 1 && <FontAwesomeIcon
-                    onClick={() => setOpenEdit(true)}
-                    className='hover:cursor-pointer text-2xl'
-                    icon={faPen}
-                />}
+                    {rows.length === 1 && <FontAwesomeIcon
+                        onClick={() => setOpenEdit(true)}
+                        className='hover:cursor-pointer text-2xl'
+                        icon={faPen}
+                    />}
+                </div>
 
             </Tooltip>
 
@@ -62,18 +54,7 @@ export default function EncabezadoTabla({ setOpen, rowSelectionModel: rows = [],
                     : '-'}
             </Typography>
 
-            <Modal
-                open={varOpenEdit}
-                onClose={closeModalEdit}
-                className="flex items-center justify-center"
-            >
-                <Box
-                    onClick={(e) => e.stopPropagation()}
-                    className="relative  w-full max-w-xl rounded-lg overflow-hidden shadow-lg border-fuchsia-950 border-4"
-                >
-                    <FormEditarCategoria valores={valores} />
-                </Box>
-            </Modal>
+
 
             {
                 state.mensajeError ?

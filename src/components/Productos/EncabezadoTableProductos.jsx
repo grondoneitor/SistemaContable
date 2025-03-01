@@ -1,27 +1,18 @@
-import { useContext, useMemo } from "react";
+import { useContext} from "react";
 import { ProductoContext } from "../../context/productos";
 import { ServiciosProducto } from "../../services/Productos/productoServicios";
-import { Box,  InputAdornment,  TextField, Toolbar, Tooltip, Typography } from "@mui/material";
+import { Box, InputAdornment, TextField, Toolbar, Tooltip, Typography } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFontAwesome, faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from "react-router-dom";
 import { SuccessOrError } from "../Messages/SuccessOrError";
-import ModalEditarProducto from "./ModalEditarProducto";
 
 
 // eslint-disable-next-line react/prop-types
-export default function EncabezadoTableProductos({ setOpen, rowSelectionModel: rows = [], valores, setRowSelectionModel, setOpenEdit, openEdit }) {
+export default function EncabezadoTableProductos({ setOpen, rowSelectionModel: rows = [], setRowSelectionModel, setOpenEdit }) {
     const { borrarProductoServ, buscandoProductoServ, isMoved, isMistake } = ServiciosProducto()
     const { state } = useContext(ProductoContext)
-    const varOpenEdit = useMemo(() => openEdit, [openEdit])
-
-    const closeModalEdit = () => {
-        setOpenEdit(false);
-        setTimeout(() => {
-            setRowSelectionModel([]);
-        }, 0);
-    };
 
     const borrar = async () => {
         await borrarProductoServ(rows)
@@ -52,36 +43,36 @@ export default function EncabezadoTableProductos({ setOpen, rowSelectionModel: r
 
                     {rows.length > 0 && <FontAwesomeIcon onClick={borrar} className='hover:cursor-pointer text-2xl' icon={faTrash} />}
 
-                    {rows.length === 1 && <FontAwesomeIcon onClick={()=> setOpenEdit(true)} className='hover:cursor-pointer text-2xl' icon={faPen} />}
+                    {rows.length === 1 && <FontAwesomeIcon onClick={() => setOpenEdit(true)} className='hover:cursor-pointer text-2xl' icon={faPen} />}
 
                 </div>
             </Tooltip>
 
-                <TextField
-                    className='text-white'
-                    label="Buscar..."
-                    variant="standard"
-                    onChange={handleChange}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="start">
-                                <SearchIcon sx={{ color: "white" }} /> {/* Icono en blanco */}
-                            </InputAdornment>
-                        )
-                    }}
-                    InputLabelProps={{
-                        sx: {
-                            color: "white", // Label en blanco
-                            "&.Mui-focused": { color: "white" }, // Label en blanco cuando está enfocado
-                        },
-                    }}
-                    sx={{
-                        input: { color: "white" }, // Texto en blanco
-                        "& .MuiInput-underline:before": { borderBottomColor: "white" }, // Línea blanca antes de enfocar
-                        "& .MuiInput-underline:hover:before": { borderBottomColor: "white" }, // Línea blanca en hover
-                        "& .MuiInput-underline:after": { borderBottomColor: "white" }, // Línea blanca después de enfocar
-                    }}
-                />
+            <TextField
+                className='text-white'
+                label="Buscar..."
+                variant="standard"
+                onChange={handleChange}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="start">
+                            <SearchIcon sx={{ color: "white" }} /> {/* Icono en blanco */}
+                        </InputAdornment>
+                    )
+                }}
+                InputLabelProps={{
+                    sx: {
+                        color: "white", // Label en blanco
+                        "&.Mui-focused": { color: "white" }, // Label en blanco cuando está enfocado
+                    },
+                }}
+                sx={{
+                    input: { color: "white" }, // Texto en blanco
+                    "& .MuiInput-underline:before": { borderBottomColor: "white" }, // Línea blanca antes de enfocar
+                    "& .MuiInput-underline:hover:before": { borderBottomColor: "white" }, // Línea blanca en hover
+                    "& .MuiInput-underline:after": { borderBottomColor: "white" }, // Línea blanca después de enfocar
+                }}
+            />
 
 
             <Box
@@ -97,7 +88,6 @@ export default function EncabezadoTableProductos({ setOpen, rowSelectionModel: r
                 </Typography>
             </Box>
 
-            <ModalEditarProducto varOpenEdit={varOpenEdit} closeModalEdit={closeModalEdit} valores={valores}  />
             {
                 state.mensajeError ?
                     <SuccessOrError message={state.mensajeError} severity={"error"} moved={isMistake} />

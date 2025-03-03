@@ -1,5 +1,4 @@
 import Paper from '@mui/material/Paper';
-import EncabezadoTablaVentas from '../Ventas/EncabezadoTablaVentas';
 import { useContext, useState } from 'react';
 import { VentasContext } from '../../context/ventas';
 import useMapeandoVenta from '../../hooks/ventas/useMapeandoVentas';
@@ -13,6 +12,7 @@ import { campos, columns } from './constantes';
 import FormEditarVentas from './FormEditarVentas';
 import { SuccessOrError } from '../Messages/SuccessOrError';
 import VentasServicios from '../../services/Ventas/ventasServicios';
+import Encabezado from '../Encabezado';
 
 
 export default function Ventas() {
@@ -24,7 +24,7 @@ export default function Ventas() {
 
     const [rowSelectionModel, setRowSelectionModel] = useState([])
     const [valores, setValores] = useState(null)
-    const { isMoved, isMistake } = VentasServicios()
+    const { isMoved, isMistake, eliminarVentaServicio } = VentasServicios()
 
 
     const [open, setOpen] = useState(false)
@@ -41,14 +41,16 @@ export default function Ventas() {
         <div className="w-full flex flex-col gap-6">
             <div className="bg-white w-full rounded-2xl p-6">
                 <Paper sx={{ borderRadius: "24px", width: '100%' }}>
-
-                    <EncabezadoTablaVentas
+                    <Encabezado
+                        setOpen={setOpen}
+                        setOpenEdit={setOpenEdit}
                         rowSelectionModel={rowSelectionModel}
                         setRowSelectionModel={setRowSelectionModel}
-                        setOpenEdit={setOpenEdit}
-                        setOpen={setOpen}
+                        Borrar={eliminarVentaServicio}
+                        isMoved={isMoved}
+                        isMistake={isMistake}
+                        state={state}
                     />
-
                     <Table
                         setRowSelectionModel={setRowSelectionModel}
                         setValores={setValores}

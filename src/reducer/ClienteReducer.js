@@ -1,13 +1,10 @@
-
-
-
 export const InitialState = {
     clientes: [],
     clienteCreadoNuevo: [],
     clientesBorrados: [],
     clienteParaEditar: [],
-    errorsMessage: "",
-    successMessage: ""
+    mensajeError: "",
+    mensajeExito: ""
 
 }
 
@@ -48,13 +45,13 @@ export const ClienteReducer = (state = InitialState, action) => {
         case ActionTypes.MENSAJE_ERROR:{
             return{
                 ...state,
-                errorsMessage: ActionPayload
+                mensajeError: ActionPayload
             }
         }
         case ActionTypes.MENSAJE_EXITO:{
             return{
                 ...state,
-                successMessage: ActionPayload
+                mensajeExito: ActionPayload
             }
         }
         default: return state

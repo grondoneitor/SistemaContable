@@ -76,10 +76,10 @@ export default function FormEditarCliente({ valores }) {
                     </button>
                 </form>
                 {
-                    state.errorsMessage ?
-                        <SuccessOrError message={state.errorsMessage} severity={"error"} moved={isMistake} />
+                    state.mensajeError ?
+                        <SuccessOrError message={state.mensajeError} severity={"error"} moved={isMistake} />
                         :
-                        <SuccessOrError message={state.successMessage} severity={"success"} moved={isMoved} />
+                        <SuccessOrError message={state.mensajeExito} severity={"success"} moved={isMoved} />
                 }
             </div>
         </div>

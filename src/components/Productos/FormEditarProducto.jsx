@@ -39,6 +39,7 @@ export default function FormEditarProducto({ valores }) {
             setValue("categoria", JSON.stringify(valores.categoria));  
         }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [valores, reset, setValue]);
 
     const handleSubmitAll = async (producto) => {
@@ -49,7 +50,6 @@ export default function FormEditarProducto({ valores }) {
             console.log(producto.user)
 
         }
-        console.log("producto", producto)
         await editarProductoServ(producto);
     };
 

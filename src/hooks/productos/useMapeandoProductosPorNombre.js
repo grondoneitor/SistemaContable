@@ -9,7 +9,7 @@ export const useMapeandoProductosPorNombre = () => {
       fetch(`http://localhost:8092/api/v1/productoName/${state.nombreProductoBuscado}`,{
         method: 'GET',
         headers: {
-          'Authorizarion': `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         }
       })
@@ -22,8 +22,7 @@ export const useMapeandoProductosPorNombre = () => {
         .then(data => mostrarProductosBuscados(data.object))
         .catch(error => {
           mostrarProductosBuscados([])
-          console.error("Error fetching products:", error);
-          setError("En este momento no hay productos disponibles");
+          setError(error,"En este momento no hay productos disponibles");
         })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

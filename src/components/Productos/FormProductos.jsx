@@ -65,7 +65,7 @@ const { borrarProductoServ, buscandoProductoServ, isMoved, isMistake } = Servici
           isMoved={isMoved}
           isMistake={isMistake}
           state={state}
-          Componente={<BuscadorDeProductos hanldeChange={handleChange}/>}
+          Componente={<BuscadorDeProductos handleChange={handleChange}/>}
         />
 
           <Table

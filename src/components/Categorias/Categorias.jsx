@@ -39,15 +39,7 @@ export default function FormCategorias() {
             <div className="w-auto min-w-[33%] max-w-lg">
                 <h1 className="text-4xl m-7 font-bold">Categorías</h1>
                 <Paper sx={{ borderRadius: "24px", width: "100%" }}>
-                    {/* <EncabezadoTabla
-                        setOpen={setOpen}
-                        rowSelectionModel={rowSelectionModel}
-                        valores={valores}
-                        setRowSelectionModel={setRowSelectionModel}
-                        setValores={setValores}
-                        setOpenEdit={setOpenEdit}
-                        openEdit={openEdit}
-                    /> */}
+
                     <Encabezado
                         setOpen={setOpen}
                         setOpenEdit={setOpenEdit}

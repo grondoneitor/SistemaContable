@@ -7,6 +7,7 @@ import { CategoriaProvider } from './context/categorias.jsx'
 import { ClienteProvider } from './context/cliente.jsx'
 import { AuthProvider } from './context/auth.jsx'
 import { VentasProvider } from './context/ventas.jsx'
+import { UltimasTransaccionesProvider } from './context/ultimasTransacciones.jsx'
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -15,7 +16,9 @@ createRoot(document.getElementById('root')).render(
         <CategoriaProvider>
           <ClienteProvider>
             <VentasProvider>
-              <App />
+              <UltimasTransaccionesProvider>
+                <App />
+              </UltimasTransaccionesProvider>
             </VentasProvider>
           </ClienteProvider>
         </CategoriaProvider>

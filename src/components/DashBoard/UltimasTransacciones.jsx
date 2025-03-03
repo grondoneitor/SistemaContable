@@ -1,51 +1,69 @@
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
+import { useUltimasTransacciones } from '../../hooks/ultimasTransacciones/useUltimasTransacciones';
+import { useContext } from 'react';
+import { UltimasTransaccionesContext } from '../../context/ultimasTransacciones';
+import { columns } from './constantesDashBoard';
 
-const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'firstName', headerName: 'First name', width: 130 },
-  { field: 'lastName', headerName: 'Last name', width: 130 },
-  {
-    field: 'age',
-    headerName: 'Age',
-    type: 'number',
-    width: 90,
-  },
-  {
-    field: 'fullName',
-    headerName: 'Full name',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    width: 160,
-    valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
-  },
-];
-
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-];
 
 const paginationModel = { page: 0, pageSize: 5 };
 
 export default function UltimasTransacciones() {
+  useUltimasTransacciones()
+  const { state } = useContext(UltimasTransaccionesContext)
+
+  const rows = state.transacciones.map(trans => ({
+    ...trans,
+    fecha: (trans.fecha).split("T")[0]
+
+  })
+  )
+
   return (
-    <Paper sx={{ height: 400, width: '100%' }}>
+    <Paper sx={{ }}>
       <DataGrid
         rows={rows}
         columns={columns}
+        disableRowSelectionOnClick
         initialState={{ pagination: { paginationModel } }}
         pageSizeOptions={[5, 10]}
-        checkboxSelection
-        sx={{ border: 0 }}
+  
+        autoHeight
+        sx={{
+          border: "none",
+          width: "100%",
+          justifyItems: "space-between",
+          marginBottom: "50px",
+          "& .MuiDataGrid-footerContainer": { // Contenedor de paginación en DataGrid
+            overflow: "hidden",
+            marginBottom:"50px" ,
+          },
+          "& .MuiTablePagination-root": { // Estilos de la paginación
+           
+            backgroundColor: "#f0f0f0",
+            color: "black"
+          },
+          "& .MuiTablePagination-actions button": {
+            color: "black",
+            
+          },
+          "& .compra": { backgroundColor: "#FFCDD2 !important" },
+          "& .venta": { backgroundColor: "#C8E6C9 !important" },
+          "& .MuiDataGrid-cell:hover": {
+            backgroundColor: "inherit !important",
+            pointerEvents: "none"
+          }
+        }
+        }
+        getRowClassName={(params) =>
+          params.row.id.startsWith("C-") ? "compra" : "venta"
+        }
+        disableColumnResize
+        disableColumnReorder
+        disableColumnMenu
       />
+
     </Paper>
+
   );
 }

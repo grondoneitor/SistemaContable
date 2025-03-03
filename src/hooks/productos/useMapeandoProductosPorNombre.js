@@ -1,11 +1,11 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext,  useEffect } from "react";
 import { ProductoContext } from "../../context/productos";
 
 export const useMapeandoProductosPorNombre = () => {
-  const [setError] = useState(null);
   const { state, mostrarProductosBuscados } = useContext(ProductoContext);
   const token = localStorage.getItem("tokenLogin")
   useEffect(() => {
+    if(state.nombreProductoBuscado === " ") throw ("El producto no se encuentra")
       fetch(`http://localhost:8092/api/v1/productoName/${state.nombreProductoBuscado}`,{
         method: 'GET',
         headers: {
@@ -22,7 +22,7 @@ export const useMapeandoProductosPorNombre = () => {
         .then(data => mostrarProductosBuscados(data.object))
         .catch(error => {
           mostrarProductosBuscados([])
-          setError(error,"En este momento no hay productos disponibles");
+          console.error("Error fetching products:", error);
         })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

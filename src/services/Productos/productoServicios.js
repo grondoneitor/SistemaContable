@@ -8,7 +8,7 @@ import { useModificarProducto } from "../../hooks/productos/useModificarProducto
 
 export const ServiciosProducto = (reset) => {
 
-  const { crearProducto, borrarProductoI, editarProducto, guardarNombreProBuscados } = useContext(ProductoContext);
+  const { crearProducto, borrarProductoI, editarProducto} = useContext(ProductoContext);
 
   const { crearProductoReal } = useCrearProducto();
   const { borrarProducto } = useBorrarProducto()
@@ -53,11 +53,11 @@ export const ServiciosProducto = (reset) => {
 
   }
 
-  const buscandoProductoServ = (producto) => {
-    const nombre = producto.length === 0 ? "" : producto
-    guardarNombreProBuscados(nombre)
+  // const buscandoProductoServ = (producto) => {
+  //   const nombre = producto.length === 0 ? "" : producto
+  //   guardarNombreProBuscados(nombre)
 
-  }
+  // }
 
   const functionMoved = () => {
     if (isMoved === false) {
@@ -78,6 +78,6 @@ export const ServiciosProducto = (reset) => {
 
 
   }
-  return { crearProductoServ, borrarProductoServ, editarProductoServ, buscandoProductoServ, isMoved, isMistake }
+  return { crearProductoServ, borrarProductoServ, editarProductoServ,  isMoved, isMistake }
 
 }

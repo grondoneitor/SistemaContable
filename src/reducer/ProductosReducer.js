@@ -1,25 +1,27 @@
 export const InitialState = {
     productos: [],
-    productosBuscados: [],
-    productosCreado:[],
-    productoEliminado:[],
-    productoEditado:[],
-    nombreProductoBuscado: "",
+    productosCreado: [],
+    productoEliminado: [],
+    productoEditado: [],
     detalleProducto: null,
     mensajeError: "",
-    mensajeExito: ""
+    mensajeExito: "",
+    filters: [{
+        categoria: "",
+        nombre: ""
+    }]
 };
 
 export const ActionTypes = {
     MOSTRAR_PRODUCTOS: 'mostrar_productos',
-    BUSCADOR_PRODUCTOS: 'buscador_productos',
-    GUARDAR_PRO_BUSCADO: 'guardar_pro_buscado',
     CREAR_PRODUCTO: 'crear_producto',
     BORRAR_PRODUCTO: 'borrar_producto',
     EDITAR_PRODUCTO: 'editar_producto',
     DETALLE_PRODUCTO: 'detalle_producto',
     MENSAJE_ERROR: 'mensaje_error',
-    MENSAJE_EXITO: 'mensaje_exito'
+    MENSAJE_EXITO: 'mensaje_exito',
+    ADD_FILTER_CATEGORIA: 'add_filter_categoria',
+    ADD_FILTER_NOMBRE: 'add_filter_nombre',
 };
 
 export const ProductReducer = (state = InitialState, action) => {
@@ -29,26 +31,13 @@ export const ProductReducer = (state = InitialState, action) => {
         case ActionTypes.MOSTRAR_PRODUCTOS: {
             return {
                 ...state,
-                productos: ActionPayload, 
+                productos: ActionPayload,
             };
         }
-        case ActionTypes.BUSCADOR_PRODUCTOS:{
-           
-            return{
-                ...state,
-                productosBuscados:ActionPayload
-            }
-        }
-        case ActionTypes.GUARDAR_PRO_BUSCADO:{
+       
+        case ActionTypes.CREAR_PRODUCTO: {
 
-            return{
-                ...state,
-                nombreProductoBuscado:ActionPayload
-            }
-        }
-        case ActionTypes.CREAR_PRODUCTO:{
-            
-            return{
+            return {
                 ...state,
                 productosCreado: [ActionPayload]
             }
@@ -65,27 +54,49 @@ export const ProductReducer = (state = InitialState, action) => {
                 productoEditado: [ActionPayload],
             };
         }
+
+        case ActionTypes.DETALLE_PRODUCTO: {
+            return {
+                ...state,
+                detalleProducto: ActionPayload
+            }
+        }
+        case ActionTypes.MENSAJE_ERROR: {
+            return {
+                ...state,
+                mensajeError: ActionPayload
+            }
+        }
+        case ActionTypes.MENSAJE_EXITO: {
+            return {
+                ...state,
+                mensajeExito: ActionPayload
+            }
+        }
+        case ActionTypes.ADD_FILTER_CATEGORIA: {
+            return {
+                ...state,
+                filters: {
+                    ...state.filters,
+                    categoria: ActionPayload
+                } 
+                
+                
+
+            };
+        }
+        case ActionTypes.ADD_FILTER_NOMBRE: {
+            return {
+                ...state,
+                filters: {
+                    ...state.filters,
+                    nombre: ActionPayload
+                } 
+            };
+        }
         
-        case ActionTypes.DETALLE_PRODUCTO:{
-            return{
-                ...state,
-                detalleProducto:ActionPayload
-            }
-        }
-        case ActionTypes.MENSAJE_ERROR:{
-            return{
-                ...state,
-                mensajeError:ActionPayload
-            }
-        }
-        case ActionTypes.MENSAJE_EXITO:{
-            return{
-                ...state,
-                mensajeExito:ActionPayload
-            }
-        }
 
         default:
-            return state; 
+            return state;
     }
 };

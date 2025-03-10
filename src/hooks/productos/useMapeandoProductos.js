@@ -7,11 +7,13 @@ export const useMapeandoProductos = () => {
   const {state,mostrarProductos} = useContext(ProductoContext)
   const {state : stateCategorias} = useContext(CategoriaContext)
   const token = localStorage.getItem("tokenLogin")
+  if(state.filters.nombre === undefined) state.filters.nombre = ""
+   if(state.filters.categoria === undefined) state.filters.categoria = ""
   useEffect(() => {
-    fetch(`http://localhost:8092/api/v1/productos`,
+    fetch(`http://localhost:8092/api/v1/productos?nombre=${state.filters.nombre}&categoria=${state.filters.categoria}`,
      { method: "GET",
       headers: {
-        "Authorization": `Bearer ${token}`, // 🔥 Agrega el token al header
+        "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json",
       }
     }
@@ -30,7 +32,7 @@ export const useMapeandoProductos = () => {
       // 
        setError(null)
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.productosCreado, state.productoEliminado, state.productoEditado, stateCategorias.categoriaCreada, stateCategorias.categoriaEditada, stateCategorias.categoriaEliminada]);
+  }, [state.productosCreado, state.productoEliminado, state.productoEditado, stateCategorias.categoriaCreada, stateCategorias.categoriaEditada, stateCategorias.categoriaEliminada, state.filters]);
    
 
   return {  error };

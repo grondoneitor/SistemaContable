@@ -1,8 +1,9 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext,  useReducer } from "react";
 import { InitialState, UltimasTransaccionesReducer } from "../reducer/UltimasTransacciones";
 
 export const UltimasTransaccionesContext = createContext()
 
+// eslint-disable-next-line react/prop-types
 export const UltimasTransaccionesProvider = ({ children }) => {
 
     const [state, dispatch] = useReducer(UltimasTransaccionesReducer, InitialState)

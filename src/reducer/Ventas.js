@@ -5,7 +5,11 @@ export const InitialState = {
     vantaModificada: [],
     ventaEliminada: [],
     mensajeExito: "",
-    mensajeError: ""
+    mensajeError: "",
+    filtersVentas: [{
+        start: null,
+        end: null
+    }]
 }
 
 export const ActionTypes = {
@@ -14,7 +18,9 @@ export const ActionTypes = {
     MODIFICAR_VENTA_CONTEXT: "modificar_venta_context",
     ELIMINAR_VENTA_CONTEXT: "eliminar_venta_context",
     GUARDAR_MENSAJE_EXITO: "guardar_mensaje_exito",
-    GUARDAR_MENSAJE_ERROR: "guardar_mensaje_error"
+    GUARDAR_MENSAJE_ERROR: "guardar_mensaje_error",
+    ADD_FILTER_START: "add_filter_start",
+    ADD_FILTER_END: "add_filter_end"
 }
 
 export const VentasReducer = (state = InitialState, action) => {
@@ -61,6 +67,19 @@ export const VentasReducer = (state = InitialState, action) => {
                 mensajeError: ActionPayload
             }
         }
+        case ActionTypes.ADD_FILTER_START:{
+            return {
+                ...state,
+                filtersVentas : {...state.filtersVentas, start: ActionPayload }
+            }
+        }
+        case ActionTypes.ADD_FILTER_END:{
+            return {
+                ...state,
+                filtersVentas : {...state.filtersVentas, end: ActionPayload }
+            }
+        }
+
 
         default:
             return state

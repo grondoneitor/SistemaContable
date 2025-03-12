@@ -11,7 +11,7 @@ export const useMapeandoProductos = () => {
    if(state.filters.categoria === undefined) state.filters.categoria = ""
   useEffect(() => {
     fetch(`http://localhost:8092/api/v1/productos?nombre=${state.filters.nombre}&categoria=${state.filters.categoria}`,
-     { method: "GET",
+      { method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json",

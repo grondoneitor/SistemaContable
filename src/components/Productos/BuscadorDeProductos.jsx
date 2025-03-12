@@ -5,29 +5,29 @@ import { GridSearchIcon } from "@mui/x-data-grid"
 export const BuscadorDeProductos = ( {handleChange}) =>{
     return(
         <TextField
-        className='text-white'
+        className='text-black'
         label="Buscar..."
         variant="standard"
         onChange={handleChange}
         InputProps={{
             endAdornment: (
                 <InputAdornment position="end">
-                    <GridSearchIcon sx={{ color: "white" }} /> {/* Icono en blanco */}
+                    <GridSearchIcon sx={{ color: "black" }} /> {/* Icono en blanco */}
                 </InputAdornment>
             )
         }}
         InputLabelProps={{
             sx: {
-                color: "white", // Label en blanco
-                "&.Mui-focused": { color: "white" }, // Label en blanco cuando está enfocado
+                color: "black", // Label en blanco
+                "&.Mui-focused": { color: "black" }, // Label en blanco cuando está enfocado
             },
         }}
         sx={{
-            input: { color: "white" }, // Texto en blanco
-            "& .MuiInput-underline:before": { borderBottomColor: "white" },
-            "& .MuiInput-underline:hover": { borderBottomColor: "white" }, // Línea blanca antes de enfocar
-            "& .MuiInput-underline:hover:before": { borderBottomColor: "white" }, // Línea blanca en hover
-            "& .MuiInput-underline:after": { borderBottomColor: "white" }, // Línea blanca después de enfocar
+            input: { color: "black" }, // Texto en blanco
+            "& .MuiInput-underline:before": { borderBottomColor: "black" },
+            "& .MuiInput-underline:hover": { borderBottomColor: "black" }, // Línea blanca antes de enfocar
+            "& .MuiInput-underline:hover:before": { borderBottomColor: "black" }, // Línea blanca en hover
+            "& .MuiInput-underline:after": { borderBottomColor: "black" }, // Línea blanca después de enfocar
         }}
     />
 

@@ -25,25 +25,7 @@ export default function Table({rows,columns ,seleccionar =[] ,setRowSelectionMod
         <DataGrid
             rows={rows}
             sx={{
-                boxShadow: 2,
-                border: "none",
-                width: "100%",
-                justifyItems: "space-between",
-                borderRadius: "0px 0px 24px 24px",
-                "& .MuiDataGrid-footerContainer": { // Contenedor de paginación en DataGrid
-                    borderBottomLeftRadius: "24px",
-                    borderBottomRightRadius: "24px",
-                    overflow: "hidden",
-                },
-                "& .MuiTablePagination-root": { // Estilos de la paginación
-                    backgroundColor: "#f0f0f0",
-                    color: "black",
-                    borderBottomLeftRadius: "24px",
-                    borderBottomRightRadius: "24px",
-                },
-                "& .MuiTablePagination-actions button": {
-                    color: "black",
-                },
+       
             }
             }
 

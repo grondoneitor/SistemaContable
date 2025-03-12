@@ -1,5 +1,5 @@
 import { createContext, useReducer } from "react";
-import { InitialState, VentasReducer } from "../reducer/ventas";
+import { InitialState, VentasReducer } from "../reducer/Ventas";
 
 
 
@@ -30,6 +30,13 @@ export function VentasProvider({children}){
     const guardarMensajeError = (error) =>{
         dispatch({type: 'guardar_mensaje_error', payload: error})
     }
+    const filtroAddStart = (start) =>{
+        dispatch({type: 'add_filter_start', payload: start})
+    }
+
+    const filtroAddEnd = (end) =>{
+        dispatch({type: 'add_filter_end', payload: end})
+    }
     return(
 
         <VentasContext.Provider
@@ -41,7 +48,9 @@ export function VentasProvider({children}){
             modificarVentaContext,
             eliminarVentaContext,
             guardarMensajeExito,
-            guardarMensajeError
+            guardarMensajeError,
+            filtroAddStart,
+            filtroAddEnd
         
         }}
         >

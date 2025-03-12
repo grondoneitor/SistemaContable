@@ -1,5 +1,5 @@
 import Paper from '@mui/material/Paper';
-import { useContext, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { VentasContext } from '../../context/ventas';
 import useMapeandoVenta from '../../hooks/ventas/useMapeandoVentas';
 import { capitalizeFirstLetter } from '../../services/mayusculaPrimeraLetra';
@@ -12,12 +12,12 @@ import { campos, columns } from './constantes';
 import FormEditarVentas from './FormEditarVentas';
 import { SuccessOrError } from '../Messages/SuccessOrError';
 import VentasServicios from '../../services/Ventas/ventasServicios';
-import Encabezado from '../Encabezado';
+import Opciones from '../Opciones';
+import FiltroDeslizante from '../Filtros';
 
 
 export default function Ventas() {
 
-    const { state } = useContext(VentasContext)
     useMapeandoVenta()
     useMapeandoProductos()
     useClientes()
@@ -26,31 +26,70 @@ export default function Ventas() {
     const [valores, setValores] = useState(null)
     const { isMoved, isMistake, eliminarVentaServicio } = VentasServicios()
 
-
+    const { state, filtroAddStart, filtroAddEnd } = useContext(VentasContext)
     const [open, setOpen] = useState(false)
     const [openEdit, setOpenEdit] = useState(false)
+    const [openfilter, setOpenFilter] = useState(false)
 
-    const ventas = state.ventas.map(venta => ({
+    const startDateRef = useRef(null);
+    const endDateRef = useRef(null);
+
+
+    const ventas = state.ventas != null ? state.ventas.map(venta => ({
         ...venta,
         producto: capitalizeFirstLetter(venta.producto.producto),
         cliente: venta.cliente.nombre_Completo,
         fecha: (venta.fecha).split("T")[0]
-    }))
+    })) : []
 
+    const handleChangeStart = (event) => {
+        filtroAddStart(event.target.value)
+    }
+    const handleChangeEnd = (event) => {
+        console.log(event.target.value)
+        filtroAddEnd(event.target.value)
+    }
+
+    const handleClear = () => {
+        // Limpiar las fechas
+        if (startDateRef.current) {
+            startDateRef.current.value = '';
+            filtroAddStart("")
+        }
+        if (endDateRef.current) {
+            endDateRef.current.value = '';
+            filtroAddEnd("")
+        }
+    };
     return (
         <div className="w-full flex flex-col gap-6">
             <div className="bg-white w-full rounded-2xl p-6">
-                <Paper sx={{ borderRadius: "24px", width: '100%' }}>
-                    <Encabezado
+
+
+                <Paper sx={{  width: '100%' }}>
+
+                    <Opciones
                         setOpen={setOpen}
                         setOpenEdit={setOpenEdit}
                         rowSelectionModel={rowSelectionModel}
                         setRowSelectionModel={setRowSelectionModel}
                         Borrar={eliminarVentaServicio}
-                        isMoved={isMoved}
-                        isMistake={isMistake}
-                        state={state}
+                        setOpenFilter={setOpenFilter}
+                        nombre="venta"
                     />
+                    <FiltroDeslizante
+                        open={openfilter}
+                        setOpen={setOpenFilter}
+                        Filtro={
+                            <div className='flex flex-col '>
+                                <label htmlFor="start" className='text-xl font-semibold'>Desde:</label>
+                                <input className="bg-fuchsia-950 text-white p-2 mb-2 w-full" id="start" type="date" ref={startDateRef} onChange={handleChangeStart}  />
+                                
+                                <label htmlFor="end" className='text-xl font-semibold' >Hasta:</label>
+                                <input className="bg-fuchsia-950 text-white p-2 mb-2  w-full" id="end" type="date" ref={endDateRef} onChange={handleChangeEnd} />
+                                <button className='bg-gradient-to-br bg-[#d1c1f3] mt-2 p-2 font-bold'  onClick={handleClear}>Limpiar fechas</button>
+                            </div>
+                        } />
                     <Table
                         setRowSelectionModel={setRowSelectionModel}
                         setValores={setValores}
@@ -60,10 +99,8 @@ export default function Ventas() {
                         seleccionar={state.ventas}
                     />
 
-                    {/* modal crear */}
                     <ModalAll open={open} setOpen={setOpen} setRowSelectionModel={setRowSelectionModel} Componente={<FormCrearVentas campos={campos} />} />
 
-                    {/* modal editar */}
                     <ModalAll open={openEdit} setOpen={setOpenEdit} setRowSelectionModel={setRowSelectionModel} Componente={<FormEditarVentas valores={valores} />} />
 
                     {

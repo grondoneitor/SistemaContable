@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Box, Toolbar, Tooltip, Typography } from "@mui/material"
-import {  faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { SuccessOrError } from "./Messages/SuccessOrError"
 
 
@@ -11,6 +11,7 @@ export default function Encabezado({ setOpen, setOpenEdit, rowSelectionModel: ro
         await Borrar(rows)
         setRowSelectionModel([])
     }
+    
     return (
         <Toolbar
             sx={{

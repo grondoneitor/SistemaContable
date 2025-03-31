@@ -52,7 +52,7 @@ export default function FormProductos() {
 
   }
 
-
+console.log(state.productos)
 
   return (
     <div className="w-full flex flex-col gap-6">
@@ -110,10 +110,8 @@ export default function FormProductos() {
             <SuccessOrError message={state.mensajeExito} severity={"success"} moved={isMoved} />
         }
       </div>
-      <div className=" ">
-        <div className="  w-2/6 ">
-          <Outlet className="w-full" />
-        </div>
+      <div className=" w-4/12">
+          <Outlet   />
       </div>
     </div>
   );

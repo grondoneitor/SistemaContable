@@ -1,39 +1,36 @@
 /* eslint-disable react/prop-types */
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { schemaCliente } from "../../services/validaciones";
+
 import { useContext, useEffect } from "react";
-import ServiciosCliente from "../../services/Clientes/clienteServicios";
-import { ClienteContext } from "../../context/cliente";
+import { ProveedoresContext } from "../../context/proveedores";
+import { ServiciosProveedores } from "../../services/Proveedor/proveedorServicios";
 import { SuccessOrError } from "../Messages/SuccessOrError";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schemaProveedor } from "../../services/validaciones";
+import { useForm } from "react-hook-form";
 
+export default function FormEditarProveedor({ valores }) {
 
-export default function FormEditarCliente({ valores }) {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
-        resolver: yupResolver(schemaCliente),
+        resolver: yupResolver(schemaProveedor),
         defaultValues: valores
     });
 
-    const { state } = useContext(ClienteContext)
-    const { EditarCliente, isMoved, isMistake } = ServiciosCliente(reset)
-
+    const { state } = useContext(ProveedoresContext);
+    const { editarProveedorServ, isMoved, isMistake } = ServiciosProveedores();
 
     useEffect(() => {
         reset(valores);
     }, [valores, reset]);
 
-    const handleSubmitAll = async (cliente) => {
-        console.log(cliente)
-        await EditarCliente(cliente)
+    const handleSubmitAll = async (proveedor) => {
+        await editarProveedorServ(proveedor);
     };
 
     const verdaderosValores = {
         id: valores.id,
-        nombre: valores.nombre_Completo,
-        direccion: valores.direcion,
-        dni: valores.dni,
-        mail: valores.mail,
-        telefono: valores.telefono
+        nombre: valores.nombre,
+        contacto: valores.contacto,
+        rubro: valores.rubro
     }
 
 
@@ -46,7 +43,7 @@ export default function FormEditarCliente({ valores }) {
                     noValidate
                 >
                     <h2 className="font-black text-3xl text-slate-800 text-center mb-10">
-                        Actualizar cliente
+                        Actualizar proveedor
                     </h2>
 
                     {Object.entries(verdaderosValores)
@@ -73,9 +70,10 @@ export default function FormEditarCliente({ valores }) {
                         type="submit"
                         className="bg-fuchsia-950 w-full p-3 text-white uppercase font-bold hover:bg-fuchsia-900 cursor-pointer transition-colors"
                     >
-                        EDITAR CLIENTE
+                        EDITAR PROVEEDOR
                     </button>
                 </form>
+
                 {
                     state.mensajeError ?
                         <SuccessOrError message={state.mensajeError} severity={"error"} moved={isMistake} />
@@ -86,3 +84,11 @@ export default function FormEditarCliente({ valores }) {
         </div>
     );
 }
+
+
+
+
+
+
+
+

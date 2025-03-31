@@ -9,6 +9,8 @@ import FormCrearCategoria from "./FormCrearCategoria.jsx";
 import { ServiciosCategoria } from "../../services/Categorias/serviciosCategoria.js";
 import Encabezado from "../Encabezado.jsx";
 import { Link } from "react-router-dom";
+import Opciones from "../Opciones.jsx";
+import FiltroDeslizante from "../Filtros.jsx";
 // import ModalCrearCategoria from "./ModalCrearCategoria.jsx";
 
 const columns = [
@@ -29,6 +31,7 @@ export default function FormCategorias() {
     const [openEdit, setOpenEdit] = useState(false)
     const [rowSelectionModel, setRowSelectionModel] = useState([]);
     const { borrarCategoriaServ, isMoved, isMistake } = ServiciosCategoria()
+    const [openFilter, setOpenFilter] = useState(false)
 
     const categoriasFinales = state.categorias.map(categoria => ({
         ...categoria,
@@ -36,37 +39,39 @@ export default function FormCategorias() {
     }))
 
     return (
-        <div className="bg-white rounded-2xl p-6 w-full flex justify-center">
-            <div className="w-auto min-w-[33%] max-w-lg">
-                <h1 className="text-4xl m-7 font-bold">Categorías</h1>
-                 <Link to="/productos" >salir de categorias</Link>
-                <Paper sx={{ borderRadius: "24px", width: "100%" }}>
+        <div className="bg-white rounded-2xl p-6 w-fit">
+            <h1 className="text-4xl m-7 font-bold">Categorías</h1>
+            <Link to="/productos" >salir de categorias</Link>
+            <Paper sx={{}}>
 
-                    <Encabezado
-                        setOpen={setOpen}
-                        setOpenEdit={setOpenEdit}
-                        rowSelectionModel={rowSelectionModel}
-                        setRowSelectionModel={setRowSelectionModel}
-                        Borrar={borrarCategoriaServ}
-                        isMoved={isMoved}
-                        isMistake={isMistake}
-                        state={state}
-                    />
+                <Opciones
+                    setOpen={setOpen}
+                    setOpenEdit={setOpenEdit}
+                    rowSelectionModel={rowSelectionModel}
+                    setRowSelectionModel={setRowSelectionModel}
+                    Borrar={borrarCategoriaServ}
+                    setOpenFilter={setOpenFilter}
+                    nombre="categoria"
+                />
+                <FiltroDeslizante
+                    open={openFilter}
+                    setOpen={setOpenFilter}
+                />
 
-                    <Table
-                        seleccionar={state.categorias}
-                        rowSelectionModel={rowSelectionModel}
-                        setRowSelectionModel={setRowSelectionModel}
-                        setValores={setValores}
-                        rows={categoriasFinales}
-                        columns={columns}
-                    />
 
-                </Paper>
-                <ModalAll open={openEdit} setOpen={setOpenEdit} setRowSelectionModel={setRowSelectionModel} Componente={<FormEditarCategoria valores={valores} />} />
-                <ModalAll open={open} setOpen={setOpen} setRowSelectionModel={setRowSelectionModel} Componente={<FormCrearCategoria campos={campos} />} />
+                <Table
+                    seleccionar={state.categorias}
+                    rowSelectionModel={rowSelectionModel}
+                    setRowSelectionModel={setRowSelectionModel}
+                    setValores={setValores}
+                    rows={categoriasFinales}
+                    columns={columns}
+                />
 
-            </div>
+            </Paper>
+            <ModalAll open={openEdit} setOpen={setOpenEdit} setRowSelectionModel={setRowSelectionModel} Componente={<FormEditarCategoria valores={valores} />} />
+            <ModalAll open={open} setOpen={setOpen} setRowSelectionModel={setRowSelectionModel} Componente={<FormCrearCategoria campos={campos} />} />
+
         </div>
     );
 }

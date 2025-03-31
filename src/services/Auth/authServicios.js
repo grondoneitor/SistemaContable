@@ -31,7 +31,7 @@ export const AuthServicios = () => {
         if (success) {
             isSuccess()
             setTimeout(()=>{
-                navigate("/");
+                navigate("/dashboard");
             },[1500])
         }else{
             isUnseccess()

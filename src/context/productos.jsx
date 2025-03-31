@@ -27,6 +27,7 @@ export function ProductoProvider({ children }) {
         dispatch({ type: 'mensaje_error', payload: error })
     }
     const mensajeExito = (exito) =>{
+        console.log("mosrtadno producto desde context ", exito)
         dispatch({ type: 'mensaje_exito', payload: exito })
     }
     const agregarFiltroCategoria = (categoria) =>{

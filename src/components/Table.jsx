@@ -4,7 +4,7 @@ import { DataGrid } from "@mui/x-data-grid"
 const paginationModel = { page: 0, pageSize: 5 };
 
 // eslint-disable-next-line react/prop-types
-export default function Table({rows,columns ,seleccionar =[] ,setRowSelectionModel, setValores, rowSelectionModel }) {
+export default function Table({rows,columns ,seleccionar =[] ,setRowSelectionModel ,setValores, rowSelectionModel }) {
 
     const funcionParaSeleccionar = (newRowSelectionModel) => {
         setRowSelectionModel(newRowSelectionModel);
@@ -18,17 +18,12 @@ export default function Table({rows,columns ,seleccionar =[] ,setRowSelectionMod
 
         }
     }
-    
+    console.log("seleccionar ", seleccionar)
     
 
     return (
         <DataGrid
             rows={rows}
-            sx={{
-       
-            }
-            }
-
             getRowId={(row) => row.id} 
             columns={columns}
             initialState={{ pagination: { paginationModel } }}

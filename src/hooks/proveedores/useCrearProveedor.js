@@ -24,7 +24,7 @@ export function useCrearProveedor() {
             }
             console.log("mensaje ", data.mensaje )
             mensajeExito(data.mensaje)
-            return response;
+            return {response, data};
 
         } catch (data) {
             mensajeError(data.mensaje)

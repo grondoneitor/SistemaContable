@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 export default function Opciones({ setOpen, setOpenEdit, rowSelectionModel = [], setRowSelectionModel, Borrar, setOpenFilter, Componente, categoria, nombre }) {
 
     const borrar = async () => {
+        console.log(rowSelectionModel)
         await Borrar(rowSelectionModel)
         setRowSelectionModel([])
     }

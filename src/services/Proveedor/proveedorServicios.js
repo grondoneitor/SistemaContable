@@ -16,10 +16,11 @@ export const ServiciosProveedores = (reset) => {
 
     const crearProveedorServ = async (proveedor) => {
         const success = await crearProveedorReal(proveedor)
-        if (success.ok) {
+        if (success.response.ok) {
             functionMoved()
             crearProveedor(proveedor)
             reset()
+            return success.data.object
         } else {
             functionMistake()
         }

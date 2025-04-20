@@ -7,6 +7,7 @@ export const useCrearCompra = () => {
     const crearCompraReal = async (compra) => {
         guardarMensajeExito("")
         guardarMensajeError("")
+        console.log("compra desde hook ", compra)
         try {
             const response = await fetch("http://localhost:8092/api/v1/compra", {
                 method: "POST",

@@ -86,3 +86,16 @@ export const schemaProveedor = yup.object({
         .min(3, 'El contacto debe tener al menos 3 letras')
         .max(70, 'El nombre no puede tener más de 70 letras')
 }).required();
+
+export const schemaCompras = yup.object({
+    producto: yup.string()
+        .required('El producto es obligatorio'),
+    proveedores: yup.string()
+        .required("El proveedor es obligatorio"),
+    cantidad: yup.string()
+        .required("El cantidad es obligatorio"),
+    costoTotal: yup.string()
+        .required("El precio es obligatorio"),
+    fecha: yup.string()
+        .required("La fecha es obligatorio")
+}).required();

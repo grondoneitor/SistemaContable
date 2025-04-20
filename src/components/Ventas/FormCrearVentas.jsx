@@ -10,9 +10,9 @@ import VentasServicios from "../../services/Ventas/ventasServicios";
 import { SuccessOrError } from "../Messages/SuccessOrError";
 import { VentasContext } from "../../context/ventas";
 import { capitalizeFirstLetter } from "../../services/mayusculaPrimeraLetra";
-import ModalAll from "../Modal";
-import {camposClientes } from '../Clientes/constantesClientes'
+import { camposClientes } from '../Clientes/constantesClientes'
 import FormCrearCliente from "../Clientes/FormCrearCliente";
+import ActivoOrNuevo from "../ActivoOrNuevo";
 
 // eslint-disable-next-line react/prop-types
 export default function FormCrearVentas({ campos = [] }) {
@@ -21,57 +21,41 @@ export default function FormCrearVentas({ campos = [] }) {
         resolver: yupResolver(schemaVentas)
     });
     const { crearVenta, isMoved, isMistake } = VentasServicios(reset);
-    const {state: stateVentas} = useContext(VentasContext)
+    const { state: stateVentas } = useContext(VentasContext)
     const { state } = useContext(ProductoContext);
     const { state: stateClientes } = useContext(ClienteContext)
+
+
+    const [clienteActual, setClienteActual] = useState(null)
+    const [creado, setCreado] = useState(false)
+
     const handleSubmitAll = async (venta) => {
         reset()
         setCreado(false);
-        setOpen(false)
-        venta.cliente = JSON.parse(venta.cliente); 
+        // setOpen(false)
+        venta.cliente = JSON.parse(venta.cliente);
         venta.producto = JSON.parse(venta.producto);
         venta.precioTotal = Number(venta.precioTotal);
         venta.cantidad = Number(venta.cantidad);
         venta.tipoTransaccion = "Venta";
-    
-    
+
+
         const clienteEncontrado = stateClientes.clientes.find(cliente => cliente.id === venta.cliente);
         if (clienteEncontrado) {
             venta.cliente = clienteEncontrado;
             venta.cliente.user = null;
         }
-    
+
         if (venta.producto) {
             venta.producto.user = null;
             venta.producto.categoria.user = null;
         }
-    
+        console.log("ventaa ",venta)
+
         await crearVenta(venta);
     };
-    
-    const [open, setOpen] = useState(false)
-    const abrirModalCrearProducto = () => {
-        setOpen(true)
-    }
-
-    const cerrarModalCrearProducto = () => {
-        setCreado(true)
-        setOpen(false)
-    }
 
 
-    const [clienteActual, setClienteActual] = useState(null)
-    const [creado, setCreado] = useState(false)
-    const nuevoCliente = (newCliente) => {
-        setClienteActual(newCliente)
-        if (newCliente) {
-            setCreado(true)
-            reset({
-                cliente: newCliente.id
-            });
-
-        }
-    }
 
 
     return (
@@ -94,14 +78,13 @@ export default function FormCrearVentas({ campos = [] }) {
                             {campo.id === "cliente" && !creado ? (
 
                                 <>
-                                    <div className="flex gap-3">
-                                        <button type="button" onClick={abrirModalCrearProducto} className="bg-fuchsia-950  rounded-lg text-white p-2">Nuevo</button>
-                                        <button type="button" onClick={cerrarModalCrearProducto} className="bg-gradient-to-br bg-[#d1c1f3] border-4 border-fuchsia-950 text-black rounded-lg p-2">Activo</button>
-                                    </div>
-                                    {open === true ?
-                                        <ModalAll open={open} setOpen={setOpen} Componente={<FormCrearCliente campos={camposClientes} nuevoCliente={nuevoCliente} />} />
-                                        : null
-                                    }
+                                    <ActivoOrNuevo
+                                        reset={reset}
+                                        setCreado={setCreado}
+                                        setActual={setClienteActual}
+                                        campos={camposClientes}
+                                        Componente={FormCrearCliente}
+                                    />
                                 </>
 
                             ) : (creado && campo.id === "cliente" ?
@@ -196,7 +179,7 @@ export default function FormCrearVentas({ campos = [] }) {
                         <SuccessOrError message={stateVentas.mensajeError} severity={"error"} moved={isMistake} />
                         :
                         <SuccessOrError message={stateVentas.mensajeExito} severity={"success"} moved={isMoved} />
-                }  
+                }
             </div>
         </div>
     );

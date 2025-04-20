@@ -18,8 +18,6 @@ export default function Table({rows,columns ,seleccionar =[] ,setRowSelectionMod
 
         }
     }
-    console.log("seleccionar ", seleccionar)
-    
 
     return (
         <DataGrid

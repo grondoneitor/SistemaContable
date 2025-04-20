@@ -8,7 +8,7 @@ import { ClienteContext } from "../../context/cliente";
 
 
 // eslint-disable-next-line react/prop-types
-export default function FormCrearCliente({ campos = [], nuevoCliente }) {
+export default function FormCrearCliente({ campos = [], nuevo }) {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schemaCliente)
     })
@@ -16,7 +16,7 @@ export default function FormCrearCliente({ campos = [], nuevoCliente }) {
     const { CrearCliente, isMoved, isMistake } = ServiciosCliente(reset)
     const handleSubmitAll = async (cliente) => {
        const respuesta = await CrearCliente(cliente)
-       if(respuesta) nuevoCliente(respuesta);
+       if(respuesta) nuevo(respuesta);
     }
 
     return (

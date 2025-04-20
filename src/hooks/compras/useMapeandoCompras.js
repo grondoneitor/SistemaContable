@@ -5,7 +5,6 @@ import { ComprasContext } from "../../context/compras";
 export default function useMapeandoCompra() {
     const{guardarCompras, state} = useContext(ComprasContext)
     const token = localStorage.getItem("tokenLogin")
-    console.log(state.filtersCompras)
     if(state.filtersCompras.start == null) state.filtersCompras.start = ""
     if(state.filtersCompras.end == null) state.filtersCompras.end = ""
     useEffect(() => {
@@ -19,7 +18,7 @@ export default function useMapeandoCompra() {
             .then(response => response.json())
             .then(data => guardarCompras(data.object))
             .catch(err => console.log(err))
-    }, [state.compraCreada, state.vantaModificada, state.compraEliminada, state.filtersCompras])
+    }, [state.compraCreada, state.compraModificada, state.compraEliminada, state.filtersCompras])
 
 
 }

@@ -5,17 +5,24 @@ import { capitalizeFirstLetter } from '../../services/mayusculaPrimeraLetra';
 import Opciones from '../Opciones';
 import { Paper } from '@mui/material';
 import Table from '../Table';
-import { columns } from './constantesCompras';
-
+import { campos, columns } from './constantesCompras';
+import ModalAll from '../Modal'
+import { SuccessOrError } from '../Messages/SuccessOrError';
+import FormCrearCompras from './FormCrearCompras';
+import FormEditarCompras from './FormEditarCompras';
+import ComprasServicios from '../../services/Compras/ComprasServicios.js';
+import { useMapeandoProductos } from '../../hooks/productos/useMapeandoProductos.js';
+import useMapeandoProveedores from '../../hooks/proveedores/useMapProveedores.js';
 
 export default function Compras() {
 
     useMapeandoCompra()
-
+    useMapeandoProveedores()
+    useMapeandoProductos()
 
     const [rowSelectionModel, setRowSelectionModel] = useState([])
     const [valores, setValores] = useState(null)
-    // const { isMoved, isMistake, eliminarVentaServicio } = VentasServicios()
+    const {   isMoved, isMistake, eliminarCompraServicio  } = ComprasServicios()
 
     const [open, setOpen] = useState(false)
     const [openEdit, setOpenEdit] = useState(false)
@@ -31,7 +38,6 @@ export default function Compras() {
         fecha: (compra.fecha).split("T")[0]
     })) : []
 
-    console.log(compras)
 
     return (
         <div className="w-full flex flex-col gap-6">
@@ -45,9 +51,9 @@ export default function Compras() {
                         setOpenEdit={setOpenEdit}
                         rowSelectionModel={rowSelectionModel}
                         setRowSelectionModel={setRowSelectionModel}
-                        // Borrar={eliminarVentaServicio}
+                        Borrar={eliminarCompraServicio}
                         setOpenFilter={setOpenFilter}
-                        nombre="venta"
+                        nombre="compra"
                     />
                     {/* <FiltroDeslizante
                         open={openfilter}
@@ -68,19 +74,19 @@ export default function Compras() {
                         rowSelectionModel={rowSelectionModel}
                         rows={compras}
                         columns={columns}
-                        seleccionar={state.ventas}
+                        seleccionar={state.compras}
                     />
 
-                    {/* <ModalAll open={open} setOpen={setOpen} setRowSelectionModel={setRowSelectionModel} Componente={<FormCrearVentas campos={campos} />} />
+                   <ModalAll open={open} setOpen={setOpen} setRowSelectionModel={setRowSelectionModel} Componente={<FormCrearCompras campos={campos}/>} />
 
-                    <ModalAll open={openEdit} setOpen={setOpenEdit} setRowSelectionModel={setRowSelectionModel} Componente={<FormEditarVentas valores={valores} />} />
+                    <ModalAll open={openEdit} setOpen={setOpenEdit} setRowSelectionModel={setRowSelectionModel} Componente={<FormEditarCompras valores={valores} />} />
 
                     {
                         state.mensajeError ?
                             <SuccessOrError message={state.mensajeError} severity={"error"} moved={isMistake} />
                             :
                             <SuccessOrError message={state.mensajeExito} severity={"success"} moved={isMoved} />
-                    } */}
+                    } 
                 </Paper>
             </div>
         </div>);

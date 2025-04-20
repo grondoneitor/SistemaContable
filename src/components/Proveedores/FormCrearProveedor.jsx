@@ -8,14 +8,15 @@ import { SuccessOrError } from "../Messages/SuccessOrError";
 
 
 // eslint-disable-next-line react/prop-types
-export default function FormCrearProveedor({ campos = [] }) {
+export default function FormCrearProveedor({ campos = [], nuevo }) {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schemaProveedor)
     });
     const { crearProveedorServ, isMoved, isMistake } = ServiciosProveedores(reset);
     const { state } = useContext(ProveedoresContext)
     const handleSubmitAll = async (proveedor) => {
-        await crearProveedorServ(proveedor);
+       const respuesta= await crearProveedorServ(proveedor);
+       nuevo(respuesta)
     };
     return (
         <div className="flex items-center justify-center w-full">

@@ -1,124 +1,91 @@
-import { Link } from "react-router-dom";
-import { ServiciosCrear } from "../../services/serviciosCrear";
+import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { schema } from "../../services/validaciones";
+import { ServiciosProducto } from "../../services/Productos/productoServicios";
+import { CategoriaContext } from "../../context/categorias";
+import { useContext } from "react";
+import { SuccessOrError } from "../Messages/SuccessOrError";
+import { ProductoContext } from "../../context/productos";
 
-export default function PatientForm() {
-   
-     const {handleOnSubmit, handleChange,producto} = ServiciosCrear()
+// eslint-disable-next-line react/prop-types
+export default function FormCrearProducto({ campos = [] }) {
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
+        resolver: yupResolver(schema)
+    });
 
+    const { crearProductoServ, isMoved, isMistake } = ServiciosProducto(reset);
+    const { state } = useContext(CategoriaContext);
+    const {state:stateProductos} = useContext(ProductoContext)
+    const handleSubmitAll = async (producto) => {
+
+        if (producto.categoria) {
+            producto.categoria = JSON.parse(producto.categoria)
+           
+            producto.categoria.user  = null;
+        }
+        producto.stock_Min = Number(producto.stock_Min)
+        await crearProductoServ(producto);
+    };
 
     return (
-        <div className="flex items-center justify-center mt-10">
-            <div className="md:w-1/2 lg:w-2/5 mx-5 w-full">
-                <h2 className="font-black text-3xl text-slate-800 text-center">Crear nuevo producto</h2>
-
-                <p className="text-lg mt-5 text-center mb-10 text-slate-800 font-semibold">
-                    Añade Productos y {''}
-                    <span className="text-indigo-600 font-bold">Administralos</span>
-                </p>
-
+        <div className="flex items-center justify-center w-full">
+            <div className="w-full">
                 <form
-                     onSubmit={handleOnSubmit  }
-                    className="bg-white shadow-md rounded-lg py-4 px-5 mb-10 border border-indigo-800"
+                    onSubmit={handleSubmit(handleSubmitAll)}
+                    className="bg-white shadow-md rounded-lg py-4 px-5 "
                     noValidate
-
                 >
-                    <button className='flex items-center mb-6' type="button"  >
-                        <Link to="/productos" >
-                            <svg className=' size-8' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" >
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-                            </svg>
-                        </Link>
-                    </button>
-                    <div className="mb-5">
-                        <label htmlFor="producto" className="text-sm uppercase font-bold">
-                            Producto
-                        </label>
-                        <input
-                            id="producto"
-                            className="w-full p-3 border border-gray-100"
-                            type="text"
-                            name="producto"
-                             value={producto.producto} // Vinculación del estado
-                             onChange={handleChange} // Maneja el cambio
-                            placeholder="Nombre del producto"
-                            required
-                        />
-                    </div>
+                    <h2 className="font-black text-3xl text-slate-800 text-center mb-10">
+                        Crear nuevo producto
+                    </h2>
 
-                    <div className="mb-5">
-                        <label htmlFor="precio" className="text-sm uppercase font-bold">
-                            Precio
-                        </label>
-                        <input
-                            id="precio"
-                            className="w-full p-3 border border-gray-100"
-                            name="precio"
-                            type="number"
-                             value={producto.precio} // Vinculación del estado
-                             onChange={handleChange} // Maneja el cambio
-                            placeholder="Precio del producto"
-                            required
+                    {Array.isArray(campos) && campos.map(campo => (
+                        <div className="mb-5" key={campo.id}>
+                            <label htmlFor={campo.id} className="text-sm uppercase font-bold">
+                                {campo.titulo}
+                            </label>
 
-                        />
-                    </div>
+                            {campo.id === "categoria" ? (
+                                <select
+                                    {...register(campo.id)}
+                                    id={campo.id}
+                                    className="w-full p-3 border border-gray-100"
+                                >
+                                    <option value="">Seleccione una categoría</option>
+                                    {state.categorias.map(cat => (
+                                        <option key={cat.id} value={JSON.stringify(cat)}>
+                                            {cat.categoria}
+                                        </option>
+                                    ))}
+                                </select>
+                            ) : (
+                                <input
+                                    {...register(campo.id)}
+                                    id={campo.id}
+                                    className="w-full p-3 border border-gray-100"
+                                    type={campo.type}
+                                    name={campo.id}
+                                    placeholder={campo.placeholder}
+                                />
+                            )}
 
-                    <div className="mb-5">
-                        <label htmlFor="descripcion" className="text-sm uppercase font-bold">
-                            Descripcion
-                        </label>
-                        <textarea
-                            id="descripcion"
-                            className="w-full p-3 border border-gray-100"
-                            name="descripcion"
-                             value={producto.descripcion} // Vinculación del estado
-                             onChange={handleChange} // Maneja el cambio
-                            placeholder="Descripcion del producto"
-                            required
-
-                        />
-                    </div>
-
-                    <div className="mb-5">
-                        <label htmlFor="stock" className="text-sm uppercase font-bold">
-                            Stock Actual
-                        </label>
-                        <input
-                            id="stock"
-                            className="w-full p-3 border border-gray-100"
-                            name="stock"
-                             value={producto.stock} // Vinculación del estado
-                             onChange={handleChange} // Maneja el cambio
-                            placeholder="Stock actual de este producto"
-                            type="number"
-                            required
-
-                        />
-                    </div>
-
-                    <div className="mb-5">
-                        <label htmlFor="stock_Min" className="text-sm uppercase font-bold">
-                            Stock minimo
-                        </label>
-                        <input
-                            id="stock_Min"
-                            type="number"
-                            className="w-full p-3 border border-gray-100"
-                            name="stock_Min"
-                             value={producto.stock_Min} // Vinculación del estado
-                             onChange={handleChange} // Maneja el cambio
-                            placeholder="Stock minimo de este producto"
-                            required
-
-                        />
-                    </div>
+                            {errors[campo.id] && <p className="text-red-500">{errors[campo.id].message}</p>}
+                        </div>
+                    ))}
 
                     <button
-                        type="submit"
-                        className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
+                        className="bg-fuchsia-950 w-full p-3 text-white uppercase font-bold hover:bg-fuchsia-900 cursor-pointer transition-colors"
                     >
-                        Guardar Producto
+                        CREAR PRODUCTO
                     </button>
                 </form>
+
+                {
+                    stateProductos.mensajeError ?
+                        <SuccessOrError message={stateProductos.mensajeError} severity={"error"} moved={isMistake} />
+                        :
+                        <SuccessOrError message={stateProductos.mensajeExito} severity={"success"} moved={isMoved} />
+                } 
             </div>
         </div>
     );

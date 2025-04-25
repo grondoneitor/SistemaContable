@@ -1,79 +1,79 @@
-import { Link, NavLink } from "react-router-dom";
-import SearchCategorias from "./SearchCategorias";
-import { capitalizeFirstLetter } from "../../services/mayusculaPrimeraLetra";
-import { ServiciosCrearCategoria } from "../../services/serviciosCrearCategoria";
-import { useElegirCategorias } from "../../hooks/useElegirCategorias";
+import { useContext, useState } from "react";
+import { CategoriaContext } from "../../context/categorias";
+import { Paper } from "@mui/material";
+import { capitalizeFirstLetter } from "../../services/mayusculaPrimeraLetra.js";
+import Table from "../Table.jsx";
+import FormEditarCategoria from "./FormEditarCategoria.jsx";
+import ModalAll from "../Modal.jsx";
+import FormCrearCategoria from "./FormCrearCategoria.jsx";
+import { ServiciosCategoria } from "../../services/Categorias/serviciosCategoria.js";
+import Encabezado from "../Encabezado.jsx";
+import { Link } from "react-router-dom";
+import Opciones from "../Opciones.jsx";
+import FiltroDeslizante from "../Filtros.jsx";
+// import ModalCrearCategoria from "./ModalCrearCategoria.jsx";
 
+const columns = [
+    { field: 'categoria', headerName: 'Categoria', flex: 1 }
+];
+const campos = [{
+    titulo: "Categoria",
+    id: "categoria",
+    placeholder: "Categoria...",
+    type: "text"
+}
+]
 
-export default function Categorias() {
+export default function FormCategorias() {
+    const { state } = useContext(CategoriaContext);
+    const [open, setOpen] = useState(false);
+    const [valores, setValores] = useState({})
+    const [openEdit, setOpenEdit] = useState(false)
+    const [rowSelectionModel, setRowSelectionModel] = useState([]);
+    const { borrarCategoriaServ, isMoved, isMistake } = ServiciosCategoria()
+    const [openFilter, setOpenFilter] = useState(false)
 
-
-    const {handleChange,handleSubmitCrear,handleOnClick,handleVolver, activo,categ, handleModificar, handleChangeEdi,handleDelete} = ServiciosCrearCategoria()
-    const {state, error} = useElegirCategorias()
-
-    const categoriasMostrar = state.categoriasBuscados.length > 0 ? state.categoriasBuscados : state.categorias
+    const categoriasFinales = state.categorias.map(categoria => ({
+        ...categoria,
+        categoria: capitalizeFirstLetter(categoria.categoria),
+    }))
 
     return (
-        <div className="flex flex-col items-center">
-            <SearchCategorias />
-            <div className="flex w-3/4 mt-16 h-full gap-6 justify-center">
-                <aside className="w-2/12 bg-white text-center m-3">
-                    <h2 className="mt-2 mb-8 font-black">Opciones</h2>
-                    <div className="flex flex-col gap-2">
-                        <NavLink to="/productos">-Ver Productos</NavLink>
-                        <Link to="/categorias" className="font-semibold">-Ver categorias</Link>
-                        <p>Filtros</p>
-                    </div>
-                </aside>
-                <main className="w-full ml-4">
-                    <h1 className="font-black text-3xl text-slate-800 text-center mb-14">Categorias</h1>
-                    <div >
-                        <ul className="grid grid-cols-4 mx-5 gap-8 " >
-                            {categoriasMostrar.map((categoria) => (
-                                <li key={categoria.id} >
-                                    <button onClick={() => handleOnClick(categoria)}><h1>{capitalizeFirstLetter(categoria.categoria)}</h1></button>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </main>
-                {!activo ?
-                    <form onSubmit={handleSubmitCrear} className=" bg-white text-center w-2/5">
-                        <>
-                            <h1 className="font-black p-2 text-xl">Crear categoria</h1>
-                            <label htmlFor="categoria"></label>
-                            <input onChange={handleChange} className="p-3 m-6 border border-s-4 border-green-600"  type="text" id="categoria" name="categoria" placeholder="categoria" />
+        <div className="bg-white rounded-2xl p-6 w-fit">
+            <h1 className="text-4xl m-7 font-bold">Categorías</h1>
+            <Link to="/productos" >salir de categorias</Link>
+            <Paper sx={{}}>
 
-                            <button className="bg-indigo-900 p-3 rounded-xl text-slate-100 font-semibold">Crear categoria</button>
+                <Opciones
+                    setOpen={setOpen}
+                    setOpenEdit={setOpenEdit}
+                    rowSelectionModel={rowSelectionModel}
+                    setRowSelectionModel={setRowSelectionModel}
+                    Borrar={borrarCategoriaServ}
+                    setOpenFilter={setOpenFilter}
+                    nombre="categoria"
+                />
+                <FiltroDeslizante
+                    open={openFilter}
+                    setOpen={setOpenFilter}
+                />
 
 
-                        </>
-                    </form>
-                    :
-                    <form action="">
+                <Table
+                    seleccionar={state.categorias}
+                    rowSelectionModel={rowSelectionModel}
+                    setRowSelectionModel={setRowSelectionModel}
+                    setValores={setValores}
+                    rows={categoriasFinales}
+                    columns={columns}
+                />
 
-                        <div className="flex gap-2 items-center p-2 justify-center">
-                            <button onClick={handleVolver} className='flex' type="button">
-                                <svg className='text-slate-800 size-8' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-                                </svg>
-                            </button>
-                            <h1 className="font-black text-xl">Opciones categoria</h1>
-                        </div>
-
-
-                        <label htmlFor="producto"></label>
-                        <input className="p-3 m-6 border border-s-4 border-blue-600" onChange={handleChangeEdi} defaultValue={categ.categoria} type="text" id="producto" name="producto" placeholder="categoria" />
-
-                        <div className="flex gap-2 p-2">
-                            <button className="bg-blue-900 p-3 rounded-xl text-slate-100 font-semibold" onClick={handleModificar}>Modificar categoria</button>
-                            <button className="bg-red-900 p-3 rounded-xl text-slate-100 font-semibold" onClick={handleDelete}>Eliminar categoria</button>
-                        </div>
-                    </form>
-
-                }
-            </div>
+            </Paper>
+            <ModalAll open={openEdit} setOpen={setOpenEdit} setRowSelectionModel={setRowSelectionModel} Componente={<FormEditarCategoria valores={valores} />} />
+            <ModalAll open={open} setOpen={setOpen} setRowSelectionModel={setRowSelectionModel} Componente={<FormCrearCategoria campos={campos} />} />
 
         </div>
-    )
+    );
 }
+
+

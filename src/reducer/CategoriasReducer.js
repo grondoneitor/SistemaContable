@@ -1,18 +1,29 @@
 
+
 export const InitialState = {
-    categorias: [],
+    categorias:[],
     categoriasBuscados: [],
-    nombreCategoriaBuscado: ""
+    nombreCategoriaBuscado: "",
+    categoriaCreada:[],
+    categoriaEditada: [],
+    categoriaEliminada: [],
+    categoriaSeleccionada: [],
+    mensajeError: "",
+    mensajeExito:""
 };
 
-// Tipos de acción
+
 export const ActionTypes = {
     MOSTRAR_CATEGORIAS: 'mostrar_categorias',
     CREAR_CATEGORIA: 'crear_categoria',
     EDITAR_CATEGORIA: 'editar_categoria',
     BORRAR_CATEGORIA: 'borrar_categoria',
     BUSCAR_CATEGORIA: 'buscar_categoria',
-    GUARDAR_CAT_CATEGORIA: 'guardar_cat_categoria'
+    GUARDAR_CAT_CATEGORIA: 'guardar_cat_categoria',
+    CATEGORIA_CREADA: 'categoria_creada',
+    CATEGORIA_SELECCIONADA: 'categoria_seleccionada',
+    MENSAJE_ERROR: 'mensaje_error',
+    MENSAJE_EXITO: 'mensaje_exito'
 };
 
 // Reducer
@@ -23,33 +34,26 @@ export const CategoriaReducer = (state = InitialState, action) => {
         case ActionTypes.MOSTRAR_CATEGORIAS: {
             return {
                 ...state,
-                categorias: ActionPayload, // Asignamos directamente los productos del payload
+                categorias: ActionPayload
             };
         }
         case ActionTypes.CREAR_CATEGORIA:{
             return{
                 ...state,
-                categorias: [...state.categorias, ActionPayload]
+                categoriaCreada: [ ActionPayload]
             }
         }
         case ActionTypes.EDITAR_CATEGORIA: {
 
             return{
                 ...state,
-                categorias: state.categorias.map((categoria) => {
-                    if (categoria.id === ActionPayload.id) {
-                       return {...categoria, ...ActionPayload}
-                    }
-                    return categoria
-                })
+                categoriaEditada:[ActionPayload]
             }
         }
         case ActionTypes.BORRAR_CATEGORIA:{
             return{
                 ...state,
-                categorias: state.categorias.filter(categoria =>{
-                    return categoria.id !== ActionPayload.id
-                })
+                categoriaEliminada:[ActionPayload]
             }
         }
         case ActionTypes.BUSCAR_CATEGORIA: {
@@ -64,7 +68,31 @@ export const CategoriaReducer = (state = InitialState, action) => {
                 nombreCategoriaBuscado:ActionPayload
             }
         }
+        case ActionTypes.CATEGORIA_CREADA:{
+            return{
+                ...state,
+                categoriaCreada: ActionPayload
+            }
+        }
+        case ActionTypes.CATEGORIA_SELECCIONADA:{
+            return{
+                ...state,
+                categoriaSeleccionada: ActionPayload
+            }
+        }
+        case ActionTypes.MENSAJE_ERROR:{
+            return{
+                ...state,
+                mensajeError: ActionPayload
+            }
+        }
+        case ActionTypes.MENSAJE_EXITO:{
+            return{
+               ...state,
+               mensajeExito:ActionPayload
+            }
+        }
         default:
-            return state; // Retorna el estado actual si no coincide la acción
+            return state;
     }
 };

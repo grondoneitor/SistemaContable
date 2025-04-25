@@ -10,10 +10,31 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@hookform/resolvers": "^3.9.0",
+    "@itinari/lib-utils": "^1.1.0",
+    "@mui/icons-material": "^6.4.3",
+    "@mui/material": "^6.4.3",
+    "@mui/utils": "^6.1.5",
+    "@mui/x-data-grid": "^7.23.6",
+    "@mui/x-data-grid-generator": "^7.24.1",
+    "@mui/x-data-grid-pro": "^7.24.1",
+    "@shadcn/ui": "^0.0.4",
+    "@toolpad/core": "^0.13.0",
+    "clsx": "^2.1.1",
+    "lib-utils-ts": "^0.0.0-test",
+    "lucide-react": "^0.475.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.1",
+    "react-router": "^7.4.0",
     "react-router-dom": "^6.26.2",
-    "standard": "17.1.2"
+    "standard": "17.1.2",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
@@ -26,8 +47,8 @@
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
-    "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.12",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
     "vite": "^5.4.1"
   },
   "eslintConfig": {

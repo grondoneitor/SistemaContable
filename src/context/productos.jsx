@@ -11,12 +11,6 @@ export function ProductoProvider({ children }) {
     const mostrarProductos = (products) => {
         dispatch({ type: 'mostrar_productos', payload: products })
     }
-    const mostrarProductosBuscados = (products) => {
-        dispatch({ type: 'buscador_productos', payload: products })
-    }
-    const guardarNombreProBuscados = (nombre) => {
-        dispatch({ type: 'guardar_pro_buscado', payload: nombre })
-    }
     const crearProducto = (producto)=>{
         dispatch({ type: 'crear_producto', payload: producto })
     }
@@ -26,16 +20,35 @@ export function ProductoProvider({ children }) {
     const editarProducto = (producto) =>{
         dispatch({ type: 'editar_producto', payload: producto })
     }
-
+    const detalleProducto = (id) =>{
+        dispatch({ type: 'detalle_producto', payload: id })
+    }
+    const mensajeError = (error) =>{
+        dispatch({ type: 'mensaje_error', payload: error })
+    }
+    const mensajeExito = (exito) =>{
+        console.log("mosrtadno producto desde context ", exito)
+        dispatch({ type: 'mensaje_exito', payload: exito })
+    }
+    const agregarFiltroCategoria = (categoria) =>{
+        dispatch({ type: 'add_filter_categoria', payload: categoria })
+    }
+    const agregarFiltroNombre = (nombre) =>{
+        dispatch({ type: 'add_filter_nombre', payload: nombre })
+    }
+    
     return (
         <ProductoContext.Provider value={{
             state,
             mostrarProductos,
-            mostrarProductosBuscados,
-            guardarNombreProBuscados,
             crearProducto,
             borrarProductoI,
-            editarProducto
+            editarProducto,
+            detalleProducto,
+            mensajeError,
+            mensajeExito,
+            agregarFiltroCategoria,
+            agregarFiltroNombre
         }}>
             {children}
         </ProductoContext.Provider>

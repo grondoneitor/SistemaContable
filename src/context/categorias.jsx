@@ -27,6 +27,17 @@ export function CategoriaProvider({ children }) {
          dispatch({ type: 'editar_categoria', payload: categoria })
      }
 
+     const categoriaSeleccionada = (categoria)=>{
+        dispatch({ type: 'categoria_seleccionada', payload: categoria })
+     }
+     
+     const mensajeError = (error) =>{
+        dispatch({ type: 'mensaje_error', payload: error })
+     }
+     
+     const mensajeExito = (exito) =>{
+        dispatch({ type: 'mensaje_exito', payload: exito })
+     }
     return (
         <CategoriaContext.Provider value={{
             state,
@@ -35,7 +46,10 @@ export function CategoriaProvider({ children }) {
             guardarNombreCatBuscados,
             crearCategoria,
             borrarCategoria,
-            editarCategoria
+            editarCategoria,
+            categoriaSeleccionada,
+            mensajeError,
+            mensajeExito
         }}>
             {children}
         </CategoriaContext.Provider>
